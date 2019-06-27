@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Checkpointing - Pytorch lightning Documentation</title>
+  <title>Logging - Pytorch lightning Documentation</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,8 +17,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Checkpointing";
-    var mkdocs_page_input_path = "Trainer/Checkpointing.md";
+    var mkdocs_page_name = "Logging";
+    var mkdocs_page_input_path = "Trainer/Logging.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -72,20 +72,29 @@
                     
     <a class="" href="../">Trainer</a>
                 </li>
-                <li class=" current">
+                <li class="">
                     
-    <a class="current" href="./">Checkpointing</a>
-    <ul class="subnav">
-            
-    </ul>
+    <a class="" href="../Checkpointing/">Checkpointing</a>
                 </li>
                 <li class="">
                     
     <a class="" href="../Distributed training/">Distributed training</a>
                 </li>
-                <li class="">
+                <li class=" current">
                     
-    <a class="" href="../Logging/">Logging</a>
+    <a class="current" href="./">Logging</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#display-metrics-in-progress-bar">Display metrics in progress bar</a></li>
+    
+
+    <li class="toctree-l3"><a href="#print-which-gradients-are-nan">Print which gradients are nan</a></li>
+    
+
+    <li class="toctree-l3"><a href="#process-position">Process position</a></li>
+    
+
+    </ul>
                 </li>
                 <li class="">
                     
@@ -136,10 +145,10 @@
         
       
     
-    <li>Checkpointing</li>
+    <li>Logging</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/williamFalcon/pytorch-lightning/edit/master/docs/Trainer/Checkpointing.md"
+        <a href="https://github.com/williamFalcon/pytorch-lightning/edit/master/docs/Trainer/Logging.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -149,7 +158,29 @@
           <div role="main">
             <div class="section">
               
-                
+                <hr />
+<h4 id="display-metrics-in-progress-bar">Display metrics in progress bar</h4>
+<pre><code class="python"># DEFAULT
+trainer = Trainer(progress_bar=True)
+</code></pre>
+
+<hr />
+<h4 id="print-which-gradients-are-nan">Print which gradients are nan</h4>
+<p>This option prints a list of tensors with nan gradients.</p>
+<pre><code class="python"># DEFAULT
+trainer = Trainer(print_nan_grads=False)
+</code></pre>
+
+<hr />
+<h4 id="process-position">Process position</h4>
+<p>When running multiple models on the same machine we want to decide which progress bar to use.
+Lightning will stack progress bars according to this value. </p>
+<pre><code class="python"># DEFAULT
+trainer = Trainer(process_position=0)
+
+# if this is the second model on the node, show the second progress bar below
+trainer = Trainer(process_position=1)
+</code></pre>
               
             </div>
           </div>
@@ -157,10 +188,10 @@
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../Distributed training/" class="btn btn-neutral float-right" title="Distributed training">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../SLURM Managed Cluster/" class="btn btn-neutral float-right" title="SLURM Managed Cluster">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../" class="btn btn-neutral" title="Trainer"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../Distributed training/" class="btn btn-neutral" title="Distributed training"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -188,10 +219,10 @@
           <a href="https://github.com/williamFalcon/pytorch-lightning/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../Distributed training/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../Distributed training/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../SLURM Managed Cluster/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

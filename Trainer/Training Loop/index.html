@@ -82,6 +82,10 @@
                 </li>
                 <li class="">
                     
+    <a class="" href="../Logging/">Logging</a>
+                </li>
+                <li class="">
+                    
     <a class="" href="../SLURM Managed Cluster/">SLURM Managed Cluster</a>
                 </li>
                 <li class=" current">
@@ -95,21 +99,6 @@
     <li class="toctree-l3"><a href="#anneal-learning-rate">Anneal Learning rate</a></li>
     
 
-    <li class="toctree-l3"><a href="#check-gpu-usage">Check GPU usage</a></li>
-    
-
-    <li class="toctree-l3"><a href="#check-which-gradients-are-nan">Check which gradients are nan</a></li>
-    
-
-    <li class="toctree-l3"><a href="#display-metrics-in-progress-bar">Display metrics in progress bar</a></li>
-    
-
-    <li class="toctree-l3"><a href="#display-the-parameter-count-by-layer">Display the parameter count by layer</a></li>
-    
-
-    <li class="toctree-l3"><a href="#fast-dev-run">Fast dev run</a></li>
-    
-
     <li class="toctree-l3"><a href="#force-training-for-min-or-max-epochs">Force training for min or max epochs</a></li>
     
 
@@ -117,12 +106,6 @@
     
 
     <li class="toctree-l3"><a href="#inspect-gradient-norms">Inspect gradient norms</a></li>
-    
-
-    <li class="toctree-l3"><a href="#make-model-overfit-on-subset-of-data">Make model overfit on subset of data</a></li>
-    
-
-    <li class="toctree-l3"><a href="#process-position">Process position</a></li>
     
 
     <li class="toctree-l3"><a href="#set-how-much-of-the-training-set-to-check">Set how much of the training set to check</a></li>
@@ -133,6 +116,10 @@
                 <li class="">
                     
     <a class="" href="../Validation loop/">Validation loop</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../debugging/">Debugging</a>
                 </li>
                 <li class="">
                     
@@ -200,33 +187,6 @@ trainer = Trainer(lr_scheduler_milestones=[100, 200, 300])
 </code></pre>
 
 <hr />
-<h4 id="check-gpu-usage">Check GPU usage</h4>
-<p>Lightning automatically logs gpu usage to the test tube logs. It'll only do it at the metric logging interval, so it doesn't slow down training.</p>
-<hr />
-<h4 id="check-which-gradients-are-nan">Check which gradients are nan</h4>
-<p>This option prints a list of tensors with nan gradients.</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(print_nan_grads=False)
-</code></pre>
-
-<hr />
-<h4 id="display-metrics-in-progress-bar">Display metrics in progress bar</h4>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(progress_bar=True)
-</code></pre>
-
-<hr />
-<h4 id="display-the-parameter-count-by-layer">Display the parameter count by layer</h4>
-<p>By default lightning prints a list of parameters <em>and submodules</em> when it starts training.</p>
-<hr />
-<h4 id="fast-dev-run">Fast dev run</h4>
-<p>This flag is meant for debugging a full train/val/test loop. It'll activate callbacks, everything but only with 1 training and 1 validation batch.
-Use this to debug a full run of your program quickly</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(fast_dev_run=False)
-</code></pre>
-
-<hr />
 <h4 id="force-training-for-min-or-max-epochs">Force training for min or max epochs</h4>
 <p>It can be useful to force training for a minimum number of epochs or limit to a max number</p>
 <pre><code class="python"># DEFAULT
@@ -248,27 +208,6 @@ trainer = Trainer(track_grad_norm=-1)
 
 # track the LP norm (P=2 here)
 trainer = Trainer(track_grad_norm=2)
-</code></pre>
-
-<hr />
-<h4 id="make-model-overfit-on-subset-of-data">Make model overfit on subset of data</h4>
-<p>A useful debugging trick is to make your model overfit a tiny fraction of the data.</p>
-<pre><code class="python"># DEFAULT don't overfit (ie: normal training)
-trainer = Trainer(overfit_pct=0.0)
-
-# overfit on 1% of data 
-trainer = Trainer(overfit_pct=0.01)
-</code></pre>
-
-<hr />
-<h4 id="process-position">Process position</h4>
-<p>When running multiple models on the same machine we want to decide which progress bar to use.
-Lightning will stack progress bars according to this value. </p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(process_position=0)
-
-# if this is the second model on the node, show the second progress bar below
-trainer = Trainer(process_position=1)
 </code></pre>
 
 <hr />

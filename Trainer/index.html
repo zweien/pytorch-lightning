@@ -88,6 +88,10 @@
                 </li>
                 <li class="">
                     
+    <a class="" href="Logging/">Logging</a>
+                </li>
+                <li class="">
+                    
     <a class="" href="SLURM Managed Cluster/">SLURM Managed Cluster</a>
                 </li>
                 <li class="">
@@ -97,6 +101,10 @@
                 <li class="">
                     
     <a class="" href="Validation loop/">Validation loop</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="debugging/">Debugging</a>
                 </li>
                 <li class="">
                     
@@ -161,17 +169,9 @@ trainer.fit(model)
 <ul>
 <li><a href="Training%20Loop/#accumulated-gradients">Accumulate gradients</a></li>
 <li><a href="Training%20Loop/#anneal-learning-rate">Anneal Learning rate</a></li>
-<li><a href="Training%20Loop/#Check-gpu-usage">Check GPU usage</a></li>
-<li><a href="Training%20Loop/#check-which-gradients-are-nan">Check which gradients are nan</a></li>
-<li><a href="Training%20Loop/#display-metrics-in-progress-bar">Display metrics in progress bar</a></li>
-<li><a href="Training%20Loop/#display-the-parameter-count-by-layer">Display the parameter count by layer</a></li>
-<li><a href="Training%20Loop/#fast-dev-run">Fast dev run</a></li>
 <li><a href="Training%20Loop/#force-training-for-min-or-max-epochs">Force training for min or max epochs</a></li>
 <li><a href="Training%20Loop/#force-disable-early-stop">Force disable early stop</a></li>
-<li><a href="Training%20Loop/#inspect-gradient-norms">Inspect gradient norms</a></li>
-<li><a href="Training%20Loop/#make-model-overfit-on-subset-of-data">Make model overfit on subset of data</a></li>
 <li><a href="../Pytorch-lightning/LightningModule/#configure_optimizers">Use multiple optimizers (like GANs)</a></li>
-<li><a href="Training%20Loop/#process-position">Process position</a></li>
 <li><a href="Training%20Loop/#set-how-much-of-the-training-set-to-check">Set how much of the training set to check (1-100%)</a></li>
 </ul>
 <p><strong>Validation loop</strong>    </p>
@@ -181,14 +181,30 @@ trainer.fit(model)
 <li><a href="Validation%20Loop/#set-how-much-of-the-test-set-to-check">Set how much of the test set to check</a></li>
 <li><a href="Validation%20Loop/#set-validation-check-frequency-within-1-training-epoch">Set validation check frequency within 1 training epoch</a></li>
 <li><a href="Validation%20Loop/#set-the-number-of-validation-sanity-steps">Set the number of validation sanity steps</a></li>
-<li><a href="Validation%20Loop/#check-validation-every-n-epochs">Check validation every n epochs</a></li>
+</ul>
+<p><strong>Debugging</strong>  </p>
+<ul>
+<li><a href="Debugging/#fast-dev-run">Fast dev run</a></li>
+<li><a href="Debugging/#inspect-gradient-norms">Inspect gradient norms</a></li>
+<li><a href="Debugging/#Log-gpu-usage">Log GPU usage</a></li>
+<li><a href="Debugging/#make-model-overfit-on-subset-of-data">Make model overfit on subset of data</a></li>
+<li><a href="Debugging/#print-the-parameter-count-by-layer">Print the parameter count by layer</a></li>
+<li><a href="Debugging/#print-which-gradients-are-nan">Pring which gradients are nan</a></li>
+</ul>
+<p><strong>Experiment Logging</strong>   </p>
+<ul>
+<li><a href="Logging/#display-metrics-in-progress-bar">Display metrics in progress bar</a></li>
+<li>Log arbitrary metrics</li>
+<li><a href="Logging/#process-position">Process position</a></li>
+<li>Save a snapshot of all hyperparameters</li>
+<li>Save a snapshot of the code for a particular model run</li>
 </ul>
 <p><strong>Distributed training</strong>    </p>
 <ul>
+<li>16-bit mixed precision</li>
 <li>Single-gpu      </li>
 <li>Multi-gpu      </li>
 <li>Multi-node   </li>
-<li>16-bit mixed precision</li>
 </ul>
 <p><strong>Checkpointing</strong>    </p>
 <ul>
