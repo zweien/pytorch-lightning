@@ -101,22 +101,28 @@
     <li class="toctree-l3"><a href="#check-which-gradients-are-nan">Check which gradients are nan</a></li>
     
 
-    <li class="toctree-l3"><a href="#check-validation-every-n-epochs">Check validation every n epochs</a></li>
-    
-
     <li class="toctree-l3"><a href="#display-metrics-in-progress-bar">Display metrics in progress bar</a></li>
     
 
     <li class="toctree-l3"><a href="#display-the-parameter-count-by-layer">Display the parameter count by layer</a></li>
     
 
+    <li class="toctree-l3"><a href="#fast-dev-run">Fast dev run</a></li>
+    
+
     <li class="toctree-l3"><a href="#force-training-for-min-or-max-epochs">Force training for min or max epochs</a></li>
+    
+
+    <li class="toctree-l3"><a href="#force-disable-early-stop">Force disable early stop</a></li>
     
 
     <li class="toctree-l3"><a href="#inspect-gradient-norms">Inspect gradient norms</a></li>
     
 
     <li class="toctree-l3"><a href="#make-model-overfit-on-subset-of-data">Make model overfit on subset of data</a></li>
+    
+
+    <li class="toctree-l3"><a href="#process-position">Process position</a></li>
     
 
     <li class="toctree-l3"><a href="#set-how-much-of-the-training-set-to-check">Set how much of the training set to check</a></li>
@@ -126,7 +132,11 @@
                 </li>
                 <li class="">
                     
-    <a class="" href="../Vaildation loop/">Vaildation loop</a>
+    <a class="" href="../Validation loop/">Validation loop</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../hooks/">Hooks</a>
                 </li>
     </ul>
 	    </li>
@@ -170,7 +180,8 @@
           <div role="main">
             <div class="section">
               
-                <p>The asdf</p>
+                <p>The lightning training loop handles everything except the actual computations of your model. To decide what will happen in your training loop, define the <a href="../../Pytorch-lightning/LightningModule/#training_step">training_step function</a>.</p>
+<p>Below are all the things lightning automates for you in the training loop.</p>
 <hr />
 <h4 id="accumulated-gradients">Accumulated gradients</h4>
 <p>Accumulated gradients runs K small batches of size N before doing a backwards pass. The effect is a large effective batch size of size KxN. </p>
@@ -199,13 +210,6 @@ trainer = Trainer(print_nan_grads=False)
 </code></pre>
 
 <hr />
-<h4 id="check-validation-every-n-epochs">Check validation every n epochs</h4>
-<p>If you have a small dataset you might want to check validation every n epochs</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(check_val_every_n_epoch=1)
-</code></pre>
-
-<hr />
 <h4 id="display-metrics-in-progress-bar">Display metrics in progress bar</h4>
 <pre><code class="python"># DEFAULT
 trainer = Trainer(progress_bar=True)
@@ -215,10 +219,25 @@ trainer = Trainer(progress_bar=True)
 <h4 id="display-the-parameter-count-by-layer">Display the parameter count by layer</h4>
 <p>By default lightning prints a list of parameters <em>and submodules</em> when it starts training.</p>
 <hr />
+<h4 id="fast-dev-run">Fast dev run</h4>
+<p>This flag is meant for debugging a full train/val/test loop. It'll activate callbacks, everything but only with 1 training and 1 validation batch.
+Use this to debug a full run of your program quickly</p>
+<pre><code class="python"># DEFAULT
+trainer = Trainer(fast_dev_run=False)
+</code></pre>
+
+<hr />
 <h4 id="force-training-for-min-or-max-epochs">Force training for min or max epochs</h4>
 <p>It can be useful to force training for a minimum number of epochs or limit to a max number</p>
 <pre><code class="python"># DEFAULT
 trainer = Trainer(min_nb_epochs=1, max_nb_epochs=1000)
+</code></pre>
+
+<hr />
+<h4 id="force-disable-early-stop">Force disable early stop</h4>
+<p>Use this to turn off early stopping and run training to the <a href="#force-training-for-min-or-max-epochs">max_epoch</a></p>
+<pre><code class="python"># DEFAULT
+trainer = Trainer(enable_early_stop=True)
 </code></pre>
 
 <hr />
@@ -242,8 +261,19 @@ trainer = Trainer(overfit_pct=0.01)
 </code></pre>
 
 <hr />
+<h4 id="process-position">Process position</h4>
+<p>When running multiple models on the same machine we want to decide which progress bar to use.
+Lightning will stack progress bars according to this value. </p>
+<pre><code class="python"># DEFAULT
+trainer = Trainer(process_position=0)
+
+# if this is the second model on the node, show the second progress bar below
+trainer = Trainer(process_position=1)
+</code></pre>
+
+<hr />
 <h4 id="set-how-much-of-the-training-set-to-check">Set how much of the training set to check</h4>
-<p>If you don't want to check 100% of the validation set (for debugging or if it's huge), set this flag</p>
+<p>If you don't want to check 100% of the training set (for debugging or if it's huge), set this flag</p>
 <pre><code class="python"># DEFAULT
 trainer = Trainer(train_percent_check=1.0)
 
@@ -257,7 +287,7 @@ trainer = Trainer(train_percent_check=0.1)
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../Vaildation loop/" class="btn btn-neutral float-right" title="Vaildation loop">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../Validation loop/" class="btn btn-neutral float-right" title="Validation loop">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../SLURM Managed Cluster/" class="btn btn-neutral" title="SLURM Managed Cluster"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -291,7 +321,7 @@ trainer = Trainer(train_percent_check=0.1)
         <span><a href="../SLURM Managed Cluster/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../Vaildation loop/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../Validation loop/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
