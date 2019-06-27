@@ -59,11 +59,15 @@
         
             <li><a class="toctree-l3" href="#quick-start">Quick start</a></li>
         
+            <li><a class="toctree-l3" href="#quick-start-examples">Quick start examples</a></li>
+        
             <li><a class="toctree-l3" href="#distributed-training">Distributed training</a></li>
         
-            <li><a class="toctree-l3" href="#mixed-precision-training">Mixed precision training</a></li>
+            <li><a class="toctree-l3" href="#checkpointing">Checkpointing</a></li>
         
             <li><a class="toctree-l3" href="#computing-cluster-slurm">Computing cluster (SLURM)</a></li>
+        
+            <li><a class="toctree-l3" href="#common-training-use-cases">Common training use cases</a></li>
         
         </ul>
     
@@ -109,6 +113,11 @@
                 <h1 id="pytorch-lightning-documentation">PYTORCH-LIGHTNING DOCUMENTATION</h1>
 <h6 id="quick-start">Quick start</h6>
 <ul>
+<li>Define a lightning model   </li>
+<li>Set up the trainer   </li>
+</ul>
+<h6 id="quick-start-examples">Quick start examples</h6>
+<ul>
 <li>CPU example   </li>
 <li>Single GPU example   </li>
 <li>Multi-gpu example </li>
@@ -120,15 +129,32 @@
 <li>Multi-gpu      </li>
 <li>Multi-node   </li>
 </ul>
-<h6 id="mixed-precision-training">Mixed precision training</h6>
+<h6 id="checkpointing">Checkpointing</h6>
 <ul>
-<li>16-bit mixed precision</li>
+<li>Model saving</li>
+<li>Model loading </li>
 </ul>
 <h6 id="computing-cluster-slurm">Computing cluster (SLURM)</h6>
 <ul>
 <li>Automatic checkpointing   </li>
 <li>Automatic saving, loading   </li>
 <li>Walltime auto-resubmit   </li>
+</ul>
+<h6 id="common-training-use-cases">Common training use cases</h6>
+<ul>
+<li>16-bit mixed precision</li>
+<li>Accumulate gradients</li>
+<li>Check val many times during 1 training epoch</li>
+<li>Check GPU usage</li>
+<li>Check validation every n epochs</li>
+<li>Check which gradients are nan</li>
+<li>Inspect gradient norms</li>
+<li>Learning rate annealing</li>
+<li>Make model overfit on subset of data</li>
+<li>Min, max epochs</li>
+<li>Multiple optimizers (like GANs)</li>
+<li>Run a sanity check of model val and tng step</li>
+<li>Set how much of the tng, val, test sets to check (1-100%)</li>
 </ul>
               
             </div>
@@ -171,5 +197,5 @@
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2019-06-26 23:17:24
+Build Date UTC : 2019-06-27 00:15:27
 -->
