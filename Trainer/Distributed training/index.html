@@ -81,6 +81,21 @@
     <a class="current" href="./">Distributed training</a>
     <ul class="subnav">
             
+    <li class="toctree-l3"><a href="#16-bit-mixed-precision">16-bit mixed precision</a></li>
+    
+
+    <li class="toctree-l3"><a href="#single-gpu">Single-gpu</a></li>
+    
+
+    <li class="toctree-l3"><a href="#multi-gpu">multi-gpu</a></li>
+    
+
+    <li class="toctree-l3"><a href="#multi-node">Multi-node</a></li>
+    
+
+    <li class="toctree-l3"><a href="#self-balancing-architecture">Self-balancing architecture</a></li>
+    
+
     </ul>
                 </li>
                 <li class="">
@@ -149,7 +164,53 @@
           <div role="main">
             <div class="section">
               
-                
+                <p>Lightning makes multi-gpu training and 16 bit training trivial.</p>
+<p><em>Note:</em> <br />
+None of the flags below require changing anything about your lightningModel definition. </p>
+<hr />
+<h4 id="16-bit-mixed-precision">16-bit mixed precision</h4>
+<p>16 bit precision can cut your memory footprint by half. If using volta architecture GPUs it can give a dramatic training speed-up as well.  <br />
+First, install apex (if install fails, look <a href="https://github.com/NVIDIA/apex">here</a>):</p>
+<pre><code class="bash">$ git clone https://github.com/NVIDIA/apex
+$ cd apex
+$ pip install -v --no-cache-dir --global-option=&quot;--cpp_ext&quot; --global-option=&quot;--cuda_ext&quot; ./
+</code></pre>
+
+<p>then set this use_amp to True.</p>
+<pre><code class="python"># DEFAULT
+trainer = Trainer(amp_level='O2', use_amp=False)
+</code></pre>
+
+<hr />
+<h4 id="single-gpu">Single-gpu</h4>
+<p>Make sure you're on a GPU machine. </p>
+<pre><code class="python"># set these flags
+os.environ[&quot;CUDA_DEVICE_ORDER&quot;] = &quot;PCI_BUS_ID&quot;
+os.environ[&quot;CUDA_VISIBLE_DEVICES&quot;] = &quot;0&quot;
+
+# DEFAULT
+trainer = Trainer(gpus=[0])
+</code></pre>
+
+<hr />
+<h4 id="multi-gpu">multi-gpu</h4>
+<p>Make sure you're on a GPU machine. You can set as many GPUs as you want.
+In this setting, the model will run on all 8 GPUs at once using DataParallel under the hood.</p>
+<pre><code class="python"># set these flags
+os.environ[&quot;CUDA_DEVICE_ORDER&quot;] = &quot;PCI_BUS_ID&quot;
+os.environ[&quot;CUDA_VISIBLE_DEVICES&quot;] = &quot;0,1,2,3,4,5,6,7&quot;
+
+# DEFAULT
+trainer = Trainer(gpus=[0,1,2,3,4,5,6,7])
+</code></pre>
+
+<hr />
+<h4 id="multi-node">Multi-node</h4>
+<p>COMING SOON.</p>
+<hr />
+<h4 id="self-balancing-architecture">Self-balancing architecture</h4>
+<p>Here lightning distributes parts of your module across available GPUs to optimize for speed and memory.   </p>
+<p>COMING SOON.</p>
               
             </div>
           </div>

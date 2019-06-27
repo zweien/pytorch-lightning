@@ -165,6 +165,45 @@ trainer.fit(model)
 </code></pre>
 
 <p>But of course the fun is in all the advanced things it can do:</p>
+<p><strong>Checkpointing</strong>    </p>
+<ul>
+<li>Model saving</li>
+<li>Model loading </li>
+</ul>
+<p><strong>Computing cluster (SLURM)</strong>    </p>
+<ul>
+<li>Automatic checkpointing   </li>
+<li>Automatic saving, loading  </li>
+<li>Running grid search on a cluster </li>
+<li>Walltime auto-resubmit   </li>
+</ul>
+<p><strong>Debugging</strong>  </p>
+<ul>
+<li><a href="Debugging/#fast-dev-run">Fast dev run</a></li>
+<li><a href="Debugging/#inspect-gradient-norms">Inspect gradient norms</a></li>
+<li><a href="Debugging/#Log-gpu-usage">Log GPU usage</a></li>
+<li><a href="Debugging/#make-model-overfit-on-subset-of-data">Make model overfit on subset of data</a></li>
+<li><a href="Debugging/#print-the-parameter-count-by-layer">Print the parameter count by layer</a></li>
+<li><a href="Debugging/#print-which-gradients-are-nan">Pring which gradients are nan</a></li>
+</ul>
+<p><strong>Distributed training</strong>    </p>
+<ul>
+<li><a href="Distributed%20training/#16-bit-mixed-precision">16-bit mixed precision</a></li>
+<li><a href="Distributed%20training/#Multi-GPU">Multi-GPU</a></li>
+<li><a href="Distributed%20training/#Multi-node">Multi-node</a></li>
+<li><a href="Distributed%20training/#single-gpu">Single GPU</a></li>
+<li><a href="Distributed%20training/#self-balancing-architecture">Self-balancing architecture</a></li>
+</ul>
+<p><strong>Experiment Logging</strong>   </p>
+<ul>
+<li><a href="Logging/#display-metrics-in-progress-bar">Display metrics in progress bar</a></li>
+<li>Log arbitrary metrics</li>
+<li><a href="Logging/#log-metric-row-every-k-batches">Log metric row every k batches</a></li>
+<li><a href="Logging/#process-position">Process position</a></li>
+<li><a href="Logging/#save-a-snapshot-of-all-hyperparameters">Save a snapshot of all hyperparameters</a> </li>
+<li><a href="Logging/#snapshot-code-for-a-training-run">Snapshot code for a training run</a> </li>
+<li><a href="Logging/#write-logs-file-to-csv-every-k-batches">Write logs file to csv every k batches</a></li>
+</ul>
 <p><strong>Training loop</strong>    </p>
 <ul>
 <li><a href="Training%20Loop/#accumulated-gradients">Accumulate gradients</a></li>
@@ -181,42 +220,6 @@ trainer.fit(model)
 <li><a href="Validation%20Loop/#set-how-much-of-the-test-set-to-check">Set how much of the test set to check</a></li>
 <li><a href="Validation%20Loop/#set-validation-check-frequency-within-1-training-epoch">Set validation check frequency within 1 training epoch</a></li>
 <li><a href="Validation%20Loop/#set-the-number-of-validation-sanity-steps">Set the number of validation sanity steps</a></li>
-</ul>
-<p><strong>Debugging</strong>  </p>
-<ul>
-<li><a href="Debugging/#fast-dev-run">Fast dev run</a></li>
-<li><a href="Debugging/#inspect-gradient-norms">Inspect gradient norms</a></li>
-<li><a href="Debugging/#Log-gpu-usage">Log GPU usage</a></li>
-<li><a href="Debugging/#make-model-overfit-on-subset-of-data">Make model overfit on subset of data</a></li>
-<li><a href="Debugging/#print-the-parameter-count-by-layer">Print the parameter count by layer</a></li>
-<li><a href="Debugging/#print-which-gradients-are-nan">Pring which gradients are nan</a></li>
-</ul>
-<p><strong>Experiment Logging</strong>   </p>
-<ul>
-<li><a href="Logging/#display-metrics-in-progress-bar">Display metrics in progress bar</a></li>
-<li>Log arbitrary metrics</li>
-<li><a href="Logging/#process-position">Process position</a></li>
-<li>Save a snapshot of all hyperparameters</li>
-<li>Save a snapshot of the code for a particular model run</li>
-</ul>
-<p><strong>Distributed training</strong>    </p>
-<ul>
-<li>16-bit mixed precision</li>
-<li>Single-gpu      </li>
-<li>Multi-gpu      </li>
-<li>Multi-node   </li>
-</ul>
-<p><strong>Checkpointing</strong>    </p>
-<ul>
-<li>Model saving</li>
-<li>Model loading </li>
-</ul>
-<p><strong>Computing cluster (SLURM)</strong>    </p>
-<ul>
-<li>Automatic checkpointing   </li>
-<li>Automatic saving, loading  </li>
-<li>Running grid search on a cluster </li>
-<li>Walltime auto-resubmit   </li>
 </ul>
               
             </div>

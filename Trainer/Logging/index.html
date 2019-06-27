@@ -88,10 +88,19 @@
     <li class="toctree-l3"><a href="#display-metrics-in-progress-bar">Display metrics in progress bar</a></li>
     
 
-    <li class="toctree-l3"><a href="#print-which-gradients-are-nan">Print which gradients are nan</a></li>
+    <li class="toctree-l3"><a href="#log-metric-row-every-k-batches">Log metric row every k batches</a></li>
     
 
     <li class="toctree-l3"><a href="#process-position">Process position</a></li>
+    
+
+    <li class="toctree-l3"><a href="#save-a-snapshot-of-all-hyperparameters">Save a snapshot of all hyperparameters</a></li>
+    
+
+    <li class="toctree-l3"><a href="#snapshot-code-for-a-training-run">Snapshot code for a training run</a></li>
+    
+
+    <li class="toctree-l3"><a href="#write-logs-file-to-csv-every-k-batches">Write logs file to csv every k batches</a></li>
     
 
     </ul>
@@ -158,17 +167,18 @@
           <div role="main">
             <div class="section">
               
-                <hr />
+                <p>Lighting offers a few options for logging information about model, gpu usage, etc (via test-tube). It also offers printing options for training monitoring.</p>
+<hr />
 <h4 id="display-metrics-in-progress-bar">Display metrics in progress bar</h4>
 <pre><code class="python"># DEFAULT
 trainer = Trainer(progress_bar=True)
 </code></pre>
 
 <hr />
-<h4 id="print-which-gradients-are-nan">Print which gradients are nan</h4>
-<p>This option prints a list of tensors with nan gradients.</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(print_nan_grads=False)
+<h4 id="log-metric-row-every-k-batches">Log metric row every k batches</h4>
+<p>Every k batches lightning will make an entry in the metrics log</p>
+<pre><code class="python"># DEFAULT (ie: save a .csv log file every 10 batches)
+trainer = Trainer(add_log_row_interval=10)
 </code></pre>
 
 <hr />
@@ -180,6 +190,33 @@ trainer = Trainer(process_position=0)
 
 # if this is the second model on the node, show the second progress bar below
 trainer = Trainer(process_position=1)
+</code></pre>
+
+<hr />
+<h4 id="save-a-snapshot-of-all-hyperparameters">Save a snapshot of all hyperparameters</h4>
+<p>Whenever you call .save() on the test-tube experiment it logs all the hyperparameters in current use.
+Give lightning a test-tube Experiment object to automate this for you.</p>
+<pre><code class="python">from test-tube import Experiment
+
+exp = Experiment(...)
+Trainer(experiment=exp)
+</code></pre>
+
+<hr />
+<h4 id="snapshot-code-for-a-training-run">Snapshot code for a training run</h4>
+<p>Whenever you call .save() on the test-tube experiment it snapshows all code and pushes to a git tag.
+Give lightning a test-tube Experiment object to automate this for you.</p>
+<pre><code class="python">from test-tube import Experiment
+
+exp = Experiment(create_git_tag=True)
+Trainer(experiment=exp)
+</code></pre>
+
+<hr />
+<h4 id="write-logs-file-to-csv-every-k-batches">Write logs file to csv every k batches</h4>
+<p>Every k batches, lightning will write the new logs to disk</p>
+<pre><code class="python"># DEFAULT (ie: save a .csv log file every 100 batches)
+trainer = Trainer(log_save_interval=100)
 </code></pre>
               
             </div>
