@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../img/favicon.ico">
+  <title>Trainer - Pytorch lightning Documentation</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Trainer";
+    var mkdocs_page_input_path = "Trainer/index.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href=".." class="icon icon-home"> Pytorch lightning Documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="..">PYTORCH-LIGHTNING DOCUMENTATION</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Pytorch Lightning</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../Pytorch-Lightning/LightningModule/">Lightning module</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Trainer</span>
+    <ul class="subnav">
+                <li class=" current">
+                    
+    <a class="current" href="./">Trainer</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#trainer">Trainer</a></li>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="Checkpointing/">Checkpointing</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="Distributed training/">Distributed training</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="SLURM Managed Cluster/">SLURM Managed Cluster</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="Training Loop/">Training Loop</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="Vaildation loop/">Vaildation loop</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="..">Pytorch lightning Documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Trainer &raquo;</li>
+        
+      
+    
+    <li>Trainer</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/williamFalcon/pytorch-lightning/edit/master/docs/Trainer/index.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="trainer">Trainer</h1>
+<p>[<a href="https://github.com/williamFalcon/pytorch-lightning/blob/master/pytorch_lightning/models/trainer.py">Github Code</a>]</p>
+<p>The lightning trainer abstracts best practices for running a training, val, test routine. It calls parts of your model when it wants to hand over full control and otherwise makes training assumptions which are now standard practice in AI research.</p>
+<p>This is the basic use of the trainer:</p>
+<pre><code class="python">from pytorch_lightning import Trainer
+
+model = LightningTemplate()
+
+trainer = Trainer()
+trainer.fit(model)
+</code></pre>
+
+<p>But of course the fun is in all the advanced things it can do:</p>
+<p><strong>Training loop</strong>    </p>
+<ul>
+<li><a href="Training%20Loop/#accumulated-gradients">Accumulate gradients</a></li>
+<li><a href="Training%20Loop/#anneal-learning-rate">Anneal Learning rate</a></li>
+<li><a href="Training%20Loop/#Check-gpu-usage">Check GPU usage</a></li>
+<li><a href="Training%20Loop/#check-which-gradients-are-nan">Check which gradients are nan</a></li>
+<li><a href="Training%20Loop/#check-validation-every-n-epochs">Check validation every n epochs</a></li>
+<li><a href="Training%20Loop/#display-metrics-in-progress-bar">Display metrics in progress bar</a></li>
+<li><a href="Training%20Loop/#display-the-parameter-count-by-layer">Display the parameter count by layer</a></li>
+<li><a href="Training%20Loop/#force-training-for-min-or-max-epochs">Force training for min or max epochs</a></li>
+<li><a href="Training%20Loop/#inspect-gradient-norms">Inspect gradient norms</a></li>
+<li><a href="Training%20Loop/#make-model-overfit-on-subset-of-data">Make model overfit on subset of data</a></li>
+<li><a href="../Pytorch-lightning/LightningModule/#configure_optimizers">Use multiple optimizers (like GANs)</a></li>
+<li><a href="Training%20Loop/#set-how-much-of-the-training-set-to-check">Set how much of the training set to check (1-100%)</a></li>
+</ul>
+<p><strong>Validation loop</strong>    </p>
+<ul>
+<li>Display metrics in progress bar</li>
+<li>Set how much of the validation set to check (1-100%)</li>
+<li>Set validation check frequency within 1 training epoch (1-100%)</li>
+<li>validation_step function</li>
+<li>Why does validation run first for 5 steps?</li>
+</ul>
+<p><strong>Distributed training</strong>    </p>
+<ul>
+<li>Single-gpu      </li>
+<li>Multi-gpu      </li>
+<li>Multi-node   </li>
+<li>16-bit mixed precision</li>
+</ul>
+<p><strong>Checkpointing</strong>    </p>
+<ul>
+<li>Model saving</li>
+<li>Model loading </li>
+</ul>
+<p><strong>Computing cluster (SLURM)</strong>    </p>
+<ul>
+<li>Automatic checkpointing   </li>
+<li>Automatic saving, loading  </li>
+<li>Running grid search on a cluster </li>
+<li>Walltime auto-resubmit   </li>
+</ul>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Checkpointing/" class="btn btn-neutral float-right" title="Checkpointing">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../Pytorch-Lightning/LightningModule/" class="btn btn-neutral" title="Lightning module"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/williamFalcon/pytorch-lightning/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../Pytorch-Lightning/LightningModule/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="Checkpointing/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '..';</script>
+    <script src="../js/theme.js" defer></script>
+      <script src="../search/main.js" defer></script>
+
+</body>
+</html>

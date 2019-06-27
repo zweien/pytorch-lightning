@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Training Loop - Pytorch lightning Documentation</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Training Loop";
+    var mkdocs_page_input_path = "Trainer/Training Loop.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Pytorch lightning Documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">PYTORCH-LIGHTNING DOCUMENTATION</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Pytorch Lightning</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../../Pytorch-Lightning/LightningModule/">Lightning module</a>
+                </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Trainer</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="../">Trainer</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../Checkpointing/">Checkpointing</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../Distributed training/">Distributed training</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../SLURM Managed Cluster/">SLURM Managed Cluster</a>
+                </li>
+                <li class=" current">
+                    
+    <a class="current" href="./">Training Loop</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#accumulated-gradients">Accumulated gradients</a></li>
+    
+
+    <li class="toctree-l3"><a href="#anneal-learning-rate">Anneal Learning rate</a></li>
+    
+
+    <li class="toctree-l3"><a href="#check-gpu-usage">Check GPU usage</a></li>
+    
+
+    <li class="toctree-l3"><a href="#check-which-gradients-are-nan">Check which gradients are nan</a></li>
+    
+
+    <li class="toctree-l3"><a href="#check-validation-every-n-epochs">Check validation every n epochs</a></li>
+    
+
+    <li class="toctree-l3"><a href="#display-metrics-in-progress-bar">Display metrics in progress bar</a></li>
+    
+
+    <li class="toctree-l3"><a href="#display-the-parameter-count-by-layer">Display the parameter count by layer</a></li>
+    
+
+    <li class="toctree-l3"><a href="#force-training-for-min-or-max-epochs">Force training for min or max epochs</a></li>
+    
+
+    <li class="toctree-l3"><a href="#inspect-gradient-norms">Inspect gradient norms</a></li>
+    
+
+    <li class="toctree-l3"><a href="#make-model-overfit-on-subset-of-data">Make model overfit on subset of data</a></li>
+    
+
+    <li class="toctree-l3"><a href="#set-how-much-of-the-training-set-to-check">Set how much of the training set to check</a></li>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../Vaildation loop/">Vaildation loop</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Pytorch lightning Documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Trainer &raquo;</li>
+        
+      
+    
+    <li>Training Loop</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/williamFalcon/pytorch-lightning/edit/master/docs/Trainer/Training Loop.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <p>The asdf</p>
+<hr />
+<h4 id="accumulated-gradients">Accumulated gradients</h4>
+<p>Accumulated gradients runs K small batches of size N before doing a backwards pass. The effect is a large effective batch size of size KxN. </p>
+<pre><code class="python"># DEFAULT (ie: no accumulated grads)
+trainer = Trainer(accumulate_grad_batches=1)
+</code></pre>
+
+<hr />
+<h4 id="anneal-learning-rate">Anneal Learning rate</h4>
+<p>Cut the learning rate by 10 at every epoch listed in this list.</p>
+<pre><code class="python"># DEFAULT (don't anneal)
+trainer = Trainer(lr_scheduler_milestones=None)
+
+# cut LR by 10 at 100, 200, and 300 epochs 
+trainer = Trainer(lr_scheduler_milestones=[100, 200, 300])
+</code></pre>
+
+<hr />
+<h4 id="check-gpu-usage">Check GPU usage</h4>
+<p>Lightning automatically logs gpu usage to the test tube logs. It'll only do it at the metric logging interval, so it doesn't slow down training.</p>
+<hr />
+<h4 id="check-which-gradients-are-nan">Check which gradients are nan</h4>
+<p>This option prints a list of tensors with nan gradients.</p>
+<pre><code class="python"># DEFAULT
+trainer = Trainer(print_nan_grads=False)
+</code></pre>
+
+<hr />
+<h4 id="check-validation-every-n-epochs">Check validation every n epochs</h4>
+<p>If you have a small dataset you might want to check validation every n epochs</p>
+<pre><code class="python"># DEFAULT
+trainer = Trainer(check_val_every_n_epoch=1)
+</code></pre>
+
+<hr />
+<h4 id="display-metrics-in-progress-bar">Display metrics in progress bar</h4>
+<pre><code class="python"># DEFAULT
+trainer = Trainer(progress_bar=True)
+</code></pre>
+
+<hr />
+<h4 id="display-the-parameter-count-by-layer">Display the parameter count by layer</h4>
+<p>By default lightning prints a list of parameters <em>and submodules</em> when it starts training.</p>
+<hr />
+<h4 id="force-training-for-min-or-max-epochs">Force training for min or max epochs</h4>
+<p>It can be useful to force training for a minimum number of epochs or limit to a max number</p>
+<pre><code class="python"># DEFAULT
+trainer = Trainer(min_nb_epochs=1, max_nb_epochs=1000)
+</code></pre>
+
+<hr />
+<h4 id="inspect-gradient-norms">Inspect gradient norms</h4>
+<p>Looking at grad norms can help you figure out where training might be going wrong.</p>
+<pre><code class="python"># DEFAULT (-1 doesn't track norms)
+trainer = Trainer(track_grad_norm=-1)
+
+# track the LP norm (P=2 here)
+trainer = Trainer(track_grad_norm=2)
+</code></pre>
+
+<hr />
+<h4 id="make-model-overfit-on-subset-of-data">Make model overfit on subset of data</h4>
+<p>A useful debugging trick is to make your model overfit a tiny fraction of the data.</p>
+<pre><code class="python"># DEFAULT don't overfit (ie: normal training)
+trainer = Trainer(overfit_pct=0.0)
+
+# overfit on 1% of data 
+trainer = Trainer(overfit_pct=0.01)
+</code></pre>
+
+<hr />
+<h4 id="set-how-much-of-the-training-set-to-check">Set how much of the training set to check</h4>
+<p>If you don't want to check 100% of the validation set (for debugging or if it's huge), set this flag</p>
+<pre><code class="python"># DEFAULT
+trainer = Trainer(train_percent_check=1.0)
+
+# check 10% only
+trainer = Trainer(train_percent_check=0.1)
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Vaildation loop/" class="btn btn-neutral float-right" title="Vaildation loop">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../SLURM Managed Cluster/" class="btn btn-neutral" title="SLURM Managed Cluster"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/williamFalcon/pytorch-lightning/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../SLURM Managed Cluster/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../Vaildation loop/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>

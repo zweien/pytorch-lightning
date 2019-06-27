@@ -93,9 +93,36 @@
 
     </ul>
                 </li>
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Trainer</span>
+    <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../Trainer/">Trainer</a>
+    <a class="" href="../../Trainer/">Trainer</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../Trainer/Checkpointing/">Checkpointing</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../Trainer/Distributed training/">Distributed training</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../Trainer/SLURM Managed Cluster/">SLURM Managed Cluster</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../Trainer/Training Loop/">Training Loop</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../Trainer/Vaildation loop/">Vaildation loop</a>
                 </li>
     </ul>
 	    </li>
@@ -142,7 +169,8 @@
                 <h1 id="lightning-module">Lightning module</h1>
 <p>[<a href="https://github.com/williamFalcon/pytorch-lightning/blob/master/pytorch_lightning/root_module/root_module.py">Github Code</a>]</p>
 <p>A lightning module is a strict superclass of nn.Module, it provides a standard interface for the trainer to interact with the model.</p>
-<p>To Define a Lightning Module, implement the following methods:</p>
+<p>The easiest thing to do is copy <a href="../lightning_module_template.py">this template</a> and modify accordingly. </p>
+<p>Otherwise, to Define a Lightning Module, implement the following methods:</p>
 <p><strong>Required</strong>:  </p>
 <ul>
 <li><a href="./#training_step">training_step</a>   </li>
@@ -550,7 +578,7 @@ def add_model_specific_args(parent_parser, root_dir):
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../Trainer/" class="btn btn-neutral float-right" title="Trainer">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../Trainer/" class="btn btn-neutral float-right" title="Trainer">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../.." class="btn btn-neutral" title="PYTORCH-LIGHTNING DOCUMENTATION"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -584,7 +612,7 @@ def add_model_specific_args(parent_parser, root_dir):
         <span><a href="../.." style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../Trainer/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../Trainer/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
