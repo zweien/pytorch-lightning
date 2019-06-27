@@ -5,7 +5,7 @@
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Documentation for Pytorch Lightning, the researcher version of keras.">
+  <meta name="description" content="Documentation for Pytorch Pytorch-Lightning, the researcher version of keras.">
   
   <link rel="shortcut icon" href="img/favicon.ico">
   <title>PYTORCH-LIGHTNING DOCUMENTATION - Pytorch lightning Documentation</title>
@@ -61,17 +61,34 @@
         
             <li><a class="toctree-l3" href="#quick-start-examples">Quick start examples</a></li>
         
+            <li><a class="toctree-l3" href="#training-loop">Training loop</a></li>
+        
+            <li><a class="toctree-l3" href="#validation-loop">Validation loop</a></li>
+        
             <li><a class="toctree-l3" href="#distributed-training">Distributed training</a></li>
         
             <li><a class="toctree-l3" href="#checkpointing">Checkpointing</a></li>
         
             <li><a class="toctree-l3" href="#computing-cluster-slurm">Computing cluster (SLURM)</a></li>
         
-            <li><a class="toctree-l3" href="#common-training-use-cases">Common training use cases</a></li>
-        
         </ul>
     
 
+    </ul>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Pytorch Lightning</span>
+    <ul class="subnav">
+                <li class="">
+                    
+    <a class="" href="Pytorch-Lightning/LightningModule/">Lightning module</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="Pytorch-Lightning/Trainer/">Trainer</a>
+                </li>
     </ul>
 	    </li>
           
@@ -113,7 +130,7 @@
                 <h1 id="pytorch-lightning-documentation">PYTORCH-LIGHTNING DOCUMENTATION</h1>
 <h6 id="quick-start">Quick start</h6>
 <ul>
-<li>Define a lightning model   </li>
+<li><a href="Pytorch-Lightning/LightningModule/">Define a LightningModule</a>  </li>
 <li>Set up the trainer   </li>
 </ul>
 <h6 id="quick-start-examples">Quick start examples</h6>
@@ -121,13 +138,39 @@
 <li>CPU example   </li>
 <li>Single GPU example   </li>
 <li>Multi-gpu example </li>
-<li>SLURM cluster example      </li>
+<li>SLURM cluster grid search example      </li>
+</ul>
+<h6 id="training-loop">Training loop</h6>
+<ul>
+<li>Accumulate gradients</li>
+<li>Check GPU usage</li>
+<li>Check which gradients are nan</li>
+<li>Check validation every n epochs</li>
+<li>Display metrics in progress bar</li>
+<li>Force training for min or max epochs</li>
+<li>Inspect gradient norms</li>
+<li>Hooks</li>
+<li>Learning rate annealing</li>
+<li>Make model overfit on subset of data</li>
+<li>Multiple optimizers (like GANs)</li>
+<li>Set how much of the training set to check (1-100%)</li>
+<li>training_step function</li>
+</ul>
+<h6 id="validation-loop">Validation loop</h6>
+<ul>
+<li>Display metrics in progress bar</li>
+<li>hooks</li>
+<li>Set how much of the validation set to check (1-100%)</li>
+<li>Set validation check frequency within 1 training epoch (1-100%)</li>
+<li>validation_step function</li>
+<li>Why does validation run first for 5 steps?</li>
 </ul>
 <h6 id="distributed-training">Distributed training</h6>
 <ul>
 <li>Single-gpu      </li>
 <li>Multi-gpu      </li>
 <li>Multi-node   </li>
+<li>16-bit mixed precision</li>
 </ul>
 <h6 id="checkpointing">Checkpointing</h6>
 <ul>
@@ -137,29 +180,21 @@
 <h6 id="computing-cluster-slurm">Computing cluster (SLURM)</h6>
 <ul>
 <li>Automatic checkpointing   </li>
-<li>Automatic saving, loading   </li>
+<li>Automatic saving, loading  </li>
+<li>Running grid search on a cluster </li>
 <li>Walltime auto-resubmit   </li>
-</ul>
-<h6 id="common-training-use-cases">Common training use cases</h6>
-<ul>
-<li>16-bit mixed precision</li>
-<li>Accumulate gradients</li>
-<li>Check val many times during 1 training epoch</li>
-<li>Check GPU usage</li>
-<li>Check validation every n epochs</li>
-<li>Check which gradients are nan</li>
-<li>Inspect gradient norms</li>
-<li>Learning rate annealing</li>
-<li>Make model overfit on subset of data</li>
-<li>Min, max epochs</li>
-<li>Multiple optimizers (like GANs)</li>
-<li>Run a sanity check of model val and tng step</li>
-<li>Set how much of the tng, val, test sets to check (1-100%)</li>
 </ul>
               
             </div>
           </div>
           <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="Pytorch-Lightning/LightningModule/" class="btn btn-neutral float-right" title="Lightning module">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+    </div>
   
 
   <hr/>
@@ -186,6 +221,8 @@
       
       
       
+        <span style="margin-left: 15px"><a href="Pytorch-Lightning/LightningModule/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
     </span>
 </div>
     <script>var base_url = '.';</script>
@@ -197,5 +234,5 @@
 
 <!--
 MkDocs version : 1.0.4
-Build Date UTC : 2019-06-27 00:15:27
+Build Date UTC : 2019-06-27 14:05:57
 -->

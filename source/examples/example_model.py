@@ -1,6 +1,6 @@
 import torch.nn as nn
 import numpy as np
-from pytorch_lightning.root_module.root_module import RootModule
+from pytorch_lightning.root_module.root_module import LightningModule
 from test_tube import HyperOptArgumentParser
 from torchvision.datasets import MNIST
 import torchvision.transforms as transforms
@@ -10,7 +10,7 @@ import os, pdb
 from collections import OrderedDict
 
 
-class ExampleModel(RootModule):
+class ExampleModel(LightningModule):
     """
     Sample model to show how to define a template
     """
@@ -71,9 +71,6 @@ class ExampleModel(RootModule):
         # calculate loss
         loss_val = self.loss(y, y_hat)
 
-        # tqdm_dic = {'tng_loss': loss_val.item()}
-        # return loss_val, tqdm_dic
-
         output = OrderedDict({
             'loss': loss_val,
             'tqdm_metrics': {}
@@ -96,7 +93,6 @@ class ExampleModel(RootModule):
         labels_hat = torch.argmax(y_hat, dim=1)
         val_acc = torch.sum(y == labels_hat).item() / (len(y) * 1.0)
 
-        # output = {'y_hat': y_hat, 'val_loss': loss_val.item(), 'val_acc': val_acc}
         output = OrderedDict({
             'val_loss': loss_val,
             'val_acc': torch.tensor(val_acc),

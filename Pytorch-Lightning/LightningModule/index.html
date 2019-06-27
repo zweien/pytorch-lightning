@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<!--[if IE 8]><html class="no-js lt-ie9" lang="en" > <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang="en" > <!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  
+  <link rel="shortcut icon" href="../../img/favicon.ico">
+  <title>Lightning module - Pytorch lightning Documentation</title>
+  <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
+
+  <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../css/theme_extra.css" type="text/css" />
+  <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/github.min.css">
+  
+  <script>
+    // Current page data
+    var mkdocs_page_name = "Lightning module";
+    var mkdocs_page_input_path = "Pytorch-Lightning/LightningModule.md";
+    var mkdocs_page_url = null;
+  </script>
+  
+  <script src="../../js/jquery-2.1.1.min.js" defer></script>
+  <script src="../../js/modernizr-2.8.3.min.js" defer></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+  <script>hljs.initHighlightingOnLoad();</script> 
+  
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+      <div class="wy-side-nav-search">
+        <a href="../.." class="icon icon-home"> Pytorch lightning Documentation</a>
+        <div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+	<ul class="current">
+	  
+          
+            <li class="toctree-l1">
+		
+    <a class="" href="../..">PYTORCH-LIGHTNING DOCUMENTATION</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
+    <span class="caption-text">Pytorch Lightning</span>
+    <ul class="subnav">
+                <li class=" current">
+                    
+    <a class="current" href="./">Lightning module</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#lightning-module">Lightning module</a></li>
+    
+        <ul>
+        
+            <li><a class="toctree-l4" href="#training_step">training_step</a></li>
+        
+            <li><a class="toctree-l4" href="#validation_step">validation_step</a></li>
+        
+            <li><a class="toctree-l4" href="#validation_end">validation_end</a></li>
+        
+            <li><a class="toctree-l4" href="#configure_optimizers">configure_optimizers</a></li>
+        
+            <li><a class="toctree-l4" href="#get_save_dict">get_save_dict</a></li>
+        
+            <li><a class="toctree-l4" href="#load_model_specific">load_model_specific</a></li>
+        
+            <li><a class="toctree-l4" href="#tng_dataloader">tng_dataloader</a></li>
+        
+            <li><a class="toctree-l4" href="#val_dataloader">val_dataloader</a></li>
+        
+            <li><a class="toctree-l4" href="#test_dataloader">test_dataloader</a></li>
+        
+            <li><a class="toctree-l4" href="#update_tng_log_metrics">update_tng_log_metrics</a></li>
+        
+            <li><a class="toctree-l4" href="#add_model_specific_args">add_model_specific_args</a></li>
+        
+        </ul>
+    
+
+    </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../Trainer/">Trainer</a>
+                </li>
+    </ul>
+	    </li>
+          
+        </ul>
+      </div>
+      &nbsp;
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" role="navigation" aria-label="top navigation">
+        <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+        <a href="../..">Pytorch lightning Documentation</a>
+      </nav>
+
+      
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="../..">Docs</a> &raquo;</li>
+    
+      
+        
+          <li>Pytorch Lightning &raquo;</li>
+        
+      
+    
+    <li>Lightning module</li>
+    <li class="wy-breadcrumbs-aside">
+      
+        <a href="https://github.com/williamFalcon/pytorch-lightning/edit/master/docs/Pytorch-Lightning/LightningModule.md"
+          class="icon icon-github"> Edit on GitHub</a>
+      
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main">
+            <div class="section">
+              
+                <h1 id="lightning-module">Lightning module</h1>
+<p>[<a href="https://github.com/williamFalcon/pytorch-lightning/blob/master/pytorch_lightning/root_module/root_module.py">Github Code</a>]</p>
+<p>A lightning module is a strict superclass of nn.Module, it provides a standard interface for the trainer to interact with the model.</p>
+<p>To Define a Lightning Module, implement the following methods:</p>
+<p><strong>Required</strong>:  </p>
+<ul>
+<li><a href="./#training_step">training_step</a>   </li>
+<li><a href="./#validation_step">validation_step</a></li>
+<li>
+<p><a href="./#validation_end">validation_end</a></p>
+</li>
+<li>
+<p><a href="./#configure_optimizers">configure_optimizers</a></p>
+</li>
+<li><a href="./#get_save_dict">get_save_dict</a></li>
+<li>
+<p><a href="./#load_model_specific">load_model_specific</a></p>
+</li>
+<li>
+<p><a href="./#tng_dataloader">tng_dataloader</a></p>
+</li>
+<li><a href="./#tng_dataloader">tng_dataloader</a></li>
+<li><a href="./#test_dataloader">test_dataloader</a></li>
+</ul>
+<p><strong>Optional</strong>:   </p>
+<ul>
+<li><a href="./#update_tng_log_metrics">update_tng_log_metrics</a></li>
+<li><a href="./#add_model_specific_args">add_model_specific_args</a></li>
+</ul>
+<hr />
+<h3 id="training_step">training_step</h3>
+<pre><code class="python">def training_step(self, data_batch, batch_nb)
+</code></pre>
+
+<p>In this step you'd normally do the forward pass and calculate the loss for a batch. You can also do fancier things like multiple forward passes or something specific to your model.</p>
+<p><strong>Params</strong>    </p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data_batch</td>
+<td>The output of your dataloader. A tensor, tuple or list</td>
+</tr>
+<tr>
+<td>batch_nb</td>
+<td>Integer displaying which batch this is</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Return</strong>   </p>
+<p>Dictionary or OrderedDict   </p>
+<table>
+<thead>
+<tr>
+<th>key</th>
+<th>value</th>
+<th>is required</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>loss</td>
+<td>tensor scalar</td>
+<td>Y</td>
+</tr>
+<tr>
+<td>prog</td>
+<td>Dict for progress bar display. Must have only tensors</td>
+<td>N</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<pre><code class="python">def training_step(self, data_batch, batch_nb):
+    x, y, z = data_batch
+
+    # implement your own
+    out = self.forward(x)
+    loss = self.loss(out, x)
+
+    output = {
+        'loss': loss, # required
+        'prog': {'tng_loss': loss, 'batch_nb': batch_nb} # optional
+    }
+
+    # return a dict
+    return output
+</code></pre>
+
+<hr />
+<h3 id="validation_step">validation_step</h3>
+<pre><code class="python">def validation_step(self, data_batch, batch_nb)
+</code></pre>
+
+<p>In this step you'd normally do the forward pass and calculate the loss for a batch. You can also do fancier things like multiple forward passes or something specific to your model.
+This is most likely the same as your training_step. But unlike training step, the outputs from here will go to validation_end for collation.</p>
+<p><strong>Params</strong>   </p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>data_batch</td>
+<td>The output of your dataloader. A tensor, tuple or list</td>
+</tr>
+<tr>
+<td>batch_nb</td>
+<td>Integer displaying which batch this is</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Return</strong>   </p>
+<table>
+<thead>
+<tr>
+<th>Return</th>
+<th>description</th>
+<th>optional</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dict</td>
+<td>Dict of OrderedDict with metrics to display in progress bar. All keys must be tensors.</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<pre><code class="python">def validation_step(self, data_batch, batch_nb):
+    x, y, z = data_batch
+
+    # implement your own
+    out = self.forward(x)
+    loss = self.loss(out, x)
+
+    # calculate acc
+    labels_hat = torch.argmax(out, dim=1)
+    val_acc = torch.sum(y == labels_hat).item() / (len(y) * 1.0)
+
+    # all optional...
+    # return whatever you need for the collation function validation_end
+    output = OrderedDict({
+        'val_loss': loss_val,
+        'val_acc': torch.tensor(val_acc), # everything must be a tensor
+    })
+
+    # return an optional dict
+    return output
+</code></pre>
+
+<hr />
+<h3 id="validation_end">validation_end</h3>
+<pre><code class="python">def validation_end(self, outputs)
+</code></pre>
+
+<p>Called at the end of the validation loop with the output of each validation_step.</p>
+<p><strong>Params</strong>    </p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>outputs</td>
+<td>List of outputs you defined in validation_step</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Return</strong>   </p>
+<table>
+<thead>
+<tr>
+<th>Return</th>
+<th>description</th>
+<th>optional</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>dict</td>
+<td>Dict of OrderedDict with metrics to display in progress bar</td>
+<td>Y</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Example</strong></p>
+<pre><code class="python">def validation_end(self, outputs):
+    &quot;&quot;&quot;
+    Called at the end of validation to aggregate outputs
+    :param outputs: list of individual outputs of each validation step
+    :return:
+    &quot;&quot;&quot;
+    val_loss_mean = 0
+    val_acc_mean = 0
+    for output in outputs:
+        val_loss_mean += output['val_loss']
+        val_acc_mean += output['val_acc']
+
+    val_loss_mean /= len(outputs)
+    val_acc_mean /= len(outputs)
+    tqdm_dic = {'val_loss': val_loss_mean.item(), 'val_acc': val_acc_mean.item()}
+    return tqdm_dic
+</code></pre>
+
+<hr />
+<h3 id="configure_optimizers">configure_optimizers</h3>
+<pre><code class="python">def configure_optimizers(self)
+</code></pre>
+
+<p>Set up as many optimizers as you need. Normally you'd need one. But in the case of GANs or something more esoteric you might have multiple. 
+Lightning will call .backward() and .step() on each one.  If you use 16 bit precision it will also handle that.</p>
+<h5 id="return">Return</h5>
+<p>List - List of optimizers</p>
+<p><strong>Example</strong></p>
+<pre><code class="python"># most cases
+def configure_optimizers(self):
+    opt = Adam(lr=0.01)
+    return [opt]
+
+# gan example
+def configure_optimizers(self):
+    generator_opt = Adam(lr=0.01)
+    disriminator_opt = Adam(lr=0.02)
+    return [generator_opt, disriminator_opt] 
+</code></pre>
+
+<hr />
+<h3 id="get_save_dict">get_save_dict</h3>
+<pre><code class="python">def get_save_dict(self)
+</code></pre>
+
+<p>Called by lightning to checkpoint your model. Lightning saves current epoch, current batch nb, etc...
+All you have to return is what specifically about your lightning model you want to checkpoint.</p>
+<h5 id="return_1">Return</h5>
+<p>Dictionary - No required keys. Most of the time as described in this example.   </p>
+<p><strong>Example</strong></p>
+<pre><code class="python">def get_save_dict(self):
+    # 99% of use cases this is all you need to return
+    checkpoint = {'state_dict': self.state_dict()}
+    return checkpoint
+</code></pre>
+
+<hr />
+<h3 id="load_model_specific">load_model_specific</h3>
+<pre><code class="python">def load_model_specific(self, checkpoint)
+</code></pre>
+
+<p>Called by lightning to restore your model. This is your chance to restore your model using the keys you added in get_save_dict.
+Lightning will automatically restore current epoch, batch nb, etc. </p>
+<h5 id="return_2">Return</h5>
+<p>Nothing  </p>
+<p><strong>Example</strong></p>
+<pre><code class="python">def load_model_specific(self, checkpoint):
+    # you defined 'state_dict' in get_save_dict()
+    self.load_state_dict(checkpoint['state_dict'])
+</code></pre>
+
+<hr />
+<h3 id="tng_dataloader">tng_dataloader</h3>
+<pre><code class="python">@property
+def tng_dataloader(self)
+</code></pre>
+
+<p>Called by lightning during training loop. Define it as a property.</p>
+<h5 id="return_3">Return</h5>
+<p>Pytorch DataLoader</p>
+<p><strong>Example</strong></p>
+<pre><code class="python">@property
+def tng_dataloader(self):
+    if self._tng_dataloader is None:
+        try:
+            transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
+            dataset = MNIST(root='/path/to/mnist/', train=True, transform=transform, download=True)
+            loader = torch.utils.data.DataLoader(
+                dataset=dataset,
+                batch_size=self.hparams.batch_size,
+                shuffle=True
+            )
+            self._tng_dataloader = loader
+        except Exception as e:
+            raise e
+
+    return self._tng_dataloader
+</code></pre>
+
+<hr />
+<h3 id="val_dataloader">val_dataloader</h3>
+<pre><code class="python">@property
+def tng_dataloader(self)
+</code></pre>
+
+<p>Called by lightning during validation loop. Define it as a property.</p>
+<h5 id="return_4">Return</h5>
+<p>Pytorch DataLoader</p>
+<p><strong>Example</strong></p>
+<pre><code class="python">@property
+def val_dataloader(self):
+    if self._val_dataloader is None:
+        try:
+            transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
+            dataset = MNIST(root='/path/to/mnist/', train=False, transform=transform, download=True)
+            loader = torch.utils.data.DataLoader(
+                dataset=dataset,
+                batch_size=self.hparams.batch_size,
+                shuffle=True
+            )
+            self._val_dataloader = loader
+        except Exception as e:
+            raise e
+
+    return self._val_dataloader
+</code></pre>
+
+<hr />
+<h3 id="test_dataloader">test_dataloader</h3>
+<pre><code class="python">@property
+def test_dataloader(self)
+</code></pre>
+
+<p>Called by lightning during test loop. Define it as a property.</p>
+<h5 id="return_5">Return</h5>
+<p>Pytorch DataLoader</p>
+<p><strong>Example</strong></p>
+<pre><code class="python">@property
+def test_dataloader(self):
+    if self._test_dataloader is None:
+        try:
+            transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
+            dataset = MNIST(root='/path/to/mnist/', train=False, transform=transform, download=True)
+            loader = torch.utils.data.DataLoader(
+                dataset=dataset,
+                batch_size=self.hparams.batch_size,
+                shuffle=True
+            )
+            self._test_dataloader = loader
+        except Exception as e:
+            raise e
+
+    return self._test_dataloader
+</code></pre>
+
+<hr />
+<h3 id="update_tng_log_metrics">update_tng_log_metrics</h3>
+<pre><code class="python">def update_tng_log_metrics(self, logs)
+</code></pre>
+
+<p>Called by lightning right before it logs metrics for this batch.
+This is a chance to ammend or add to the metrics about to be logged.</p>
+<h5 id="return_6">Return</h5>
+<p>Dict </p>
+<p><strong>Example</strong></p>
+<pre><code class="python">def update_tng_log_metrics(self, logs):
+    # modify or add to logs
+    return logs
+</code></pre>
+
+<hr />
+<h3 id="add_model_specific_args">add_model_specific_args</h3>
+<pre><code class="python">@staticmethod
+def add_model_specific_args(parent_parser, root_dir)
+</code></pre>
+
+<p>Lightning has a list of default argparse commands.
+This method is your chance to add or modify commands specific to your model.
+The argument parser is available anywhere in your model by calling self.hparams</p>
+<h5 id="return_7">Return</h5>
+<p>An argument parser</p>
+<p><strong>Example</strong></p>
+<pre><code class="python">@staticmethod
+def add_model_specific_args(parent_parser, root_dir):
+    parser = HyperOptArgumentParser(strategy=parent_parser.strategy, parents=[parent_parser])
+
+    # param overwrites
+    # parser.set_defaults(gradient_clip=5.0)
+
+    # network params
+    parser.opt_list('--drop_prob', default=0.2, options=[0.2, 0.5], type=float, tunable=False)
+    parser.add_argument('--in_features', default=28*28)
+    parser.add_argument('--out_features', default=10)
+    parser.add_argument('--hidden_dim', default=50000) # use 500 for CPU, 50000 for GPU to see speed difference
+
+    # data
+    parser.add_argument('--data_root', default=os.path.join(root_dir, 'mnist'), type=str)
+
+    # training params (opt)
+    parser.opt_list('--learning_rate', default=0.001, type=float, options=[0.0001, 0.0005, 0.001, 0.005],
+                    tunable=False)
+    parser.opt_list('--batch_size', default=256, type=int, options=[32, 64, 128, 256], tunable=False)
+    parser.opt_list('--optimizer_name', default='adam', type=str, options=['adam'], tunable=False)
+    return parser
+</code></pre>
+              
+            </div>
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="../Trainer/" class="btn btn-neutral float-right" title="Trainer">Next <span class="icon icon-circle-arrow-right"></span></a>
+      
+      
+        <a href="../.." class="btn btn-neutral" title="PYTORCH-LIGHTNING DOCUMENTATION"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+    
+  </div>
+
+  Built with <a href="http://www.mkdocs.org">MkDocs</a> using a <a href="https://github.com/snide/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+      
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" style="cursor: pointer">
+    <span class="rst-current-version" data-toggle="rst-current-version">
+      
+          <a href="https://github.com/williamFalcon/pytorch-lightning/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
+      
+      
+        <span><a href="../.." style="color: #fcfcfc;">&laquo; Previous</a></span>
+      
+      
+        <span style="margin-left: 15px"><a href="../Trainer/" style="color: #fcfcfc">Next &raquo;</a></span>
+      
+    </span>
+</div>
+    <script>var base_url = '../..';</script>
+    <script src="../../js/theme.js" defer></script>
+      <script src="../../search/main.js" defer></script>
+
+</body>
+</html>
