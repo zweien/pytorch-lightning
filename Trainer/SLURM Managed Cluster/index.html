@@ -55,11 +55,15 @@
           
             <li class="toctree-l1">
 		
-    <span class="caption-text">Pytorch Lightning</span>
+    <span class="caption-text">LightningModule</span>
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../../Pytorch-Lightning/LightningModule/">Lightning module</a>
+    <a class="" href="../../LightningModule/RequiredTrainerInterface/">Lightning Module interface</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../LightningModule/methods/">Methods</a>
                 </li>
     </ul>
 	    </li>
@@ -89,6 +93,12 @@
     <a class="current" href="./">SLURM Managed Cluster</a>
     <ul class="subnav">
             
+    <li class="toctree-l3"><a href="#running-grid-search-on-a-cluster">Running grid search on a cluster</a></li>
+    
+
+    <li class="toctree-l3"><a href="#walltime-auto-resubmit">Walltime auto-resubmit</a></li>
+    
+
     </ul>
                 </li>
                 <li class="">
@@ -149,7 +159,97 @@
           <div role="main">
             <div class="section">
               
-                
+                <p>Lightning supports model training on a cluster managed by SLURM in the following cases:    </p>
+<ol>
+<li>Training on single or multi-cpus only.</li>
+<li>Training on single or multi-gpus on the same node.</li>
+<li>Coming SOON: Training across multiple nodes.</li>
+</ol>
+<hr />
+<h4 id="running-grid-search-on-a-cluster">Running grid search on a cluster</h4>
+<p>To use lightning to run a hyperparameter search (grid-search or random-search) on a cluster do 4 things:   </p>
+<p>(1). Define the parameters for the grid search    </p>
+<pre><code class="python">from test_tube import HyperOptArgumentParser
+
+# subclass of argparse
+parser = HyperOptArgumentParser(strategy='random_search')
+parser.add_argument('--learning_rate', default=0.002, type=float, help='the learning rate')
+
+# let's enable optimizing over the number of layers in the network
+parser.opt_list('--nb_layers', default=2, type=int, tunable=True, options=[2, 4, 8])
+
+hparams = parser.parse_args()    
+</code></pre>
+
+<p>(2). Define the cluster options in the <a href="https://williamfalcon.github.io/test-tube/hpc/SlurmCluster/">SlurmCluster object</a> (over 5 nodes and 8 gpus)    </p>
+<pre><code class="python">from test_tube.hpc import SlurmCluster
+
+# hyperparameters is a test-tube hyper params object
+# see https://williamfalcon.github.io/test-tube/hyperparameter_optimization/HyperOptArgumentParser/
+hyperparams = args.parse()
+
+# init cluster
+cluster = SlurmCluster(
+    hyperparam_optimizer=hyperparams,
+    log_path='/path/to/log/results/to',
+    python_cmd='python3'
+)
+
+# let the cluster know where to email for a change in job status (ie: complete, fail, etc...)
+cluster.notify_job_status(email='some@email.com', on_done=True, on_fail=True)
+
+# set the job options. In this instance, we'll run 20 different models
+# each with its own set of hyperparameters giving each one 1 GPU (ie: taking up 20 GPUs)
+cluster.per_experiment_nb_gpus = 8
+cluster.per_experiment_nb_nodes = 5
+
+# we'll request 10GB of memory per node
+cluster.memory_mb_per_node = 10000
+
+# set a walltime of 10 minues
+cluster.job_time = '10:00'
+</code></pre>
+
+<p>(3). Give trainer the cluster_manager in your main function:    </p>
+<pre><code class="python">from pytorch_lightning import Trainer
+
+def train_fx(trial_hparams, cluster_manager, _):
+    # hparams has a specific set of hyperparams
+
+    my_model = MyLightningModel()
+
+    # give the trainer the cluster object
+    trainer = Trainer(cluster=cluster_manager)
+    trainer.fit(my_model)
+
+</code></pre>
+
+<p>(4). Start the grid search     </p>
+<pre><code class="python"># run the models on the cluster
+cluster.optimize_parallel_cluster_gpu(
+    train_fx, 
+    nb_trials=20, 
+    job_name='my_grid_search_exp_name', 
+    job_display_name='my_exp')
+</code></pre>
+
+<p>That's it! The SlurmCluster object will automatically checkpoint the lightning model and resubmit if it runs into the walltime!</p>
+<hr />
+<h4 id="walltime-auto-resubmit">Walltime auto-resubmit</h4>
+<p>Lightning automatically resubmits jobs when they reach the walltime. You get this behavior for free if you give lightning
+a slurm cluster object.</p>
+<pre><code class="python">def my_main_fx(hparams, slurm_manager, _):
+    trainer = Trainer(cluster=slurm_manager)
+</code></pre>
+
+<p>(See the grid search example above for cluster configuration).
+With this feature lightning will:    </p>
+<ol>
+<li>automatically checkpoint the model</li>
+<li>checkpoint the trainer session</li>
+<li>resubmit a continuation job.</li>
+<li>load the checkpoint and trainer session in the new model</li>
+</ol>
               
             </div>
           </div>

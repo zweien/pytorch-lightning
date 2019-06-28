@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Debugging - Pytorch lightning Documentation</title>
+  <title>Methods - Pytorch lightning Documentation</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,8 +17,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Debugging";
-    var mkdocs_page_input_path = "Trainer/debugging.md";
+    var mkdocs_page_name = "Methods";
+    var mkdocs_page_input_path = "LightningModule/methods.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -59,11 +59,23 @@
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../../LightningModule/RequiredTrainerInterface/">Lightning Module interface</a>
+    <a class="" href="../RequiredTrainerInterface/">Lightning Module interface</a>
                 </li>
-                <li class="">
+                <li class=" current">
                     
-    <a class="" href="../../LightningModule/methods/">Methods</a>
+    <a class="current" href="./">Methods</a>
+    <ul class="subnav">
+            
+    <li class="toctree-l3"><a href="#freeze">freeze</a></li>
+    
+
+    <li class="toctree-l3"><a href="#load_from_metrics">load_from_metrics</a></li>
+    
+
+    <li class="toctree-l3"><a href="#unfreeze">unfreeze</a></li>
+    
+
+    </ul>
                 </li>
     </ul>
 	    </li>
@@ -74,60 +86,39 @@
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../">Trainer</a>
+    <a class="" href="../../Trainer/">Trainer</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../Checkpointing/">Checkpointing</a>
+    <a class="" href="../../Trainer/Checkpointing/">Checkpointing</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../Distributed training/">Distributed training</a>
+    <a class="" href="../../Trainer/Distributed training/">Distributed training</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../Logging/">Logging</a>
+    <a class="" href="../../Trainer/Logging/">Logging</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../SLURM Managed Cluster/">SLURM Managed Cluster</a>
+    <a class="" href="../../Trainer/SLURM Managed Cluster/">SLURM Managed Cluster</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../Training Loop/">Training Loop</a>
+    <a class="" href="../../Trainer/Training Loop/">Training Loop</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../Validation loop/">Validation loop</a>
-                </li>
-                <li class=" current">
-                    
-    <a class="current" href="./">Debugging</a>
-    <ul class="subnav">
-            
-    <li class="toctree-l3"><a href="#fast-dev-run">Fast dev run</a></li>
-    
-
-    <li class="toctree-l3"><a href="#inspect-gradient-norms">Inspect gradient norms</a></li>
-    
-
-    <li class="toctree-l3"><a href="#make-model-overfit-on-subset-of-data">Make model overfit on subset of data</a></li>
-    
-
-    <li class="toctree-l3"><a href="#print-the-parameter-count-by-layer">Print the parameter count by layer</a></li>
-    
-
-    <li class="toctree-l3"><a href="#print-which-gradients-are-nan">Print which gradients are nan</a></li>
-    
-
-    <li class="toctree-l3"><a href="#log-gpu-usage">Log GPU usage</a></li>
-    
-
-    </ul>
+    <a class="" href="../../Trainer/Validation loop/">Validation loop</a>
                 </li>
                 <li class="">
                     
-    <a class="" href="../hooks/">Hooks</a>
+    <a class="" href="../../Trainer/debugging/">Debugging</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../Trainer/hooks/">Hooks</a>
                 </li>
     </ul>
 	    </li>
@@ -154,14 +145,14 @@
     
       
         
-          <li>Trainer &raquo;</li>
+          <li>LightningModule &raquo;</li>
         
       
     
-    <li>Debugging</li>
+    <li>Methods</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/williamFalcon/pytorch-lightning/edit/master/docs/Trainer/debugging.md"
+        <a href="https://github.com/williamFalcon/pytorch-lightning/edit/master/docs/LightningModule/methods.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -171,48 +162,65 @@
           <div role="main">
             <div class="section">
               
-                <p>These flags are useful to help debug a model.</p>
+                <p>Lightning modules are strict superclasses of torch.nn.Module. A LightningModule offers the following in addition to that API.</p>
 <hr />
-<h4 id="fast-dev-run">Fast dev run</h4>
-<p>This flag is meant for debugging a full train/val/test loop. It'll activate callbacks, everything but only with 1 training and 1 validation batch.
-Use this to debug a full run of your program quickly</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(fast_dev_run=False)
+<h3 id="freeze">freeze</h3>
+<p>Freeze all params for inference</p>
+<pre><code class="python">model = MyLightningModule(...)
+model.freeze()
 </code></pre>
 
 <hr />
-<h4 id="inspect-gradient-norms">Inspect gradient norms</h4>
-<p>Looking at grad norms can help you figure out where training might be going wrong.</p>
-<pre><code class="python"># DEFAULT (-1 doesn't track norms)
-trainer = Trainer(track_grad_norm=-1)
+<h3 id="load_from_metrics">load_from_metrics</h3>
+<p>This is the easiest/fastest way which uses the meta_tags.csv file from test-tube to rebuild the model.
+The meta_tags.csv file can be found in the test-tube experiment save_dir.       </p>
+<pre><code class="python">pretrained_model = MyLightningModule.load_from_metrics(
+    weights_path='/path/to/pytorch_checkpoint.ckpt',
+    tags_csv='/path/to/test_tube/experiment/version/meta_tags.csv',
+    on_gpu=True,
+    map_location=None
+)
 
-# track the LP norm (P=2 here)
-trainer = Trainer(track_grad_norm=2)
+# predict 
+pretrained_model.freeze()
+y_hat = pretrained_model(x)
 </code></pre>
 
+<p><strong>Params</strong>    </p>
+<table>
+<thead>
+<tr>
+<th>Param</th>
+<th>description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>weights_path</td>
+<td>Path to a pytorch checkpoint</td>
+</tr>
+<tr>
+<td>tags_csv</td>
+<td>Path to meta_tags.csv file generated by the test-tube Experiment</td>
+</tr>
+<tr>
+<td>on_gpu</td>
+<td>if True, puts model on GPU. Make sure to use transforms option if model devices have changed</td>
+</tr>
+<tr>
+<td>map_location</td>
+<td>A dictionary mapping saved weight GPU devices to new GPU devices</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Returns</strong>    </p>
+<p>LightningModule - The pretrained LightningModule</p>
 <hr />
-<h4 id="make-model-overfit-on-subset-of-data">Make model overfit on subset of data</h4>
-<p>A useful debugging trick is to make your model overfit a tiny fraction of the data.</p>
-<pre><code class="python"># DEFAULT don't overfit (ie: normal training)
-trainer = Trainer(overfit_pct=0.0)
-
-# overfit on 1% of data 
-trainer = Trainer(overfit_pct=0.01)
+<h3 id="unfreeze">unfreeze</h3>
+<p>Unfreeze all params for inference</p>
+<pre><code class="python">model = MyLightningModule(...)
+model.unfreeze()
 </code></pre>
-
-<hr />
-<h4 id="print-the-parameter-count-by-layer">Print the parameter count by layer</h4>
-<p>By default lightning prints a list of parameters <em>and submodules</em> when it starts training.</p>
-<hr />
-<h4 id="print-which-gradients-are-nan">Print which gradients are nan</h4>
-<p>This option prints a list of tensors with nan gradients.</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(print_nan_grads=False)
-</code></pre>
-
-<hr />
-<h4 id="log-gpu-usage">Log GPU usage</h4>
-<p>Lightning automatically logs gpu usage to the test tube logs. It'll only do it at the metric logging interval, so it doesn't slow down training.</p>
               
             </div>
           </div>
@@ -220,10 +228,10 @@ trainer = Trainer(print_nan_grads=False)
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../hooks/" class="btn btn-neutral float-right" title="Hooks">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../../Trainer/" class="btn btn-neutral float-right" title="Trainer">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
-        <a href="../Validation loop/" class="btn btn-neutral" title="Validation loop"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="../RequiredTrainerInterface/" class="btn btn-neutral" title="Lightning Module interface"><span class="icon icon-circle-arrow-left"></span> Previous</a>
       
     </div>
   
@@ -251,10 +259,10 @@ trainer = Trainer(print_nan_grads=False)
           <a href="https://github.com/williamFalcon/pytorch-lightning/" class="fa fa-github" style="float: left; color: #fcfcfc"> GitHub</a>
       
       
-        <span><a href="../Validation loop/" style="color: #fcfcfc;">&laquo; Previous</a></span>
+        <span><a href="../RequiredTrainerInterface/" style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../hooks/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../../Trainer/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>

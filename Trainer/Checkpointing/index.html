@@ -55,11 +55,15 @@
           
             <li class="toctree-l1">
 		
-    <span class="caption-text">Pytorch Lightning</span>
+    <span class="caption-text">LightningModule</span>
     <ul class="subnav">
                 <li class="">
                     
-    <a class="" href="../../Pytorch-Lightning/LightningModule/">Lightning module</a>
+    <a class="" href="../../LightningModule/RequiredTrainerInterface/">Lightning Module interface</a>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../../LightningModule/methods/">Methods</a>
                 </li>
     </ul>
 	    </li>
@@ -77,6 +81,9 @@
     <a class="current" href="./">Checkpointing</a>
     <ul class="subnav">
             
+    <li class="toctree-l3"><a href="#model-saving">Model saving</a></li>
+    
+
     </ul>
                 </li>
                 <li class="">
@@ -149,7 +156,22 @@
           <div role="main">
             <div class="section">
               
-                
+                <p>Lightning can automate saving and loading checkpoints.</p>
+<hr />
+<h3 id="model-saving">Model saving</h3>
+<p>To enable checkpointing, define the checkpoint callback and give it to the trainer.</p>
+<pre><code class="python">from pytorch_lightning.utils.pt_callbacks import ModelCheckpoint
+
+checkpoint_callback = ModelCheckpoint(
+    filepath='/path/to/store/weights.ckpt',
+    save_best_only=True,
+    verbose=True,
+    monitor='val_loss',
+    mode='min'
+)
+
+trainer = Trainer(checkpoint_callback=checkpoint_callback)
+</code></pre>
               
             </div>
           </div>

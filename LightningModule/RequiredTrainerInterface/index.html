@@ -8,7 +8,7 @@
   
   
   <link rel="shortcut icon" href="../../img/favicon.ico">
-  <title>Lightning module - Pytorch lightning Documentation</title>
+  <title>Lightning Module interface - Pytorch lightning Documentation</title>
   <link href='https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700' rel='stylesheet' type='text/css'>
 
   <link rel="stylesheet" href="../../css/theme.css" type="text/css" />
@@ -17,8 +17,8 @@
   
   <script>
     // Current page data
-    var mkdocs_page_name = "Lightning module";
-    var mkdocs_page_input_path = "Pytorch-Lightning/LightningModule.md";
+    var mkdocs_page_name = "Lightning Module interface";
+    var mkdocs_page_input_path = "LightningModule/RequiredTrainerInterface.md";
     var mkdocs_page_url = null;
   </script>
   
@@ -55,14 +55,14 @@
           
             <li class="toctree-l1">
 		
-    <span class="caption-text">Pytorch Lightning</span>
+    <span class="caption-text">LightningModule</span>
     <ul class="subnav">
                 <li class=" current">
                     
-    <a class="current" href="./">Lightning module</a>
+    <a class="current" href="./">Lightning Module interface</a>
     <ul class="subnav">
             
-    <li class="toctree-l3"><a href="#lightning-module">Lightning module</a></li>
+    <li class="toctree-l3"><a href="#lightning-module-interface">Lightning Module interface</a></li>
     
         <ul>
         
@@ -92,6 +92,10 @@
     
 
     </ul>
+                </li>
+                <li class="">
+                    
+    <a class="" href="../methods/">Methods</a>
                 </li>
     </ul>
 	    </li>
@@ -161,14 +165,14 @@
     
       
         
-          <li>Pytorch Lightning &raquo;</li>
+          <li>LightningModule &raquo;</li>
         
       
     
-    <li>Lightning module</li>
+    <li>Lightning Module interface</li>
     <li class="wy-breadcrumbs-aside">
       
-        <a href="https://github.com/williamFalcon/pytorch-lightning/edit/master/docs/Pytorch-Lightning/LightningModule.md"
+        <a href="https://github.com/williamFalcon/pytorch-lightning/edit/master/docs/LightningModule/RequiredTrainerInterface.md"
           class="icon icon-github"> Edit on GitHub</a>
       
     </li>
@@ -178,7 +182,7 @@
           <div role="main">
             <div class="section">
               
-                <h1 id="lightning-module">Lightning module</h1>
+                <h1 id="lightning-module-interface">Lightning Module interface</h1>
 <p>[<a href="https://github.com/williamFalcon/pytorch-lightning/blob/master/pytorch_lightning/root_module/root_module.py">Github Code</a>]</p>
 <p>A lightning module is a strict superclass of nn.Module, it provides a standard interface for the trainer to interact with the model.</p>
 <p>The easiest thing to do is copy <a href="../../examples/new_project_templates/lightning_module_template.py">this template</a> and modify accordingly. </p>
@@ -590,7 +594,7 @@ def add_model_specific_args(parent_parser, root_dir):
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="../../Trainer/" class="btn btn-neutral float-right" title="Trainer">Next <span class="icon icon-circle-arrow-right"></span></a>
+        <a href="../methods/" class="btn btn-neutral float-right" title="Methods">Next <span class="icon icon-circle-arrow-right"></span></a>
       
       
         <a href="../.." class="btn btn-neutral" title="PYTORCH-LIGHTNING DOCUMENTATION"><span class="icon icon-circle-arrow-left"></span> Previous</a>
@@ -624,7 +628,7 @@ def add_model_specific_args(parent_parser, root_dir):
         <span><a href="../.." style="color: #fcfcfc;">&laquo; Previous</a></span>
       
       
-        <span style="margin-left: 15px"><a href="../../Trainer/" style="color: #fcfcfc">Next &raquo;</a></span>
+        <span style="margin-left: 15px"><a href="../methods/" style="color: #fcfcfc">Next &raquo;</a></span>
       
     </span>
 </div>
