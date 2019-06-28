@@ -55,6 +55,11 @@
           
             <li class="toctree-l1">
 		
+    <a class="" href="../../Examples/">Examples</a>
+	    </li>
+          
+            <li class="toctree-l1">
+		
     <span class="caption-text">LightningModule</span>
     <ul class="subnav">
                 <li class="">
@@ -107,6 +112,9 @@
     
 
     <li class="toctree-l3"><a href="#force-disable-early-stop">Force disable early stop</a></li>
+    
+
+    <li class="toctree-l3"><a href="#gradient-clipping">Gradient Clipping</a></li>
     
 
     <li class="toctree-l3"><a href="#inspect-gradient-norms">Inspect gradient norms</a></li>
@@ -202,6 +210,13 @@ trainer = Trainer(min_nb_epochs=1, max_nb_epochs=1000)
 <p>Use this to turn off early stopping and run training to the <a href="#force-training-for-min-or-max-epochs">max_epoch</a></p>
 <pre><code class="python"># DEFAULT
 trainer = Trainer(enable_early_stop=True)
+</code></pre>
+
+<hr />
+<h4 id="gradient-clipping">Gradient Clipping</h4>
+<p>Use this to turn off early stopping and run training to the <a href="#force-training-for-min-or-max-epochs">max_epoch</a></p>
+<pre><code class="python"># DEFAULT (ie: don't clip)
+trainer = Trainer(gradient_clip=0)
 </code></pre>
 
 <hr />
