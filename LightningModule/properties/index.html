@@ -310,6 +310,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#experiment" title="experiment" class="md-nav__link">
+    experiment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#global_step" title="global_step" class="md-nav__link">
     global_step
   </a>
@@ -331,8 +338,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#trainer" title="Trainer" class="md-nav__link">
-    Trainer
+  <a href="#trainer" title="trainer" class="md-nav__link">
+    trainer
   </a>
   
 </li>
@@ -554,6 +561,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#experiment" title="experiment" class="md-nav__link">
+    experiment
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#global_step" title="global_step" class="md-nav__link">
     global_step
   </a>
@@ -575,8 +589,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#trainer" title="Trainer" class="md-nav__link">
-    Trainer
+  <a href="#trainer" title="trainer" class="md-nav__link">
+    trainer
   </a>
   
 </li>
@@ -610,6 +624,14 @@
 <h4 id="dtype">dtype</h4>
 <p>Current dtype    </p>
 <hr />
+<h4 id="experiment">experiment</h4>
+<p>An instance of test-tube Experiment which you can use to log anything for tensorboarX.   </p>
+<pre><code class="python">self.experiment.add_embedding(...)   
+self.experiment.log({'val_loss': 0.9})   
+self.experiment.add_scalars(...)   
+</code></pre>
+
+<hr />
 <h4 id="global_step">global_step</h4>
 <p>Total training batches seen across all epochs   </p>
 <hr />
@@ -619,8 +641,12 @@
 <h4 id="on_gpu">on_gpu</h4>
 <p>True if your model is currently running on GPUs. Useful to set flags around the LightningModule for different CPU vs GPU behavior.    </p>
 <hr />
-<h4 id="trainer">Trainer</h4>
+<h4 id="trainer">trainer</h4>
 <p>Last resort access to any state the trainer has. Changing certain properties here could affect your training run.</p>
+<pre><code class="python">self.trainer.optimizers
+self.trainer.current_epoch
+...   
+</code></pre>
                 
                   
                 
