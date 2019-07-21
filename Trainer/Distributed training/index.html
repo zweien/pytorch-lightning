@@ -651,8 +651,10 @@ trainer = Trainer(gpus=[0])
 <p>Make sure you're on a GPU machine. You can set as many GPUs as you want.
 In this setting, the model will run on all 8 GPUs at once using DataParallel under the hood.</p>
 <pre><code class="python"># set these flags
-os.environ[&quot;CUDA_DEVICE_ORDER&quot;] = &quot;PCI_BUS_ID&quot;
-os.environ[&quot;CUDA_VISIBLE_DEVICES&quot;] = &quot;0,1,2,3,4,5,6,7&quot;
+# lightning sets these flags for you automatically
+# no need to set yourself
+# os.environ[&quot;CUDA_DEVICE_ORDER&quot;] = &quot;PCI_BUS_ID&quot;
+# os.environ[&quot;CUDA_VISIBLE_DEVICES&quot;] = &quot;0,1,2,3,4,5,6,7&quot;
 
 
 trainer = Trainer(gpus=[0,1,2,3,4,5,6,7])
