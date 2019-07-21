@@ -79,7 +79,7 @@
     <input class="md-toggle" data-md-toggle="search" type="checkbox" id="__search" autocomplete="off">
     <label class="md-overlay" data-md-component="overlay" for="__drawer"></label>
     
-      <a href="#16-bit-mixed-precision" tabindex="1" class="md-skip">
+      <a href="#choosing-a-backend" tabindex="1" class="md-skip">
         Skip to content
       </a>
     
@@ -356,6 +356,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#choosing-a-backend" title="Choosing a backend" class="md-nav__link">
+    Choosing a backend
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#16-bit-mixed-precision" title="16-bit mixed precision" class="md-nav__link">
     16-bit mixed precision
   </a>
@@ -533,6 +540,13 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
+  <a href="#choosing-a-backend" title="Choosing a backend" class="md-nav__link">
+    Choosing a backend
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#16-bit-mixed-precision" title="16-bit mixed precision" class="md-nav__link">
     16-bit mixed precision
   </a>
@@ -592,6 +606,22 @@
 <p><em>Note:</em> <br />
 None of the flags below require changing anything about your lightningModel definition. </p>
 <hr />
+<h4 id="choosing-a-backend">Choosing a backend</h4>
+<p>Lightning supports two backends. DataParallel and DistributedDataParallel. Both can be used for single-node multi-GPU training.
+For multi-node training you must use DistributedDataParallel.   </p>
+<p>You can toggle between each mode by setting this flag.</p>
+<pre><code class="python"># DEFAULT uses DataParallel
+trainer = Trainer(distributed_backend='dp')
+
+# change to distributed data parallel
+trainer = Trainer(distributed_backend='ddp')
+</code></pre>
+
+<p>If you request multiple nodes, the back-end will auto-switch to ddp.
+We recommend you use DistributedDataparallel even for single-node multi-GPU training. It is MUCH faster than DP but <em>may</em>
+have configuration issues depending on your cluster.</p>
+<p>For a deeper understanding of what lightning is doing, feel free to read <a href="https://medium.com/@_willfalcon/9-tips-for-training-lightning-fast-neural-networks-in-pytorch-8e63a502f565">this guide</a>.   </p>
+<hr />
 <h4 id="16-bit-mixed-precision">16-bit mixed precision</h4>
 <p>16 bit precision can cut your memory footprint by half. If using volta architecture GPUs it can give a dramatic training speed-up as well.  <br />
 First, install apex (if install fails, look <a href="https://github.com/NVIDIA/apex">here</a>):</p>
@@ -646,6 +676,17 @@ cluster.per_experiment_nb_nodes = 12
 cluster.per_experiment_nb_gpus = 8
 
 cluster.add_slurm_cmd(cmd='ntasks-per-node', value=8, comment='1 task per gpu')
+</code></pre>
+
+<p>Finally, make sure to add a distributed sampler to your dataset.    </p>
+<pre><code class="python"># ie: this:
+dataset = myDataset()
+dataloader = Dataloader(dataset)
+
+# becomes:
+dataset = myDataset()
+dist_sampler = torch.utils.data.distributed.DistributedSampler(dataset)
+dataloader = Dataloader(dataset, sampler=dist_sampler)
 </code></pre>
 
 <hr />
