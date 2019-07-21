@@ -624,13 +624,30 @@ In this setting, the model will run on all 8 GPUs at once using DataParallel und
 os.environ[&quot;CUDA_DEVICE_ORDER&quot;] = &quot;PCI_BUS_ID&quot;
 os.environ[&quot;CUDA_VISIBLE_DEVICES&quot;] = &quot;0,1,2,3,4,5,6,7&quot;
 
-# DEFAULT
+
 trainer = Trainer(gpus=[0,1,2,3,4,5,6,7])
 </code></pre>
 
 <hr />
 <h4 id="multi-node">Multi-node</h4>
-<p>COMING SOON.</p>
+<p>Multi-node training is easily done by specifying these flags.</p>
+<pre><code class="python"># train on 12*8 GPUs
+trainer = Trainer(gpus=[0,1,2,3,4,5,6,7], nb_gpu_nodes=12)
+</code></pre>
+
+<p>In addition, make sure to set up your SLURM job correctly via the <a href="https://williamfalcon.github.io/test-tube/hpc/SlurmCluster/">SlurmClusterObject</a>. In particular, specify the number of tasks per node correctly.</p>
+<pre><code class="python">cluster = SlurmCluster(
+    hyperparam_optimizer=test_tube.HyperOptArgumentParser(),
+    log_path='/some/path/to/save',
+)
+
+# configure cluster
+cluster.per_experiment_nb_nodes = 12 
+cluster.per_experiment_nb_gpus = 8
+
+cluster.add_slurm_cmd(cmd='ntasks-per-node', value=8, comment='1 task per gpu')
+</code></pre>
+
 <hr />
 <h4 id="self-balancing-architecture">Self-balancing architecture</h4>
 <p>Here lightning distributes parts of your module across available GPUs to optimize for speed and memory.   </p>
