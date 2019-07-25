@@ -1165,22 +1165,16 @@ def tng_dataloader(self)
 <h5 id="return_3">Return</h5>
 <p>Pytorch DataLoader</p>
 <p><strong>Example</strong></p>
-<pre><code class="python">@property
+<pre><code class="python">@ptl.data_loader
 def tng_dataloader(self):
-    if self._tng_dataloader is None:
-        try:
-            transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
-            dataset = MNIST(root='/path/to/mnist/', train=True, transform=transform, download=True)
-            loader = torch.utils.data.DataLoader(
-                dataset=dataset,
-                batch_size=self.hparams.batch_size,
-                shuffle=True
-            )
-            self._tng_dataloader = loader
-        except Exception as e:
-            raise e
-
-    return self._tng_dataloader
+    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
+    dataset = MNIST(root='/path/to/mnist/', train=True, transform=transform, download=True)
+    loader = torch.utils.data.DataLoader(
+        dataset=dataset,
+        batch_size=self.hparams.batch_size,
+        shuffle=True
+    )
+    return loader
 </code></pre>
 
 <hr />
@@ -1193,22 +1187,17 @@ def tng_dataloader(self)
 <h5 id="return_4">Return</h5>
 <p>Pytorch DataLoader</p>
 <p><strong>Example</strong></p>
-<pre><code class="python">@property
+<pre><code class="python">@ptl.data_loader
 def val_dataloader(self):
-    if self._val_dataloader is None:
-        try:
-            transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
-            dataset = MNIST(root='/path/to/mnist/', train=False, transform=transform, download=True)
-            loader = torch.utils.data.DataLoader(
-                dataset=dataset,
-                batch_size=self.hparams.batch_size,
-                shuffle=True
-            )
-            self._val_dataloader = loader
-        except Exception as e:
-            raise e
+    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
+    dataset = MNIST(root='/path/to/mnist/', train=False, transform=transform, download=True)
+    loader = torch.utils.data.DataLoader(
+        dataset=dataset,
+        batch_size=self.hparams.batch_size,
+        shuffle=True
+    )
 
-    return self._val_dataloader
+    return loader
 </code></pre>
 
 <hr />
@@ -1221,22 +1210,17 @@ def test_dataloader(self)
 <h5 id="return_5">Return</h5>
 <p>Pytorch DataLoader</p>
 <p><strong>Example</strong></p>
-<pre><code class="python">@property
+<pre><code class="python">@ptl.data_loader
 def test_dataloader(self):
-    if self._test_dataloader is None:
-        try:
-            transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
-            dataset = MNIST(root='/path/to/mnist/', train=False, transform=transform, download=True)
-            loader = torch.utils.data.DataLoader(
-                dataset=dataset,
-                batch_size=self.hparams.batch_size,
-                shuffle=True
-            )
-            self._test_dataloader = loader
-        except Exception as e:
-            raise e
+    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
+    dataset = MNIST(root='/path/to/mnist/', train=False, transform=transform, download=True)
+    loader = torch.utils.data.DataLoader(
+        dataset=dataset,
+        batch_size=self.hparams.batch_size,
+        shuffle=True
+    )
 
-    return self._test_dataloader
+    return loader
 </code></pre>
 
 <hr />
