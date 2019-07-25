@@ -925,8 +925,9 @@ from torchvision.datasets import MNIST
 class CoolModel(ptl.LightningModule):
 
     def __init(self):
+        super(CoolModel, self).__init__()
         # not the best model...
-        self.l1 = torch.nn.Linear(28*28, 10)
+        self.l1 = torch.nn.Linear(28 * 28, 10)
 
     def forward(self, x):
         return torch.relu(self.l1(x))
@@ -961,7 +962,7 @@ class CoolModel(ptl.LightningModule):
 
     @ptl.data_loader
     def test_dataloader(self):
-        return DataLoader(MNIST('path/to/save', train=False), batch_size=32)   
+        return DataLoader(MNIST('path/to/save', train=False), batch_size=32)
 </code></pre>
 
 <hr />
