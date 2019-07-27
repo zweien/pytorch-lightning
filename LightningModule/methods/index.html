@@ -579,7 +579,8 @@ The meta_tags.csv file can be found in the test-tube experiment save_dir.       
     map_location=None
 )
 
-# predict 
+# predict
+pretrained_model.eval()
 pretrained_model.freeze()
 y_hat = pretrained_model(x)
 </code></pre>
