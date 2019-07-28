@@ -399,13 +399,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#anneal-learning-rate" title="Anneal Learning rate" class="md-nav__link">
-    Anneal Learning rate
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#force-training-for-min-or-max-epochs" title="Force training for min or max epochs" class="md-nav__link">
     Force training for min or max epochs
   </a>
@@ -554,13 +547,6 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#anneal-learning-rate" title="Anneal Learning rate" class="md-nav__link">
-    Anneal Learning rate
-  </a>
-  
-</li>
-      
-        <li class="md-nav__item">
   <a href="#force-training-for-min-or-max-epochs" title="Force training for min or max epochs" class="md-nav__link">
     Force training for min or max epochs
   </a>
@@ -623,16 +609,6 @@
 <p>Accumulated gradients runs K small batches of size N before doing a backwards pass. The effect is a large effective batch size of size KxN. </p>
 <pre><code class="python"># DEFAULT (ie: no accumulated grads)
 trainer = Trainer(accumulate_grad_batches=1)
-</code></pre>
-
-<hr />
-<h4 id="anneal-learning-rate">Anneal Learning rate</h4>
-<p>Cut the learning rate by 10 at every epoch listed in this list.</p>
-<pre><code class="python"># DEFAULT (don't anneal)
-trainer = Trainer(lr_scheduler_milestones=None)
-
-# cut LR by 10 at 100, 200, and 300 epochs 
-trainer = Trainer(lr_scheduler_milestones='100, 200, 300')
 </code></pre>
 
 <hr />
