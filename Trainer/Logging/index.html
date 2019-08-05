@@ -657,7 +657,7 @@ trainer = Trainer(process_position=1)
 <h4 id="save-a-snapshot-of-all-hyperparameters">Save a snapshot of all hyperparameters</h4>
 <p>Whenever you call .save() on the test-tube experiment it logs all the hyperparameters in current use.
 Give lightning a test-tube Experiment object to automate this for you.</p>
-<pre><code class="python">from test-tube import Experiment
+<pre><code class="python">from test_tube import Experiment
 
 exp = Experiment(...)
 Trainer(experiment=exp)
@@ -667,7 +667,7 @@ Trainer(experiment=exp)
 <h4 id="snapshot-code-for-a-training-run">Snapshot code for a training run</h4>
 <p>Whenever you call .save() on the test-tube experiment it snapshows all code and pushes to a git tag.
 Give lightning a test-tube Experiment object to automate this for you.</p>
-<pre><code class="python">from test-tube import Experiment
+<pre><code class="python">from test_tube import Experiment
 
 exp = Experiment(create_git_tag=True)
 Trainer(experiment=exp)

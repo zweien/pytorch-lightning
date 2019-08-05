@@ -283,6 +283,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-do-these-methods-fit-into-the-broader-training" title="How do these methods fit into the broader training?" class="md-nav__link">
+    How do these methods fit into the broader training?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#training_step" title="training_step" class="md-nav__link">
     training_step
   </a>
@@ -699,6 +706,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#how-do-these-methods-fit-into-the-broader-training" title="How do these methods fit into the broader training?" class="md-nav__link">
+    How do these methods fit into the broader training?
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#training_step" title="training_step" class="md-nav__link">
     training_step
   </a>
@@ -979,6 +993,15 @@ class CoolModel(ptl.LightningModule):
     def test_dataloader(self):
         return DataLoader(MNIST(os.getcwd(), train=True, download=True, transform=transforms.ToTensor()), batch_size=32)
 </code></pre>
+
+<hr />
+<h3 id="how-do-these-methods-fit-into-the-broader-training">How do these methods fit into the broader training?</h3>
+<p>The LightningModule interface is on the right. Each method corresponds to a part of a research project. Lightning automates everything not in blue.    </p>
+<p align="center">
+  <a href="https://github.com/williamFalcon/pytorch-lightning/blob/master/docs/source/_static/overview_flat.jpg">
+    <img alt="" src="https://github.com/williamFalcon/pytorch-lightning/blob/master/docs/source/_static/overview_flat.jpg" height="900px">
+  </a>
+</p>
 
 <hr />
 <h3 id="training_step">training_step</h3>
