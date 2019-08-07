@@ -675,6 +675,14 @@ Trainer(experiment=exp)
 
 <hr />
 <h3 id="tensorboard-support">Tensorboard support</h3>
+<p>In the LightningModule you can access the experiment logger by doing:</p>
+<pre><code class="python">self.experiment
+
+# add image
+# Look at PyTorch SummaryWriter docs for what you can do.   
+self.experiment.add_image(...)
+</code></pre>
+
 <p>The experiment object is a strict subclass of PyTorch SummaryWriter. However, this class
 also snapshots every detail about the experiment (data folder paths, code, hyperparams),
 and allows you to visualize it using tensorboard.</p>

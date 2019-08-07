@@ -344,6 +344,26 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#debugging" title="Debugging" class="md-nav__link">
+    Debugging
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example_input_array" title="example_input_array" class="md-nav__link">
+    example_input_array
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
       
       
       
@@ -595,6 +615,26 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#debugging" title="Debugging" class="md-nav__link">
+    Debugging
+  </a>
+  
+    <nav class="md-nav">
+      <ul class="md-nav__list">
+        
+          <li class="md-nav__item">
+  <a href="#example_input_array" title="example_input_array" class="md-nav__link">
+    example_input_array
+  </a>
+  
+</li>
+        
+      </ul>
+    </nav>
+  
+</li>
+      
       
       
       
@@ -646,6 +686,17 @@ self.experiment.add_scalars(...)
 <pre><code class="python">self.trainer.optimizers
 self.trainer.current_epoch
 ...   
+</code></pre>
+
+<h2 id="debugging">Debugging</h2>
+<p>The LightningModule also offers these tricks to help debug.   </p>
+<hr />
+<h4 id="example_input_array">example_input_array</h4>
+<p>In the LightningModule init, you can set a dummy tensor for this property
+to get a print out of sizes coming into and out of every layer.   </p>
+<pre><code class="python">def __init__(self):
+    # put the dimensions of the first input to your system
+    self.example_input_array = torch.rand(5, 28 * 28)
 </code></pre>
                 
                   
