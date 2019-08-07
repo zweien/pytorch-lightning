@@ -653,6 +653,7 @@ have configuration issues depending on your cluster.</p>
 <h4 id="distributed-and-16-bit-precision">Distributed and 16-bit precision.</h4>
 <p>Due to an issue with apex and DistributedDataParallel (PyTorch and NVIDIA issue), Lightning does
 not allow 16-bit and DP training. We tried to get this to work, but it's an issue on their end.   </p>
+<p>Below are the possible configurations we support.    </p>
 <table>
 <thead>
 <tr>
@@ -670,8 +671,16 @@ not allow 16-bit and DP training. We tried to get this to work, but it's an issu
 <td></td>
 <td></td>
 <td></td>
-<td>Y</td>
+<td></td>
 <td><code>Trainer(gpus=[0])</code></td>
+</tr>
+<tr>
+<td>Y</td>
+<td></td>
+<td></td>
+<td></td>
+<td>Y</td>
+<td><code>Trainer(gpus=[0], use_amp=True)</code></td>
 </tr>
 <tr>
 <td></td>
