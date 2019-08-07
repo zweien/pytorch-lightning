@@ -949,9 +949,9 @@ from torch.utils.data import DataLoader
 from torchvision.datasets import MNIST
 import torchvision.transforms as transforms
 
-import pytorch_lightning as ptl
+import pytorch_lightning as pl
 
-class CoolModel(ptl.LightningModule):
+class CoolModel(pl.LightningModule):
 
     def __init__(self):
         super(CoolModel, self).__init__()
@@ -981,15 +981,15 @@ class CoolModel(ptl.LightningModule):
     def configure_optimizers(self):
         return [torch.optim.Adam(self.parameters(), lr=0.02)]
 
-    @ptl.data_loader
+    @pl.data_loader
     def tng_dataloader(self):
         return DataLoader(MNIST(os.getcwd(), train=True, download=True, transform=transforms.ToTensor()), batch_size=32)
 
-    @ptl.data_loader
+    @pl.data_loader
     def val_dataloader(self):
         return DataLoader(MNIST(os.getcwd(), train=True, download=True, transform=transforms.ToTensor()), batch_size=32)
 
-    @ptl.data_loader
+    @pl.data_loader
     def test_dataloader(self):
         return DataLoader(MNIST(os.getcwd(), train=True, download=True, transform=transforms.ToTensor()), batch_size=32)
 </code></pre>
@@ -1248,15 +1248,15 @@ If you saved something with <strong>on_save_checkpoint</strong> this is your cha
 
 <hr />
 <h3 id="tng_dataloader">tng_dataloader</h3>
-<pre><code class="python">@ptl.data_loader
+<pre><code class="python">@pl.data_loader
 def tng_dataloader(self)
 </code></pre>
 
-<p>Called by lightning during training loop. Make sure to use the @ptl.data_loader decorator, this ensures not calling this function until the data are needed.</p>
+<p>Called by lightning during training loop. Make sure to use the @pl.data_loader decorator, this ensures not calling this function until the data are needed.</p>
 <h5 id="return_3">Return</h5>
 <p>PyTorch DataLoader</p>
 <p><strong>Example</strong></p>
-<pre><code class="python">@ptl.data_loader
+<pre><code class="python">@pl.data_loader
 def tng_dataloader(self):
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
     dataset = MNIST(root='/path/to/mnist/', train=True, transform=transform, download=True)
@@ -1270,15 +1270,15 @@ def tng_dataloader(self):
 
 <hr />
 <h3 id="val_dataloader">val_dataloader</h3>
-<pre><code class="python">@ptl.data_loader
+<pre><code class="python">@pl.data_loader
 def tng_dataloader(self)
 </code></pre>
 
-<p>Called by lightning during validation loop. Make sure to use the @ptl.data_loader decorator, this ensures not calling this function until the data are needed.</p>
+<p>Called by lightning during validation loop. Make sure to use the @pl.data_loader decorator, this ensures not calling this function until the data are needed.</p>
 <h5 id="return_4">Return</h5>
 <p>PyTorch DataLoader</p>
 <p><strong>Example</strong></p>
-<pre><code class="python">@ptl.data_loader
+<pre><code class="python">@pl.data_loader
 def val_dataloader(self):
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
     dataset = MNIST(root='/path/to/mnist/', train=False, transform=transform, download=True)
@@ -1293,15 +1293,15 @@ def val_dataloader(self):
 
 <hr />
 <h3 id="test_dataloader">test_dataloader</h3>
-<pre><code class="python">@ptl.data_loader
+<pre><code class="python">@pl.data_loader
 def test_dataloader(self)
 </code></pre>
 
-<p>Called by lightning during test loop. Make sure to use the @ptl.data_loader decorator, this ensures not calling this function until the data are needed.</p>
+<p>Called by lightning during test loop. Make sure to use the @pl.data_loader decorator, this ensures not calling this function until the data are needed.</p>
 <h5 id="return_5">Return</h5>
 <p>PyTorch DataLoader</p>
 <p><strong>Example</strong></p>
-<pre><code class="python">@ptl.data_loader
+<pre><code class="python">@pl.data_loader
 def test_dataloader(self):
     transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
     dataset = MNIST(root='/path/to/mnist/', train=False, transform=transform, download=True)

@@ -439,8 +439,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#on_batch_end" title="on_batch_end" class="md-nav__link">
-    on_batch_end
+  <a href="#on_epoch_end" title="on_epoch_end" class="md-nav__link">
+    on_epoch_end
   </a>
   
 </li>
@@ -448,6 +448,13 @@
         <li class="md-nav__item">
   <a href="#on_batch_start" title="on_batch_start" class="md-nav__link">
     on_batch_start
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#on_batch_end" title="on_batch_end" class="md-nav__link">
+    on_batch_end
   </a>
   
 </li>
@@ -567,8 +574,8 @@
 </li>
       
         <li class="md-nav__item">
-  <a href="#on_batch_end" title="on_batch_end" class="md-nav__link">
-    on_batch_end
+  <a href="#on_epoch_end" title="on_epoch_end" class="md-nav__link">
+    on_epoch_end
   </a>
   
 </li>
@@ -576,6 +583,13 @@
         <li class="md-nav__item">
   <a href="#on_batch_start" title="on_batch_start" class="md-nav__link">
     on_batch_start
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#on_batch_end" title="on_batch_end" class="md-nav__link">
+    on_batch_end
   </a>
   
 </li>
@@ -650,7 +664,7 @@ To enable a hook, simply override the method in your LightningModule and the tra
 </code></pre>
 
 <hr />
-<h4 id="on_batch_end">on_batch_end</h4>
+<h4 id="on_epoch_end">on_epoch_end</h4>
 <p>Called in the training loop at the very end of the epoch.   </p>
 <pre><code class="python">def on_epoch_end(self):
     # do something when the epoch ends 
@@ -661,6 +675,13 @@ To enable a hook, simply override the method in your LightningModule and the tra
 <p>Called in the training loop before anything happens for that batch.   </p>
 <pre><code class="python">def on_batch_start(self):
     # do something when the batch starts
+</code></pre>
+
+<hr />
+<h4 id="on_batch_end">on_batch_end</h4>
+<p>Called in the training loop after the batch.   </p>
+<pre><code class="python">def on_batch_end(self):
+    # do something when the batch ends 
 </code></pre>
 
 <hr />
