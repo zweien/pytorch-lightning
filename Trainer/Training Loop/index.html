@@ -627,9 +627,13 @@ trainer = Trainer(enable_early_stop=True)
 
 <hr />
 <h4 id="gradient-clipping">Gradient Clipping</h4>
-<p>Use this to turn off early stopping and run training to the <a href="#force-training-for-min-or-max-epochs">max_epoch</a></p>
+<p>Gradient clipping may be enabled to avoid exploding gradients.
+Specifically, this will <a href="https://pytorch.org/docs/stable/nn.html#torch.nn.utils.clip_grad_norm_">clip the gradient norm computed over all model parameters <em>together</em></a>.</p>
 <pre><code class="python"># DEFAULT (ie: don't clip)
 trainer = Trainer(gradient_clip=0)
+
+# clip gradients with norm above 0.5
+trainer = Trainer(gradient_clip=0.5)
 </code></pre>
 
 <hr />

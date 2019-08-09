@@ -546,11 +546,11 @@
                 
                   <h1>Checkpointing</h1>
                 
-                <p>Lightning can automate saving and loading checkpoints.</p>
+                <p>i Lightning can automate saving and loading checkpoints.</p>
 <hr />
 <h3 id="model-saving">Model saving</h3>
 <p>To enable checkpointing, define the checkpoint callback and give it to the trainer.</p>
-<pre><code class="python">from pytorch_lightning.utils.pt_callbacks import ModelCheckpoint
+<pre><code class="python">from pytorch_lightning.callbacks import ModelCheckpoint
 
 checkpoint_callback = ModelCheckpoint(
     filepath='/path/to/store/weights.ckpt',
