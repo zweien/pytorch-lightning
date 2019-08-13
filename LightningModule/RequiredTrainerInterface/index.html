@@ -1118,6 +1118,15 @@ class CoolModel(pl.LightningModule):
     return output
 </code></pre>
 
+<p>If you define multiple optimizers, this step will also be called with an additional <code>optimizer_idx</code> param.    </p>
+<pre><code class="python"># Multiple optimizers (ie: GANs)     
+def training_step(self, data_batch, batch_nb, optimizer_idx):
+    if optimizer_idx == 0:
+        # do training_step with encoder
+    if optimizer_idx == 1:
+        # do training_step with decoder    
+</code></pre>
+
 <hr />
 <h3 id="tng_dataloader">tng_dataloader</h3>
 <pre><code class="python">@pl.data_loader
