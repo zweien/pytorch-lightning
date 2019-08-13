@@ -631,89 +631,133 @@
                 <p>Lighting offers a few options for logging information about model, gpu usage, etc (via test-tube). It also offers printing options for training monitoring.</p>
 <hr />
 <h4 id="display-metrics-in-progress-bar">Display metrics in progress bar</h4>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(progress_bar=True)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">progress_bar</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="log-metric-row-every-k-batches">Log metric row every k batches</h4>
 <p>Every k batches lightning will make an entry in the metrics log</p>
-<pre><code class="python"># DEFAULT (ie: save a .csv log file every 10 batches)
-trainer = Trainer(add_log_row_interval=10)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT (ie: save a .csv log file every 10 batches)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">add_log_row_interval</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="process-position">Process position</h4>
 <p>When running multiple models on the same machine we want to decide which progress bar to use.
 Lightning will stack progress bars according to this value. </p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(process_position=0)
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">process_position</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-# if this is the second model on the node, show the second progress bar below
-trainer = Trainer(process_position=1)
-</code></pre>
+<span class="c1"># if this is the second model on the node, show the second progress bar below</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">process_position</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="save-a-snapshot-of-all-hyperparameters">Save a snapshot of all hyperparameters</h4>
 <p>Whenever you call .save() on the test-tube experiment it logs all the hyperparameters in current use.
 Give lightning a test-tube Experiment object to automate this for you.</p>
-<pre><code class="python">from test_tube import Experiment
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">test_tube</span> <span class="kn">import</span> <span class="n">Experiment</span>
 
-exp = Experiment(...)
-Trainer(experiment=exp)
-</code></pre>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="n">Trainer</span><span class="p">(</span><span class="n">experiment</span><span class="o">=</span><span class="n">exp</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="snapshot-code-for-a-training-run">Snapshot code for a training run</h4>
 <p>Whenever you call .save() on the test-tube experiment it snapshows all code and pushes to a git tag.
 Give lightning a test-tube Experiment object to automate this for you.</p>
-<pre><code class="python">from test_tube import Experiment
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">test_tube</span> <span class="kn">import</span> <span class="n">Experiment</span>
 
-exp = Experiment(create_git_tag=True)
-Trainer(experiment=exp)
-</code></pre>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">create_git_tag</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">Trainer</span><span class="p">(</span><span class="n">experiment</span><span class="o">=</span><span class="n">exp</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h3 id="tensorboard-support">Tensorboard support</h3>
 <p>In the LightningModule you can access the experiment logger by doing:</p>
-<pre><code class="python">self.experiment
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span>
 
-# add image
-# Look at PyTorch SummaryWriter docs for what you can do.   
-self.experiment.add_image(...)
-</code></pre>
+<span class="c1"># add image</span>
+<span class="c1"># Look at PyTorch SummaryWriter docs for what you can do.   </span>
+<span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">add_image</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>The experiment object is a strict subclass of PyTorch SummaryWriter. However, this class
 also snapshots every detail about the experiment (data folder paths, code, hyperparams),
 and allows you to visualize it using tensorboard.</p>
-<pre><code class="python">from test_tube import Experiment, HyperOptArgumentParser
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">test_tube</span> <span class="kn">import</span> <span class="n">Experiment</span><span class="p">,</span> <span class="n">HyperOptArgumentParser</span>
 
-# exp hyperparams
-args = HyperOptArgumentParser()
-hparams = args.parse_args()
+<span class="c1"># exp hyperparams</span>
+<span class="n">args</span> <span class="o">=</span> <span class="n">HyperOptArgumentParser</span><span class="p">()</span>
+<span class="n">hparams</span> <span class="o">=</span> <span class="n">args</span><span class="o">.</span><span class="n">parse_args</span><span class="p">()</span>
 
-# this is a summaryWriter with nicer logging structure
-exp = Experiment(save_dir='/some/path', create_git_tag=True)
+<span class="c1"># this is a summaryWriter with nicer logging structure</span>
+<span class="n">exp</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">save_dir</span><span class="o">=</span><span class="s1">&#39;/some/path&#39;</span><span class="p">,</span> <span class="n">create_git_tag</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
 
-# track experiment details (must be ArgumentParser or HyperOptArgumentParser).
-# each option in the parser is tracked
-exp.argparse(hparams)
-exp.tag({'description': 'running demo'})
+<span class="c1"># track experiment details (must be ArgumentParser or HyperOptArgumentParser).</span>
+<span class="c1"># each option in the parser is tracked</span>
+<span class="n">exp</span><span class="o">.</span><span class="n">argparse</span><span class="p">(</span><span class="n">hparams</span><span class="p">)</span>
+<span class="n">exp</span><span class="o">.</span><span class="n">tag</span><span class="p">({</span><span class="s1">&#39;description&#39;</span><span class="p">:</span> <span class="s1">&#39;running demo&#39;</span><span class="p">})</span>
 
-# trainer uses the exp object to log exp data
-trainer = Trainer(experiment=exp)
-trainer.fit(model)
+<span class="c1"># trainer uses the exp object to log exp data</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">experiment</span><span class="o">=</span><span class="n">exp</span><span class="p">)</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 
-# view logs at:
-# tensorboard --logdir /some/path   
-</code></pre>
+<span class="c1"># view logs at:</span>
+<span class="c1"># tensorboard --logdir /some/path   </span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="write-logs-file-to-csv-every-k-batches">Write logs file to csv every k batches</h4>
 <p>Every k batches, lightning will write the new logs to disk</p>
-<pre><code class="python"># DEFAULT (ie: save a .csv log file every 100 batches)
-trainer = Trainer(log_save_interval=100)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT (ie: save a .csv log file every 100 batches)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">log_save_interval</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
                 
                   
                 

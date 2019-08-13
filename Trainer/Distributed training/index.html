@@ -638,12 +638,17 @@ None of the flags below require changing anything about your lightningModel defi
 <p>Lightning supports two backends. DataParallel and DistributedDataParallel. Both can be used for single-node multi-GPU training.
 For multi-node training you must use DistributedDataParallel.   </p>
 <p>You can toggle between each mode by setting this flag.</p>
-<pre><code class="python"># DEFAULT uses DataParallel
-trainer = Trainer(distributed_backend='dp')
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT uses DataParallel</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">distributed_backend</span><span class="o">=</span><span class="s1">&#39;dp&#39;</span><span class="p">)</span>
 
-# change to distributed data parallel
-trainer = Trainer(distributed_backend='ddp')
-</code></pre>
+<span class="c1"># change to distributed data parallel</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">distributed_backend</span><span class="o">=</span><span class="s1">&#39;ddp&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>If you request multiple nodes, the back-end will auto-switch to ddp.
 We recommend you use DistributedDataparallel even for single-node multi-GPU training. It is MUCH faster than DP but <em>may</em>
@@ -712,88 +717,137 @@ not allow 16-bit and DP training. We tried to get this to work, but it's an issu
 <h4 id="cuda-flags">CUDA flags</h4>
 <p>CUDA flags make certain GPUs visible to your script. 
 Lightning sets these for you automatically, there's NO NEED to do this yourself.</p>
-<pre><code class="python"># lightning will set according to what you give the trainer
-# os.environ[&quot;CUDA_DEVICE_ORDER&quot;] = &quot;PCI_BUS_ID&quot;
-# os.environ[&quot;CUDA_VISIBLE_DEVICES&quot;] = &quot;0&quot;
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># lightning will set according to what you give the trainer</span>
+<span class="c1"># os.environ[&quot;CUDA_DEVICE_ORDER&quot;] = &quot;PCI_BUS_ID&quot;</span>
+<span class="c1"># os.environ[&quot;CUDA_VISIBLE_DEVICES&quot;] = &quot;0&quot;</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="16-bit-mixed-precision">16-bit mixed precision</h4>
 <p>16 bit precision can cut your memory footprint by half. If using volta architecture GPUs it can give a dramatic training speed-up as well.  <br />
 First, install apex (if install fails, look <a href="https://github.com/NVIDIA/apex">here</a>):</p>
-<pre><code class="bash">$ git clone https://github.com/NVIDIA/apex
-$ cd apex
-$ pip install -v --no-cache-dir --global-option=&quot;--cpp_ext&quot; --global-option=&quot;--cuda_ext&quot; ./
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ git clone https://github.com/NVIDIA/apex
+$ <span class="nb">cd</span> apex
+$ pip install -v --no-cache-dir --global-option<span class="o">=</span><span class="s2">&quot;--cpp_ext&quot;</span> --global-option<span class="o">=</span><span class="s2">&quot;--cuda_ext&quot;</span> ./
+</pre></div>
+</td></tr></table>
 
 <p>then set this use_amp to True.</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(amp_level='O2', use_amp=False)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">amp_level</span><span class="o">=</span><span class="s1">&#39;O2&#39;</span><span class="p">,</span> <span class="n">use_amp</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="single-gpu">Single-gpu</h4>
 <p>Make sure you're on a GPU machine. </p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(gpus=[0])
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="multi-gpu">multi-gpu</h4>
 <p>Make sure you're on a GPU machine. You can set as many GPUs as you want.
 In this setting, the model will run on all 8 GPUs at once using DataParallel under the hood.</p>
-<pre><code class="python"># to use DataParallel (default)
-trainer = Trainer(gpus=[0,1,2,3,4,5,6,7], distributed_backend='dp')
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># to use DataParallel (default)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">distributed_backend</span><span class="o">=</span><span class="s1">&#39;dp&#39;</span><span class="p">)</span>
 
-# RECOMMENDED use DistributedDataParallel
-trainer = Trainer(gpus=[0,1,2,3,4,5,6,7], distributed_backend='ddp')
-</code></pre>
+<span class="c1"># RECOMMENDED use DistributedDataParallel</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">distributed_backend</span><span class="o">=</span><span class="s1">&#39;ddp&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="multi-node">Multi-node</h4>
 <p>Multi-node training is easily done by specifying these flags.</p>
-<pre><code class="python"># train on 12*8 GPUs
-trainer = Trainer(gpus=[0,1,2,3,4,5,6,7], nb_gpu_nodes=12)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># train on 12*8 GPUs</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">nb_gpu_nodes</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>In addition, make sure to set up your SLURM job correctly via the <a href="https://williamfalcon.github.io/test-tube/hpc/SlurmCluster/">SlurmClusterObject</a>. In particular, specify the number of tasks per node correctly.</p>
-<pre><code class="python">cluster = SlurmCluster(
-    hyperparam_optimizer=test_tube.HyperOptArgumentParser(),
-    log_path='/some/path/to/save',
-)
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">cluster</span> <span class="o">=</span> <span class="n">SlurmCluster</span><span class="p">(</span>
+    <span class="n">hyperparam_optimizer</span><span class="o">=</span><span class="n">test_tube</span><span class="o">.</span><span class="n">HyperOptArgumentParser</span><span class="p">(),</span>
+    <span class="n">log_path</span><span class="o">=</span><span class="s1">&#39;/some/path/to/save&#39;</span><span class="p">,</span>
+<span class="p">)</span>
 
-# OPTIONAL FLAGS WHICH MAY BE CLUSTER DEPENDENT
-# which interface your nodes use for communication
-cluster.add_command('export NCCL_SOCKET_IFNAME=^docker0,lo')
+<span class="c1"># OPTIONAL FLAGS WHICH MAY BE CLUSTER DEPENDENT</span>
+<span class="c1"># which interface your nodes use for communication</span>
+<span class="n">cluster</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="s1">&#39;export NCCL_SOCKET_IFNAME=^docker0,lo&#39;</span><span class="p">)</span>
 
-# see output of the NCCL connection process
-# NCCL is how the nodes talk to each other
-cluster.add_command('export NCCL_DEBUG=INFO')
+<span class="c1"># see output of the NCCL connection process</span>
+<span class="c1"># NCCL is how the nodes talk to each other</span>
+<span class="n">cluster</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="s1">&#39;export NCCL_DEBUG=INFO&#39;</span><span class="p">)</span>
 
-# setting a master port here is a good idea.
-cluster.add_command('export MASTER_PORT=%r' % PORT)
+<span class="c1"># setting a master port here is a good idea.</span>
+<span class="n">cluster</span><span class="o">.</span><span class="n">add_command</span><span class="p">(</span><span class="s1">&#39;export MASTER_PORT=</span><span class="si">%r</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="n">PORT</span><span class="p">)</span>
 
-# good to load the latest NCCL version
-cluster.load_modules(['NCCL/2.4.7-1-cuda.10.0'])
+<span class="c1"># good to load the latest NCCL version</span>
+<span class="n">cluster</span><span class="o">.</span><span class="n">load_modules</span><span class="p">([</span><span class="s1">&#39;NCCL/2.4.7-1-cuda.10.0&#39;</span><span class="p">])</span>
 
-# configure cluster
-cluster.per_experiment_nb_nodes = 12 
-cluster.per_experiment_nb_gpus = 8
+<span class="c1"># configure cluster</span>
+<span class="n">cluster</span><span class="o">.</span><span class="n">per_experiment_nb_nodes</span> <span class="o">=</span> <span class="mi">12</span> 
+<span class="n">cluster</span><span class="o">.</span><span class="n">per_experiment_nb_gpus</span> <span class="o">=</span> <span class="mi">8</span>
 
-cluster.add_slurm_cmd(cmd='ntasks-per-node', value=8, comment='1 task per gpu')
-</code></pre>
+<span class="n">cluster</span><span class="o">.</span><span class="n">add_slurm_cmd</span><span class="p">(</span><span class="n">cmd</span><span class="o">=</span><span class="s1">&#39;ntasks-per-node&#39;</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">comment</span><span class="o">=</span><span class="s1">&#39;1 task per gpu&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Finally, make sure to add a distributed sampler to your dataset. The distributed sampler copies a 
 portion of your dataset onto each GPU. (World_size = gpus_per_node * nb_nodes).   </p>
-<pre><code class="python"># ie: this:
-dataset = myDataset()
-dataloader = Dataloader(dataset)
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># ie: this:</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">myDataset</span><span class="p">()</span>
+<span class="n">dataloader</span> <span class="o">=</span> <span class="n">Dataloader</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
 
-# becomes:
-dataset = myDataset()
-dist_sampler = torch.utils.data.distributed.DistributedSampler(dataset)
-dataloader = Dataloader(dataset, sampler=dist_sampler)
-</code></pre>
+<span class="c1"># becomes:</span>
+<span class="n">dataset</span> <span class="o">=</span> <span class="n">myDataset</span><span class="p">()</span>
+<span class="n">dist_sampler</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">distributed</span><span class="o">.</span><span class="n">DistributedSampler</span><span class="p">(</span><span class="n">dataset</span><span class="p">)</span>
+<span class="n">dataloader</span> <span class="o">=</span> <span class="n">Dataloader</span><span class="p">(</span><span class="n">dataset</span><span class="p">,</span> <span class="n">sampler</span><span class="o">=</span><span class="n">dist_sampler</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="self-balancing-architecture">Self-balancing architecture</h4>

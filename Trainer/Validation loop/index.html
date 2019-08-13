@@ -595,46 +595,65 @@ Lightning will run 5 steps of validation in the beginning of training as a sanit
 <hr />
 <h4 id="check-validation-every-n-epochs">Check validation every n epochs</h4>
 <p>If you have a small dataset you might want to check validation every n epochs</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(check_val_every_n_epoch=1)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">check_val_every_n_epoch</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="set-how-much-of-the-validation-set-to-check">Set how much of the validation set to check</h4>
 <p>If you don't want to check 100% of the validation set (for debugging or if it's huge), set this flag</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(val_percent_check=1.0)
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">val_percent_check</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 
-# check 10% only
-trainer = Trainer(val_percent_check=0.1)
-</code></pre>
+<span class="c1"># check 10% only</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">val_percent_check</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="set-how-much-of-the-test-set-to-check">Set how much of the test set to check</h4>
 <p>If you don't want to check 100% of the test set (for debugging or if it's huge), set this flag</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(test_percent_check=1.0)
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">test_percent_check</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 
-# check 10% only
-trainer = Trainer(test_percent_check=0.1)
-</code></pre>
+<span class="c1"># check 10% only</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">test_percent_check</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="set-validation-check-frequency-within-1-training-epoch">Set validation check frequency within 1 training epoch</h4>
 <p>For large datasets it's often desirable to check validation multiple times within a training loop</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(val_check_interval=0.95)
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">val_check_interval</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
 
-# check every .25 of an epoch 
-trainer = Trainer(val_check_interval=0.25)
-</code></pre>
+<span class="c1"># check every .25 of an epoch </span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">val_check_interval</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="set-the-number-of-validation-sanity-steps">Set the number of validation sanity steps</h4>
 <p>Lightning runs a few steps of validation in the beginning of training. This avoids crashing in the validation loop sometime deep into a lengthy training loop.</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(nb_sanity_val_steps=5)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">nb_sanity_val_steps</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
                 
                   
                 

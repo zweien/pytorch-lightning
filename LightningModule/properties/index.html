@@ -666,10 +666,13 @@
 <hr />
 <h4 id="experiment">experiment</h4>
 <p>An instance of test-tube Experiment which you can use to log anything for tensorboarX.   </p>
-<pre><code class="python">self.experiment.add_embedding(...)   
-self.experiment.log({'val_loss': 0.9})   
-self.experiment.add_scalars(...)   
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">add_embedding</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>   
+<span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">log</span><span class="p">({</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">})</span>   
+<span class="bp">self</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">add_scalars</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>   
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="global_step">global_step</h4>
@@ -683,10 +686,13 @@ self.experiment.add_scalars(...)
 <hr />
 <h4 id="trainer">trainer</h4>
 <p>Last resort access to any state the trainer has. Changing certain properties here could affect your training run.</p>
-<pre><code class="python">self.trainer.optimizers
-self.trainer.current_epoch
-...   
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">optimizers</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">current_epoch</span>
+<span class="o">...</span>   
+</pre></div>
+</td></tr></table>
 
 <h2 id="debugging">Debugging</h2>
 <p>The LightningModule also offers these tricks to help debug.   </p>
@@ -694,10 +700,13 @@ self.trainer.current_epoch
 <h4 id="example_input_array">example_input_array</h4>
 <p>In the LightningModule init, you can set a dummy tensor for this property
 to get a print out of sizes coming into and out of every layer.   </p>
-<pre><code class="python">def __init__(self):
-    # put the dimensions of the first input to your system
-    self.example_input_array = torch.rand(5, 28 * 28)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="c1"># put the dimensions of the first input to your system</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">example_input_array</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">rand</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
                 
                   
                 

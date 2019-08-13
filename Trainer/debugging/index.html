@@ -607,29 +607,41 @@
 <h4 id="fast-dev-run">Fast dev run</h4>
 <p>This flag is meant for debugging a full train/val/test loop. It'll activate callbacks, everything but only with 1 training and 1 validation batch.
 Use this to debug a full run of your program quickly</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(fast_dev_run=False)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">fast_dev_run</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="inspect-gradient-norms">Inspect gradient norms</h4>
 <p>Looking at grad norms can help you figure out where training might be going wrong.</p>
-<pre><code class="python"># DEFAULT (-1 doesn't track norms)
-trainer = Trainer(track_grad_norm=-1)
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT (-1 doesn&#39;t track norms)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">track_grad_norm</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
-# track the LP norm (P=2 here)
-trainer = Trainer(track_grad_norm=2)
-</code></pre>
+<span class="c1"># track the LP norm (P=2 here)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">track_grad_norm</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="make-model-overfit-on-subset-of-data">Make model overfit on subset of data</h4>
 <p>A useful debugging trick is to make your model overfit a tiny fraction of the data.</p>
-<pre><code class="python"># DEFAULT don't overfit (ie: normal training)
-trainer = Trainer(overfit_pct=0.0)
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT don&#39;t overfit (ie: normal training)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">overfit_pct</span><span class="o">=</span><span class="mf">0.0</span><span class="p">)</span>
 
-# overfit on 1% of data 
-trainer = Trainer(overfit_pct=0.01)
-</code></pre>
+<span class="c1"># overfit on 1% of data </span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">overfit_pct</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="print-the-parameter-count-by-layer">Print the parameter count by layer</h4>
@@ -637,9 +649,11 @@ trainer = Trainer(overfit_pct=0.01)
 <hr />
 <h4 id="print-which-gradients-are-nan">Print which gradients are nan</h4>
 <p>This option prints a list of tensors with nan gradients.</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(print_nan_grads=False)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">print_nan_grads</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="log-gpu-usage">Log GPU usage</h4>

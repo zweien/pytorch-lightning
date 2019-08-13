@@ -988,61 +988,115 @@
 </ul>
 <hr />
 <h3 id="minimal-example">Minimal example</h3>
-<pre><code class="python">import os
-import torch
-from torch.nn import functional as F
-from torch.utils.data import DataLoader
-from torchvision.datasets import MNIST
-import torchvision.transforms as transforms
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22
+23
+24
+25
+26
+27
+28
+29
+30
+31
+32
+33
+34
+35
+36
+37
+38
+39
+40
+41
+42
+43
+44
+45
+46
+47
+48
+49
+50
+51
+52
+53
+54</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">torch</span>
+<span class="kn">from</span> <span class="nn">torch.nn</span> <span class="kn">import</span> <span class="n">functional</span> <span class="k">as</span> <span class="n">F</span>
+<span class="kn">from</span> <span class="nn">torch.utils.data</span> <span class="kn">import</span> <span class="n">DataLoader</span>
+<span class="kn">from</span> <span class="nn">torchvision.datasets</span> <span class="kn">import</span> <span class="n">MNIST</span>
+<span class="kn">import</span> <span class="nn">torchvision.transforms</span> <span class="kn">as</span> <span class="nn">transforms</span>
 
-import pytorch_lightning as pl
+<span class="kn">import</span> <span class="nn">pytorch_lightning</span> <span class="kn">as</span> <span class="nn">pl</span>
 
-class CoolModel(pl.LightningModule):
+<span class="k">class</span> <span class="nc">CoolModel</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
 
-    def __init__(self):
-        super(CoolModel, self).__init__()
-        # not the best model...
-        self.l1 = torch.nn.Linear(28 * 28, 10)
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="nb">super</span><span class="p">(</span><span class="n">CoolModel</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">()</span>
+        <span class="c1"># not the best model...</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">l1</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">nn</span><span class="o">.</span><span class="n">Linear</span><span class="p">(</span><span class="mi">28</span> <span class="o">*</span> <span class="mi">28</span><span class="p">,</span> <span class="mi">10</span><span class="p">)</span>
 
-    def forward(self, x):
-        return torch.relu(self.l1(x.view(x.size(0), -1)))
+    <span class="k">def</span> <span class="nf">forward</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">torch</span><span class="o">.</span><span class="n">relu</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">l1</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">view</span><span class="p">(</span><span class="n">x</span><span class="o">.</span><span class="n">size</span><span class="p">(</span><span class="mi">0</span><span class="p">),</span> <span class="o">-</span><span class="mi">1</span><span class="p">)))</span>
 
-    def training_step(self, batch, batch_nb):
-        # REQUIRED
-        x, y = batch
-        y_hat = self.forward(x)
-        return {'loss': F.cross_entropy(y_hat, y)(y_hat, y)}
+    <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_nb</span><span class="p">):</span>
+        <span class="c1"># REQUIRED</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
+        <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)}</span>
 
-    def validation_step(self, batch, batch_nb):
-        # OPTIONAL
-        x, y = batch
-        y_hat = self.forward(x)
-        return {'val_loss': F.cross_entropy(y_hat, y)(y_hat, y)}
+    <span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_nb</span><span class="p">):</span>
+        <span class="c1"># OPTIONAL</span>
+        <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
+        <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)}</span>
 
-    def validation_end(self, outputs):
-        # OPTIONAL
-        avg_loss = torch.stack([x['val_loss'] for x in outputs]).mean()
-        return {'avg_val_loss': avg_loss}
+    <span class="k">def</span> <span class="nf">validation_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+        <span class="c1"># OPTIONAL</span>
+        <span class="n">avg_loss</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">stack</span><span class="p">([</span><span class="n">x</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">])</span><span class="o">.</span><span class="n">mean</span><span class="p">()</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;avg_val_loss&#39;</span><span class="p">:</span> <span class="n">avg_loss</span><span class="p">}</span>
 
-    def configure_optimizers(self):
-        # REQUIRED
-        return [torch.optim.Adam(self.parameters(), lr=0.02)]
+    <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># REQUIRED</span>
+        <span class="k">return</span> <span class="p">[</span><span class="n">torch</span><span class="o">.</span><span class="n">optim</span><span class="o">.</span><span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)]</span>
 
-    @pl.data_loader
-    def tng_dataloader(self):
-        return DataLoader(MNIST(os.getcwd(), train=True, download=True, transform=transforms.ToTensor()), batch_size=32)
+    <span class="nd">@pl.data_loader</span>
+    <span class="k">def</span> <span class="nf">tng_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">MNIST</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">train</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
 
-    @pl.data_loader
-    def val_dataloader(self):
-        # OPTIONAL
-        # can also return a list of val dataloaders
-        return DataLoader(MNIST(os.getcwd(), train=True, download=True, transform=transforms.ToTensor()), batch_size=32)
+    <span class="nd">@pl.data_loader</span>
+    <span class="k">def</span> <span class="nf">val_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># OPTIONAL</span>
+        <span class="c1"># can also return a list of val dataloaders</span>
+        <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">MNIST</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">train</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
 
-    @pl.data_loader
-    def test_dataloader(self):
-        # OPTIONAL
-        return DataLoader(MNIST(os.getcwd(), train=True, download=True, transform=transforms.ToTensor()), batch_size=32)
-</code></pre>
+    <span class="nd">@pl.data_loader</span>
+    <span class="k">def</span> <span class="nf">test_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="c1"># OPTIONAL</span>
+        <span class="k">return</span> <span class="n">DataLoader</span><span class="p">(</span><span class="n">MNIST</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">(),</span> <span class="n">train</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">()),</span> <span class="n">batch_size</span><span class="o">=</span><span class="mi">32</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h3 id="how-do-these-methods-fit-into-the-broader-training">How do these methods fit into the broader training?</h3>
@@ -1055,8 +1109,9 @@ class CoolModel(pl.LightningModule):
 
 <h2 id="required-methods">Required Methods</h2>
 <h3 id="training_step">training_step</h3>
-<pre><code class="python">def training_step(self, data_batch, batch_nb)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_batch</span><span class="p">,</span> <span class="n">batch_nb</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>In this step you'd normally do the forward pass and calculate the loss for a batch. You can also do fancier things like multiple forward passes or something specific to your model.</p>
 <p><strong>Params</strong>    </p>
@@ -1102,57 +1157,90 @@ class CoolModel(pl.LightningModule):
 </tbody>
 </table>
 <p><strong>Example</strong></p>
-<pre><code class="python">def training_step(self, data_batch, batch_nb):
-    x, y, z = data_batch
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_batch</span><span class="p">,</span> <span class="n">batch_nb</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">data_batch</span>
 
-    # implement your own
-    out = self.forward(x)
-    loss = self.loss(out, x)
+    <span class="c1"># implement your own</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
 
-    output = {
-        'loss': loss, # required
-        'prog': {'tng_loss': loss, 'batch_nb': batch_nb} # optional
-    }
+    <span class="n">output</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="c1"># required</span>
+        <span class="s1">&#39;prog&#39;</span><span class="p">:</span> <span class="p">{</span><span class="s1">&#39;tng_loss&#39;</span><span class="p">:</span> <span class="n">loss</span><span class="p">,</span> <span class="s1">&#39;batch_nb&#39;</span><span class="p">:</span> <span class="n">batch_nb</span><span class="p">}</span> <span class="c1"># optional</span>
+    <span class="p">}</span>
 
-    # return a dict
-    return output
-</code></pre>
+    <span class="c1"># return a dict</span>
+    <span class="k">return</span> <span class="n">output</span>
+</pre></div>
+</td></tr></table>
 
 <p>If you define multiple optimizers, this step will also be called with an additional <code>optimizer_idx</code> param.    </p>
-<pre><code class="python"># Multiple optimizers (ie: GANs)     
-def training_step(self, data_batch, batch_nb, optimizer_idx):
-    if optimizer_idx == 0:
-        # do training_step with encoder
-    if optimizer_idx == 1:
-        # do training_step with decoder    
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># Multiple optimizers (ie: GANs)     </span>
+<span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_batch</span><span class="p">,</span> <span class="n">batch_nb</span><span class="p">,</span> <span class="n">optimizer_idx</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">optimizer_idx</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="c1"># do training_step with encoder</span>
+    <span class="k">if</span> <span class="n">optimizer_idx</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="c1"># do training_step with decoder    </span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h3 id="tng_dataloader">tng_dataloader</h3>
-<pre><code class="python">@pl.data_loader
-def tng_dataloader(self)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nd">@pl.data_loader</span>
+<span class="k">def</span> <span class="nf">tng_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Called by lightning during training loop. Make sure to use the @pl.data_loader decorator, this ensures not calling this function until the data are needed.</p>
 <h5 id="return">Return</h5>
 <p>PyTorch DataLoader</p>
 <p><strong>Example</strong></p>
-<pre><code class="python">@pl.data_loader
-def tng_dataloader(self):
-    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
-    dataset = MNIST(root='/path/to/mnist/', train=True, transform=transform, download=True)
-    loader = torch.utils.data.DataLoader(
-        dataset=dataset,
-        batch_size=self.hparams.batch_size,
-        shuffle=True
-    )
-    return loader
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nd">@pl.data_loader</span>
+<span class="k">def</span> <span class="nf">tng_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,),</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,))])</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s1">&#39;/path/to/mnist/&#39;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+        <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hparams</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span>
+    <span class="p">)</span>
+    <span class="k">return</span> <span class="n">loader</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h3 id="configure_optimizers">configure_optimizers</h3>
-<pre><code class="python">def configure_optimizers(self)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Set up as many optimizers and (optionally) learning rate schedulers as you need. Normally you'd need one. But in the case of GANs or something more esoteric you might have multiple. 
 Lightning will call .backward() and .step() on each one in every epoch.  If you use 16 bit precision it will also handle that.</p>
@@ -1160,28 +1248,43 @@ Lightning will call .backward() and .step() on each one in every epoch.  If you 
 <h5 id="return_1">Return</h5>
 <p>List or Tuple - List of optimizers with an optional second list of learning-rate schedulers</p>
 <p><strong>Example</strong></p>
-<pre><code class="python"># most cases
-def configure_optimizers(self):
-    opt = Adam(self.parameters(), lr=0.01)
-    return [opt]
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># most cases</span>
+<span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">opt</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">opt</span><span class="p">]</span>
 
-# gan example, with scheduler for discriminator
-def configure_optimizers(self):
-    generator_opt = Adam(self.model_gen.parameters(), lr=0.01)
-    disriminator_opt = Adam(self.model_disc.parameters(), lr=0.02)
-    discriminator_sched = CosineAnnealing(discriminator_opt, T_max=10)
-    return [generator_opt, disriminator_opt], [discriminator_sched]
-</code></pre>
+<span class="c1"># gan example, with scheduler for discriminator</span>
+<span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">generator_opt</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_gen</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+    <span class="n">disriminator_opt</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_disc</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+    <span class="n">discriminator_sched</span> <span class="o">=</span> <span class="n">CosineAnnealing</span><span class="p">(</span><span class="n">discriminator_opt</span><span class="p">,</span> <span class="n">T_max</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">generator_opt</span><span class="p">,</span> <span class="n">disriminator_opt</span><span class="p">],</span> <span class="p">[</span><span class="n">discriminator_sched</span><span class="p">]</span>
+</pre></div>
+</td></tr></table>
 
 <p>If you need to control how often those optimizers step or override the default .step() schedule, override 
 the <a href="https://williamfalcon.github.io/pytorch-lightning/Trainer/hooks/#optimizer_step">optimizer_step</a> hook.   </p>
 <h2 id="optional-methods">Optional Methods</h2>
 <h3 id="validation_step">validation_step</h3>
-<pre><code class="python">def validation_step(self, data_batch, batch_nb)   
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_batch</span><span class="p">,</span> <span class="n">batch_nb</span><span class="p">)</span>   
 
-# if have multiple val dataloaders:  
-def validation_step(self, data_batch, batch_nb, dataloader_idx)
-</code></pre>
+<span class="c1"># if have multiple val dataloaders:  </span>
+<span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_batch</span><span class="p">,</span> <span class="n">batch_nb</span><span class="p">,</span> <span class="n">dataloader_idx</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p><strong>OPTIONAL</strong>  <br />
 If you don't need to validate you don't need to implement this method.    </p>
@@ -1228,40 +1331,65 @@ If you don't need to validate you don't need to implement this method.    </p>
 </tbody>
 </table>
 <p><strong>Example</strong></p>
-<pre><code class="python"># CASE 1: A single validation dataset
-def validation_step(self, data_batch, batch_nb):
-    x, y, z = data_batch
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># CASE 1: A single validation dataset</span>
+<span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_batch</span><span class="p">,</span> <span class="n">batch_nb</span><span class="p">):</span>
+    <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">z</span> <span class="o">=</span> <span class="n">data_batch</span>
 
-    # implement your own
-    out = self.forward(x)
-    loss = self.loss(out, x)
+    <span class="c1"># implement your own</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+    <span class="n">loss</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">loss</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span>
 
-    # calculate acc
-    labels_hat = torch.argmax(out, dim=1)
-    val_acc = torch.sum(y == labels_hat).item() / (len(y) * 1.0)
+    <span class="c1"># calculate acc</span>
+    <span class="n">labels_hat</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">argmax</span><span class="p">(</span><span class="n">out</span><span class="p">,</span> <span class="n">dim</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+    <span class="n">val_acc</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">y</span> <span class="o">==</span> <span class="n">labels_hat</span><span class="p">)</span><span class="o">.</span><span class="n">item</span><span class="p">()</span> <span class="o">/</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">y</span><span class="p">)</span> <span class="o">*</span> <span class="mf">1.0</span><span class="p">)</span>
 
-    # all optional...
-    # return whatever you need for the collation function validation_end
-    output = OrderedDict({
-        'val_loss': loss_val,
-        'val_acc': torch.tensor(val_acc), # everything must be a tensor
-    })
+    <span class="c1"># all optional...</span>
+    <span class="c1"># return whatever you need for the collation function validation_end</span>
+    <span class="n">output</span> <span class="o">=</span> <span class="n">OrderedDict</span><span class="p">({</span>
+        <span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">loss_val</span><span class="p">,</span>
+        <span class="s1">&#39;val_acc&#39;</span><span class="p">:</span> <span class="n">torch</span><span class="o">.</span><span class="n">tensor</span><span class="p">(</span><span class="n">val_acc</span><span class="p">),</span> <span class="c1"># everything must be a tensor</span>
+    <span class="p">})</span>
 
-    # return an optional dict
-    return output
-</code></pre>
+    <span class="c1"># return an optional dict</span>
+    <span class="k">return</span> <span class="n">output</span>
+</pre></div>
+</td></tr></table>
 
 <p>If you pass in multiple validation datasets, validation_step will have an additional argument.</p>
-<pre><code class="python"># CASE 2: multiple validation datasets
-def validation_step(self, data_batch, batch_nb, dataset_idx):
-    # dataset_idx tells you which dataset this is.   
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># CASE 2: multiple validation datasets</span>
+<span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">data_batch</span><span class="p">,</span> <span class="n">batch_nb</span><span class="p">,</span> <span class="n">dataset_idx</span><span class="p">):</span>
+    <span class="c1"># dataset_idx tells you which dataset this is.   </span>
+</pre></div>
+</td></tr></table>
 
 <p>The <code>dataset_idx</code> corresponds to the order of datasets returned in <code>val_dataloader</code>.    </p>
 <hr />
 <h3 id="validation_end">validation_end</h3>
-<pre><code class="python">def validation_end(self, outputs)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">validation_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>If you didn't define a validation_step, this won't be called.       </p>
 <p>Called at the end of the validation loop with the output of each validation_step.  Called once per validation dataset.   </p>
@@ -1299,28 +1427,45 @@ def validation_step(self, data_batch, batch_nb, dataset_idx):
 </tbody>
 </table>
 <p><strong>Example</strong></p>
-<pre><code class="python">def validation_end(self, outputs):
-    &quot;&quot;&quot;
-    Called at the end of validation to aggregate outputs
-    :param outputs: list of individual outputs of each validation step
-    :return:
-    &quot;&quot;&quot;
-    val_loss_mean = 0
-    val_acc_mean = 0
-    for output in outputs:
-        val_loss_mean += output['val_loss']
-        val_acc_mean += output['val_acc']
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">validation_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Called at the end of validation to aggregate outputs</span>
+<span class="sd">    :param outputs: list of individual outputs of each validation step</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">val_loss_mean</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">val_acc_mean</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+        <span class="n">val_loss_mean</span> <span class="o">+=</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span>
+        <span class="n">val_acc_mean</span> <span class="o">+=</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;val_acc&#39;</span><span class="p">]</span>
 
-    val_loss_mean /= len(outputs)
-    val_acc_mean /= len(outputs)
-    tqdm_dic = {'val_loss': val_loss_mean.item(), 'val_acc': val_acc_mean.item()}
-    return tqdm_dic
-</code></pre>
+    <span class="n">val_loss_mean</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">val_acc_mean</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">tqdm_dic</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">val_loss_mean</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="s1">&#39;val_acc&#39;</span><span class="p">:</span> <span class="n">val_acc_mean</span><span class="o">.</span><span class="n">item</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="n">tqdm_dic</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h3 id="on_save_checkpoint">on_save_checkpoint</h3>
-<pre><code class="python">def on_save_checkpoint(self, checkpoint)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">on_save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Called by lightning to checkpoint your model. Lightning saves the training state (current epoch, global_step, etc)
 and also saves the model state_dict. If you want to save anything else, use this method to add your own
@@ -1328,15 +1473,19 @@ key-value pair.</p>
 <h5 id="return_2">Return</h5>
 <p>Nothing</p>
 <p><strong>Example</strong></p>
-<pre><code class="python">def on_save_checkpoint(self, checkpoint):
-    # 99% of use cases you don't need to implement this method 
-    checkpoint['something_cool_i_want_to_save'] = my_cool_pickable_object
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">on_save_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">):</span>
+    <span class="c1"># 99% of use cases you don&#39;t need to implement this method </span>
+    <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;something_cool_i_want_to_save&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">my_cool_pickable_object</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h3 id="on_load_checkpoint">on_load_checkpoint</h3>
-<pre><code class="python">def on_load_checkpoint(self, checkpoint)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">on_load_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Called by lightning to restore your model. Lighting auto-restores global step, epoch, etc...
 It also restores the model state_dict.
@@ -1344,16 +1493,21 @@ If you saved something with <strong>on_save_checkpoint</strong> this is your cha
 <h5 id="return_3">Return</h5>
 <p>Nothing  </p>
 <p><strong>Example</strong></p>
-<pre><code class="python">def on_load_checkpoint(self, checkpoint):
-    # 99% of the time you don't need to implement this method
-    self.something_cool_i_want_to_save = checkpoint['something_cool_i_want_to_save']
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">on_load_checkpoint</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">checkpoint</span><span class="p">):</span>
+    <span class="c1"># 99% of the time you don&#39;t need to implement this method</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">something_cool_i_want_to_save</span> <span class="o">=</span> <span class="n">checkpoint</span><span class="p">[</span><span class="s1">&#39;something_cool_i_want_to_save&#39;</span><span class="p">]</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h3 id="val_dataloader">val_dataloader</h3>
-<pre><code class="python">@pl.data_loader
-def tng_dataloader(self)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nd">@pl.data_loader</span>
+<span class="k">def</span> <span class="nf">tng_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p><strong>OPTIONAL</strong>  <br />
 If you don't need a validation dataset and a validation_step, you don't need to implement this method.    </p>
@@ -1361,31 +1515,49 @@ If you don't need a validation dataset and a validation_step, you don't need to 
 <h5 id="return_4">Return</h5>
 <p>PyTorch DataLoader or list of PyTorch Dataloaders.    </p>
 <p><strong>Example</strong></p>
-<pre><code class="python">@pl.data_loader
-def val_dataloader(self):
-    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
-    dataset = MNIST(root='/path/to/mnist/', train=False, transform=transform, download=True)
-    loader = torch.utils.data.DataLoader(
-        dataset=dataset,
-        batch_size=self.hparams.batch_size,
-        shuffle=True
-    )
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nd">@pl.data_loader</span>
+<span class="k">def</span> <span class="nf">val_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,),</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,))])</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s1">&#39;/path/to/mnist/&#39;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+        <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hparams</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span>
+    <span class="p">)</span>
 
-    return loader
+    <span class="k">return</span> <span class="n">loader</span>
 
-# can also return multiple dataloaders   
-@pl.data_loader
-def val_dataloader(self):
-    return [loader_a, loader_b, ..., loader_n]   
-</code></pre>
+<span class="c1"># can also return multiple dataloaders   </span>
+<span class="nd">@pl.data_loader</span>
+<span class="k">def</span> <span class="nf">val_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">return</span> <span class="p">[</span><span class="n">loader_a</span><span class="p">,</span> <span class="n">loader_b</span><span class="p">,</span> <span class="o">...</span><span class="p">,</span> <span class="n">loader_n</span><span class="p">]</span>   
+</pre></div>
+</td></tr></table>
 
 <p>In the case where you return multiple val_dataloaders, the validation_step will have an arguement <code>dataset_idx</code>
 which matches the order here.    </p>
 <hr />
 <h3 id="test_dataloader">test_dataloader</h3>
-<pre><code class="python">@pl.data_loader
-def test_dataloader(self)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nd">@pl.data_loader</span>
+<span class="k">def</span> <span class="nf">test_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p><strong>OPTIONAL</strong>  <br />
 If you don't need a test dataset and a test_step, you don't need to implement this method.    </p>
@@ -1393,39 +1565,56 @@ If you don't need a test dataset and a test_step, you don't need to implement th
 <h5 id="return_5">Return</h5>
 <p>PyTorch DataLoader</p>
 <p><strong>Example</strong></p>
-<pre><code class="python">@pl.data_loader
-def test_dataloader(self):
-    transform = transforms.Compose([transforms.ToTensor(), transforms.Normalize((0.5,), (1.0,))])
-    dataset = MNIST(root='/path/to/mnist/', train=False, transform=transform, download=True)
-    loader = torch.utils.data.DataLoader(
-        dataset=dataset,
-        batch_size=self.hparams.batch_size,
-        shuffle=True
-    )
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nd">@pl.data_loader</span>
+<span class="k">def</span> <span class="nf">test_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">transform</span> <span class="o">=</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Compose</span><span class="p">([</span><span class="n">transforms</span><span class="o">.</span><span class="n">ToTensor</span><span class="p">(),</span> <span class="n">transforms</span><span class="o">.</span><span class="n">Normalize</span><span class="p">((</span><span class="mf">0.5</span><span class="p">,),</span> <span class="p">(</span><span class="mf">1.0</span><span class="p">,))])</span>
+    <span class="n">dataset</span> <span class="o">=</span> <span class="n">MNIST</span><span class="p">(</span><span class="n">root</span><span class="o">=</span><span class="s1">&#39;/path/to/mnist/&#39;</span><span class="p">,</span> <span class="n">train</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span> <span class="n">transform</span><span class="o">=</span><span class="n">transform</span><span class="p">,</span> <span class="n">download</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+    <span class="n">loader</span> <span class="o">=</span> <span class="n">torch</span><span class="o">.</span><span class="n">utils</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">DataLoader</span><span class="p">(</span>
+        <span class="n">dataset</span><span class="o">=</span><span class="n">dataset</span><span class="p">,</span>
+        <span class="n">batch_size</span><span class="o">=</span><span class="bp">self</span><span class="o">.</span><span class="n">hparams</span><span class="o">.</span><span class="n">batch_size</span><span class="p">,</span>
+        <span class="n">shuffle</span><span class="o">=</span><span class="bp">True</span>
+    <span class="p">)</span>
 
-    return loader
-</code></pre>
+    <span class="k">return</span> <span class="n">loader</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h3 id="update_tng_log_metrics">update_tng_log_metrics</h3>
-<pre><code class="python">def update_tng_log_metrics(self, logs)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">update_tng_log_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logs</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Called by lightning right before it logs metrics for this batch.
 This is a chance to ammend or add to the metrics about to be logged.</p>
 <h5 id="return_6">Return</h5>
 <p>Dict </p>
 <p><strong>Example</strong></p>
-<pre><code class="python">def update_tng_log_metrics(self, logs):
-    # modify or add to logs
-    return logs
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">update_tng_log_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logs</span><span class="p">):</span>
+    <span class="c1"># modify or add to logs</span>
+    <span class="k">return</span> <span class="n">logs</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h3 id="add_model_specific_args">add_model_specific_args</h3>
-<pre><code class="python">@staticmethod
-def add_model_specific_args(parent_parser, root_dir)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">add_model_specific_args</span><span class="p">(</span><span class="n">parent_parser</span><span class="p">,</span> <span class="n">root_dir</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <p>Lightning has a list of default argparse commands.
 This method is your chance to add or modify commands specific to your model.
@@ -1433,29 +1622,51 @@ The <a href="https://williamfalcon.github.io/test-tube/hyperparameter_optimizati
 <h5 id="return_7">Return</h5>
 <p>An argument parser</p>
 <p><strong>Example</strong></p>
-<pre><code class="python">@staticmethod
-def add_model_specific_args(parent_parser, root_dir):
-    parser = HyperOptArgumentParser(strategy=parent_parser.strategy, parents=[parent_parser])
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19
+20
+21
+22</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
+<span class="k">def</span> <span class="nf">add_model_specific_args</span><span class="p">(</span><span class="n">parent_parser</span><span class="p">,</span> <span class="n">root_dir</span><span class="p">):</span>
+    <span class="n">parser</span> <span class="o">=</span> <span class="n">HyperOptArgumentParser</span><span class="p">(</span><span class="n">strategy</span><span class="o">=</span><span class="n">parent_parser</span><span class="o">.</span><span class="n">strategy</span><span class="p">,</span> <span class="n">parents</span><span class="o">=</span><span class="p">[</span><span class="n">parent_parser</span><span class="p">])</span>
 
-    # param overwrites
-    # parser.set_defaults(gradient_clip=5.0)
+    <span class="c1"># param overwrites</span>
+    <span class="c1"># parser.set_defaults(gradient_clip=5.0)</span>
 
-    # network params
-    parser.opt_list('--drop_prob', default=0.2, options=[0.2, 0.5], type=float, tunable=False)
-    parser.add_argument('--in_features', default=28*28)
-    parser.add_argument('--out_features', default=10)
-    parser.add_argument('--hidden_dim', default=50000) # use 500 for CPU, 50000 for GPU to see speed difference
+    <span class="c1"># network params</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">opt_list</span><span class="p">(</span><span class="s1">&#39;--drop_prob&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.2</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.5</span><span class="p">],</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">tunable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--in_features&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">28</span><span class="o">*</span><span class="mi">28</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--out_features&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--hidden_dim&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">50000</span><span class="p">)</span> <span class="c1"># use 500 for CPU, 50000 for GPU to see speed difference</span>
 
-    # data
-    parser.add_argument('--data_root', default=os.path.join(root_dir, 'mnist'), type=str)
+    <span class="c1"># data</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">add_argument</span><span class="p">(</span><span class="s1">&#39;--data_root&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">root_dir</span><span class="p">,</span> <span class="s1">&#39;mnist&#39;</span><span class="p">),</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">)</span>
 
-    # training params (opt)
-    parser.opt_list('--learning_rate', default=0.001, type=float, options=[0.0001, 0.0005, 0.001, 0.005],
-                    tunable=False)
-    parser.opt_list('--batch_size', default=256, type=int, options=[32, 64, 128, 256], tunable=False)
-    parser.opt_list('--optimizer_name', default='adam', type=str, options=['adam'], tunable=False)
-    return parser
-</code></pre>
+    <span class="c1"># training params (opt)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">opt_list</span><span class="p">(</span><span class="s1">&#39;--learning_rate&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mf">0.001</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">float</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="mf">0.0001</span><span class="p">,</span> <span class="mf">0.0005</span><span class="p">,</span> <span class="mf">0.001</span><span class="p">,</span> <span class="mf">0.005</span><span class="p">],</span>
+                    <span class="n">tunable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">opt_list</span><span class="p">(</span><span class="s1">&#39;--batch_size&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="mi">256</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">int</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="mi">32</span><span class="p">,</span> <span class="mi">64</span><span class="p">,</span> <span class="mi">128</span><span class="p">,</span> <span class="mi">256</span><span class="p">],</span> <span class="n">tunable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">parser</span><span class="o">.</span><span class="n">opt_list</span><span class="p">(</span><span class="s1">&#39;--optimizer_name&#39;</span><span class="p">,</span> <span class="n">default</span><span class="o">=</span><span class="s1">&#39;adam&#39;</span><span class="p">,</span> <span class="nb">type</span><span class="o">=</span><span class="nb">str</span><span class="p">,</span> <span class="n">options</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;adam&#39;</span><span class="p">],</span> <span class="n">tunable</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">parser</span>
+</pre></div>
+</td></tr></table>
                 
                   
                 

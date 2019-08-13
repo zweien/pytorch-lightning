@@ -607,54 +607,75 @@
 <hr />
 <h4 id="accumulated-gradients">Accumulated gradients</h4>
 <p>Accumulated gradients runs K small batches of size N before doing a backwards pass. The effect is a large effective batch size of size KxN. </p>
-<pre><code class="python"># DEFAULT (ie: no accumulated grads)
-trainer = Trainer(accumulate_grad_batches=1)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT (ie: no accumulated grads)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">accumulate_grad_batches</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="force-training-for-min-or-max-epochs">Force training for min or max epochs</h4>
 <p>It can be useful to force training for a minimum number of epochs or limit to a max number</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(min_nb_epochs=1, max_nb_epochs=1000)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">min_nb_epochs</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">max_nb_epochs</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="force-disable-early-stop">Force disable early stop</h4>
 <p>Use this to turn off early stopping and run training to the <a href="#force-training-for-min-or-max-epochs">max_epoch</a></p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(enable_early_stop=True)
-</code></pre>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">enable_early_stop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="gradient-clipping">Gradient Clipping</h4>
 <p>Gradient clipping may be enabled to avoid exploding gradients.
 Specifically, this will <a href="https://pytorch.org/docs/stable/nn.html#torch.nn.utils.clip_grad_norm_">clip the gradient norm computed over all model parameters <em>together</em></a>.</p>
-<pre><code class="python"># DEFAULT (ie: don't clip)
-trainer = Trainer(gradient_clip=0)
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT (ie: don&#39;t clip)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gradient_clip</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
 
-# clip gradients with norm above 0.5
-trainer = Trainer(gradient_clip=0.5)
-</code></pre>
+<span class="c1"># clip gradients with norm above 0.5</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gradient_clip</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="inspect-gradient-norms">Inspect gradient norms</h4>
 <p>Looking at grad norms can help you figure out where training might be going wrong.</p>
-<pre><code class="python"># DEFAULT (-1 doesn't track norms)
-trainer = Trainer(track_grad_norm=-1)
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT (-1 doesn&#39;t track norms)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">track_grad_norm</span><span class="o">=-</span><span class="mi">1</span><span class="p">)</span>
 
-# track the LP norm (P=2 here)
-trainer = Trainer(track_grad_norm=2)
-</code></pre>
+<span class="c1"># track the LP norm (P=2 here)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">track_grad_norm</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
 
 <hr />
 <h4 id="set-how-much-of-the-training-set-to-check">Set how much of the training set to check</h4>
 <p>If you don't want to check 100% of the training set (for debugging or if it's huge), set this flag</p>
-<pre><code class="python"># DEFAULT
-trainer = Trainer(train_percent_check=1.0)
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">train_percent_check</span><span class="o">=</span><span class="mf">1.0</span><span class="p">)</span>
 
-# check 10% only
-trainer = Trainer(train_percent_check=0.1)
-</code></pre>
+<span class="c1"># check 10% only</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">train_percent_check</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
                 
                   
                 
