@@ -1163,6 +1163,8 @@ def configure_optimizers(self):
     return [generator_opt, disriminator_opt], [discriminator_sched]
 </code></pre>
 
+<p>If you need to control how often those optimizers step or override the default .step() schedule, override 
+the <a href="https://williamfalcon.github.io/pytorch-lightning/Trainer/hooks/#optimizer_step">optimizer_step</a> hook.   </p>
 <h2 id="optional-methods">Optional Methods</h2>
 <h3 id="validation_step">validation_step</h3>
 <pre><code class="python">def validation_step(self, data_batch, batch_nb)   
