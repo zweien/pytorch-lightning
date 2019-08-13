@@ -1165,7 +1165,10 @@ def configure_optimizers(self):
 
 <h2 id="optional-methods">Optional Methods</h2>
 <h3 id="validation_step">validation_step</h3>
-<pre><code class="python">def validation_step(self, data_batch, batch_nb, dataloader_i)
+<pre><code class="python">def validation_step(self, data_batch, batch_nb)   
+
+# if have multiple val dataloaders:  
+def validation_step(self, data_batch, batch_nb, dataloader_idx)
 </code></pre>
 
 <p><strong>OPTIONAL</strong>  <br />
