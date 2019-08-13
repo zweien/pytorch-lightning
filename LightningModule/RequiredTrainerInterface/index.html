@@ -1013,7 +1013,7 @@ class CoolModel(pl.LightningModule):
         y_hat = self.forward(x)
         return {'loss': F.cross_entropy(y_hat, y)(y_hat, y)}
 
-    def validation_step(self, batch, batch_nb, dataloader_i):
+    def validation_step(self, batch, batch_nb):
         # OPTIONAL
         x, y = batch
         y_hat = self.forward(x)
@@ -1191,7 +1191,7 @@ If you don't need to validate you don't need to implement this method.    </p>
 </tr>
 <tr>
 <td>dataloader_i</td>
-<td>Integer displaying which dataloader this is</td>
+<td>Integer displaying which dataloader this is (only if multiple val datasets used)</td>
 </tr>
 </tbody>
 </table>
@@ -1213,7 +1213,8 @@ If you don't need to validate you don't need to implement this method.    </p>
 </tbody>
 </table>
 <p><strong>Example</strong></p>
-<pre><code class="python">def validation_step(self, data_batch, batch_nb):
+<pre><code class="python"># CASE 1: A single validation dataset
+def validation_step(self, data_batch, batch_nb):
     x, y, z = data_batch
 
     # implement your own
@@ -1235,6 +1236,13 @@ If you don't need to validate you don't need to implement this method.    </p>
     return output
 </code></pre>
 
+<p>If you pass in multiple validation datasets, validation_step will have an additional argument.</p>
+<pre><code class="python"># CASE 2: multiple validation datasets
+def validation_step(self, data_batch, batch_nb, dataset_idx):
+    # dataset_idx tells you which dataset this is.   
+</code></pre>
+
+<p>The <code>dataset_idx</code> corresponds to the order of datasets returned in <code>val_dataloader</code>.    </p>
 <hr />
 <h3 id="validation_end">validation_end</h3>
 <pre><code class="python">def validation_end(self, outputs)
@@ -1356,6 +1364,8 @@ def val_dataloader(self):
     return [loader_a, loader_b, ..., loader_n]   
 </code></pre>
 
+<p>In the case where you return multiple val_dataloaders, the validation_step will have an arguement <code>dataset_idx</code>
+which matches the order here.    </p>
 <hr />
 <h3 id="test_dataloader">test_dataloader</h3>
 <pre><code class="python">@pl.data_loader

@@ -481,6 +481,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimizer_step" title="optimizer_step" class="md-nav__link">
+    optimizer_step
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#on_before_zero_grad" title="on_before_zero_grad" class="md-nav__link">
     on_before_zero_grad
   </a>
@@ -616,6 +623,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#optimizer_step" title="optimizer_step" class="md-nav__link">
+    optimizer_step
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#on_before_zero_grad" title="on_before_zero_grad" class="md-nav__link">
     on_before_zero_grad
   </a>
@@ -705,6 +719,31 @@ Although you can log at any time by using self.experiment, you can use
 this callback to modify what will be logged.</p>
 <pre><code class="python">def on_tng_metrics(self, metrics):
     # do something before validation end
+</code></pre>
+
+<hr />
+<h4 id="optimizer_step">optimizer_step</h4>
+<p>Calls .step() and .zero_grad for each optimizer.<br />
+You can override this method to adjust how you do the optimizer step for each optimizer</p>
+<p>Called once per optimizer</p>
+<pre><code class="python"># DEFAULT
+def optimizer_step(self, current_epoch, batch_nb, optimizer, optimizer_i):
+    optimizer.step()   
+    optimizer.zero_grad()   
+
+# Alternating schedule for optimizer steps (ie: GANs)    
+def optimizer_step(self, current_epoch, batch_nb, optimizer, optimizer_i):
+    # update generator opt every 2 steps
+    if optimizer_i == 0:
+        if batch_nb % 2 == 0 :
+            optimizer.step()
+            optimizer.zero_grad()
+
+    # update discriminator opt every 4 steps
+    if optimizer_i == 1:
+        if batch_nb % 4 == 0 :
+            optimizer.step()
+            optimizer.zero_grad()    
 </code></pre>
 
 <hr />
