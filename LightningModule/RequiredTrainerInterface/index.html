@@ -1246,7 +1246,10 @@
 Lightning will call .backward() and .step() on each one in every epoch.  If you use 16 bit precision it will also handle that.</p>
 <p><strong>Note:</strong> If you use multiple optimizers, training_step will have an additional <code>optimizer_idx</code> parameter.    </p>
 <h5 id="return_1">Return</h5>
-<p>List or Tuple - List of optimizers with an optional second list of learning-rate schedulers</p>
+<p>Return any of these 3 options: <br />
+Single optimizer <br />
+List or Tuple - List of optimizers  <br />
+Two lists - The first list has multiple optimizers, the second a list of learning-rate schedulers</p>
 <p><strong>Example</strong></p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -1258,12 +1261,24 @@ Lightning will call .backward() and .step() on each one in every epoch.  If you 
  8
  9
 10
-11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># most cases</span>
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># most cases</span>
 <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="n">opt</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
-    <span class="k">return</span> <span class="p">[</span><span class="n">opt</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">opt</span>
 
-<span class="c1"># gan example, with scheduler for discriminator</span>
+<span class="c1"># multiple optimizer case (eg: GAN)</span>
+<span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="n">generator_opt</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_gen</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
+    <span class="n">disriminator_opt</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_disc</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">generator_opt</span><span class="p">,</span> <span class="n">disriminator_opt</span>
+
+<span class="c1"># example with learning_rate schedulers  </span>
 <span class="k">def</span> <span class="nf">configure_optimizers</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
     <span class="n">generator_opt</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_gen</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.01</span><span class="p">)</span>
     <span class="n">disriminator_opt</span> <span class="o">=</span> <span class="n">Adam</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">model_disc</span><span class="o">.</span><span class="n">parameters</span><span class="p">(),</span> <span class="n">lr</span><span class="o">=</span><span class="mf">0.02</span><span class="p">)</span>
