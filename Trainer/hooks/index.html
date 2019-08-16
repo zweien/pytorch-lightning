@@ -784,6 +784,31 @@ You can override this method to adjust how you do the optimizer step for each op
 </pre></div>
 </td></tr></table>
 
+<p>This step allows you to do a lot of non-standard training tricks such as learning-rate warm-up:   </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># learning rate warm-up</span>
+<span class="k">def</span> <span class="nf">optimizer_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">current_epoch</span><span class="p">,</span> <span class="n">batch_nb</span><span class="p">,</span> <span class="n">optimizer</span><span class="p">,</span> <span class="n">optimizer_i</span><span class="p">):</span>
+    <span class="c1"># warm up lr</span>
+    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">global_step</span> <span class="o">&lt;</span> <span class="mi">500</span><span class="p">:</span>
+        <span class="n">lr_scale</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mf">1.</span><span class="p">,</span> <span class="nb">float</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">trainer</span><span class="o">.</span><span class="n">global_step</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="mf">500.</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">pg</span> <span class="ow">in</span> <span class="n">optimizer</span><span class="o">.</span><span class="n">param_groups</span><span class="p">:</span>
+            <span class="n">pg</span><span class="p">[</span><span class="s1">&#39;lr&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">lr_scale</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">hparams</span><span class="o">.</span><span class="n">learning_rate</span>
+
+    <span class="c1"># update params</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">step</span><span class="p">()</span>
+    <span class="n">optimizer</span><span class="o">.</span><span class="n">zero_grad</span><span class="p">()</span> 
+</pre></div>
+</td></tr></table>
+
 <hr />
 <h4 id="on_before_zero_grad">on_before_zero_grad</h4>
 <p>Called in the training loop after taking an optimizer step and before zeroing grads.
