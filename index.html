@@ -246,6 +246,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#case-1-bert" title="Case 1: BERT" class="md-nav__link">
+    Case 1: BERT
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#case-2-cooler-not-bert" title="Case 2: COOLER NOT BERT" class="md-nav__link">
+    Case 2: COOLER NOT BERT
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rapid-research-flow" title="Rapid research flow" class="md-nav__link">
+    Rapid research flow
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#templates" title="Templates" class="md-nav__link">
+    Templates
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#docs-shortcuts" title="Docs shortcuts" class="md-nav__link">
     Docs shortcuts
   </a>
@@ -573,6 +601,34 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#case-1-bert" title="Case 1: BERT" class="md-nav__link">
+    Case 1: BERT
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#case-2-cooler-not-bert" title="Case 2: COOLER NOT BERT" class="md-nav__link">
+    Case 2: COOLER NOT BERT
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#rapid-research-flow" title="Rapid research flow" class="md-nav__link">
+    Rapid research flow
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#templates" title="Templates" class="md-nav__link">
+    Templates
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#docs-shortcuts" title="Docs shortcuts" class="md-nav__link">
     Docs shortcuts
   </a>
@@ -658,10 +714,86 @@
                 
                 <h6 id="new-project-quick-start">New project Quick Start</h6>
 <p>To start a new project you define two files, a LightningModule and a Trainer file.    </p>
-<p>A separate trainer file allows to run many LightningModules. Each LightningModule has the core
-logic to a particular research project.    </p>
-<p>For example, one lightningModule could be an image classifier, the other
-one could be a seq-2-seq model, both (optionally) ran by the same trainer file.</p>
+<p>Here's an example of how you would use Lightning for research.   </p>
+<h6 id="case-1-bert">Case 1: BERT</h6>
+<p>Let's say you're working on something like BERT but want to try different ways of training or even different networks.<br />
+You would define a single LightningModule and use flags to switch between your different ideas.   </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">BERT</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">model_name</span><span class="p">,</span> <span class="n">task</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">task</span> <span class="o">=</span> <span class="n">task</span>
+
+        <span class="k">if</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">&#39;transformer&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">Transformer</span><span class="p">()</span>
+        <span class="k">elif</span> <span class="n">model_name</span> <span class="o">==</span> <span class="s1">&#39;my_cool_version&#39;</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="n">MyCoolVersion</span><span class="p">()</span>
+
+    <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_nb</span><span class="p">):</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">task</span> <span class="o">==</span> <span class="s1">&#39;standard_bert&#39;</span><span class="p">:</span>
+            <span class="c1"># do standard bert training with self.net...</span>
+            <span class="c1"># return loss</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">task</span> <span class="o">==</span> <span class="s1">&#39;my_cool_task&#39;</span><span class="p">:</span>
+            <span class="c1"># do my own version with self.net</span>
+            <span class="c1"># return loss</span>
+</pre></div>
+</td></tr></table>
+
+<h6 id="case-2-cooler-not-bert">Case 2: COOLER NOT BERT</h6>
+<p>But if you wanted to try something <strong>completely</strong> different, you'd define a new module for that.    </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">class</span> <span class="nc">CoolerNotBERT</span><span class="p">(</span><span class="n">pl</span><span class="o">.</span><span class="n">LightningModule</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">net</span> <span class="o">=</span> <span class="o">...</span>
+
+    <span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_nb</span><span class="p">):</span>
+        <span class="c1"># do some other cool task</span>
+        <span class="c1"># return loss   </span>
+</pre></div>
+</td></tr></table>
+
+<h6 id="rapid-research-flow">Rapid research flow</h6>
+<p>Then you could do rapid research by switching between these two and using the same trainer.   </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">if</span> <span class="n">use_bert</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">BERT</span><span class="p">()</span>
+<span class="k">else</span><span class="p">:</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">CoolerNotBERT</span><span class="p">()</span>
+
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">],</span> <span class="n">use_amp</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>Notice that without writing any GPU or 16-bit specific code, your models gain that capability by<br />
+using Lightning.    </p>
+<hr />
+<h6 id="templates">Templates</h6>
 <ol>
 <li><a href="https://williamfalcon.github.io/pytorch-lightning/LightningModule/RequiredTrainerInterface/#minimal-example">MNIST LightningModule</a> </li>
 <li><a href="https://williamfalcon.github.io/pytorch-lightning/Trainer/">Trainer</a><ul>
