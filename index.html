@@ -713,8 +713,8 @@
                   <h1>Home</h1>
                 
                 <h6 id="new-project-quick-start">New project Quick Start</h6>
-<p>To start a new project you define two files, a LightningModule and a Trainer file.    </p>
-<p>Here's an example of how you would use Lightning for research.   </p>
+<p>To start a new project define two files, a LightningModule and a Trainer file.  <br />
+To illustrate Lightning power and simplicity, here's an example of a typical research flow.    </p>
 <h6 id="case-1-bert">Case 1: BERT</h6>
 <p>Let's say you're working on something like BERT but want to try different ways of training or even different networks.<br />
 You would define a single LightningModule and use flags to switch between your different ideas.   </p>
@@ -790,8 +790,10 @@ You would define a single LightningModule and use flags to switch between your d
 </pre></div>
 </td></tr></table>
 
-<p>Notice that without writing any GPU or 16-bit specific code, your models gain that capability by<br />
-using Lightning.    </p>
+<p>Notice a few things about this flow: <br />
+1. You're writing pure PyTorch... no unnecessary abstractions or new libraries to learn. <br />
+2. You get free GPU and 16-bit support without writing any of that code in your model. <br />
+3. You also get all of the capabilities below (without coding or testing yourself).     </p>
 <hr />
 <h6 id="templates">Templates</h6>
 <ol>
