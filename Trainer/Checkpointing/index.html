@@ -546,7 +546,7 @@
                 
                   <h1>Checkpointing</h1>
                 
-                <p>i Lightning can automate saving and loading checkpoints.</p>
+                <p>Lightning can automate saving and loading checkpoints.</p>
 <hr />
 <h3 id="model-saving">Model saving</h3>
 <p>To enable checkpointing, define the checkpoint callback and give it to the trainer.</p>
@@ -600,12 +600,14 @@ However, the dataloaders will start from the first batch again (if you shuffled 
 </pre></div>
 </td></tr></table>
 
-<p>The trainer restores:<br />
-- global_step  <br />
-- current_epoch  <br />
-- All optimizers  <br />
-- All lr_schedulers  <br />
-- Model weights</p>
+<p>The trainer restores:  </p>
+<ul>
+<li>global_step    </li>
+<li>current_epoch    </li>
+<li>All optimizers    </li>
+<li>All lr_schedulers    </li>
+<li>Model weights</li>
+</ul>
 <p>You can even change the logic of your model as long as the weights and "architecture" of 
 the system isn't different. If you add a layer, for instance, it might not work.   </p>
 <p>At a rough level, here's <a href="https://github.com/williamFalcon/pytorch-lightning/blob/master/pytorch_lightning/root_module/model_saving.py#L63">what happens inside Trainer</a>:   </p>

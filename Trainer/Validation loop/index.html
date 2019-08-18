@@ -604,6 +604,7 @@ Lightning will run 5 steps of validation in the beginning of training as a sanit
 <hr />
 <h4 id="set-how-much-of-the-validation-set-to-check">Set how much of the validation set to check</h4>
 <p>If you don't want to check 100% of the validation set (for debugging or if it's huge), set this flag</p>
+<p>val_percent_check will be overwritten by overfit_pct if <code>overfit_pct &gt; 0</code></p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -619,6 +620,7 @@ Lightning will run 5 steps of validation in the beginning of training as a sanit
 <hr />
 <h4 id="set-how-much-of-the-test-set-to-check">Set how much of the test set to check</h4>
 <p>If you don't want to check 100% of the test set (for debugging or if it's huge), set this flag</p>
+<p>test_percent_check will be overwritten by overfit_pct if <code>overfit_pct &gt; 0</code></p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3

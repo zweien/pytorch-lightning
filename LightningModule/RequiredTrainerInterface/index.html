@@ -1064,13 +1064,13 @@
         <span class="c1"># REQUIRED</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
         <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;loss&#39;</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)}</span>
 
     <span class="k">def</span> <span class="nf">validation_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_nb</span><span class="p">):</span>
         <span class="c1"># OPTIONAL</span>
         <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">batch</span>
         <span class="n">y_hat</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">forward</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
-        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)}</span>
+        <span class="k">return</span> <span class="p">{</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">F</span><span class="o">.</span><span class="n">cross_entropy</span><span class="p">(</span><span class="n">y_hat</span><span class="p">,</span> <span class="n">y</span><span class="p">)}</span>
 
     <span class="k">def</span> <span class="nf">validation_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
         <span class="c1"># OPTIONAL</span>
@@ -1532,7 +1532,7 @@ If you saved something with <strong>on_save_checkpoint</strong> this is your cha
 <h3 id="val_dataloader">val_dataloader</h3>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nd">@pl.data_loader</span>
-<span class="k">def</span> <span class="nf">tng_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">val_dataloader</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
@@ -1623,7 +1623,7 @@ If you don't need a test dataset and a test_step, you don't need to implement th
 </td></tr></table>
 
 <p>Called by lightning right before it logs metrics for this batch.
-This is a chance to ammend or add to the metrics about to be logged.</p>
+This is a chance to amend or add to the metrics about to be logged.</p>
 <h5 id="return_6">Return</h5>
 <p>Dict </p>
 <p><strong>Example</strong></p>
