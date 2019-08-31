@@ -156,7 +156,7 @@
     </div>
   
   <div class="md-source__repository">
-    GitHub
+    williamFalcon/pytorch-lightning
   </div>
 </a>
           </div>
@@ -203,7 +203,7 @@
     </div>
   
   <div class="md-source__repository">
-    GitHub
+    williamFalcon/pytorch-lightning
   </div>
 </a>
     </div>
@@ -703,58 +703,58 @@ The main function should have 3 arguments: <br />
 49
 50
 51
-52</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>def main(hparams, cluster, results_dict):
-    &quot;&quot;&quot;
-    Main training routine specific for this project
-    :param hparams:
-    :return:
-    &quot;&quot;&quot;
-    # init experiment
-    log_dir = os.path.dirname(os.path.realpath(__file__))
-    exp = Experiment(
-        name=&#39;test_tube_exp&#39;,
-        debug=True,
-        save_dir=log_dir,
-        version=0,
-        autosave=False,
-        description=&#39;test demo&#39;
-    )
+52</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">main</span><span class="p">(</span><span class="n">hparams</span><span class="p">,</span> <span class="n">cluster</span><span class="p">,</span> <span class="n">results_dict</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Main training routine specific for this project</span>
+<span class="sd">    :param hparams:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># init experiment</span>
+    <span class="n">log_dir</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">dirname</span><span class="p">(</span><span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">realpath</span><span class="p">(</span><span class="vm">__file__</span><span class="p">))</span>
+    <span class="n">exp</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span>
+        <span class="n">name</span><span class="o">=</span><span class="s1">&#39;test_tube_exp&#39;</span><span class="p">,</span>
+        <span class="n">debug</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">save_dir</span><span class="o">=</span><span class="n">log_dir</span><span class="p">,</span>
+        <span class="n">version</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span>
+        <span class="n">autosave</span><span class="o">=</span><span class="bp">False</span><span class="p">,</span>
+        <span class="n">description</span><span class="o">=</span><span class="s1">&#39;test demo&#39;</span>
+    <span class="p">)</span>
 
-    # set the hparams for the experiment
-    exp.argparse(hparams)
-    exp.save()
+    <span class="c1"># set the hparams for the experiment</span>
+    <span class="n">exp</span><span class="o">.</span><span class="n">argparse</span><span class="p">(</span><span class="n">hparams</span><span class="p">)</span>
+    <span class="n">exp</span><span class="o">.</span><span class="n">save</span><span class="p">()</span>
 
-    # build model
-    model = MyLightningModule(hparams)
+    <span class="c1"># build model</span>
+    <span class="n">model</span> <span class="o">=</span> <span class="n">MyLightningModule</span><span class="p">(</span><span class="n">hparams</span><span class="p">)</span>
 
-    # callbacks
-    early_stop = EarlyStopping(
-        monitor=hparams.early_stop_metric,
-        patience=hparams.early_stop_patience,
-        verbose=True,
-        mode=hparams.early_stop_mode
-    )
+    <span class="c1"># callbacks</span>
+    <span class="n">early_stop</span> <span class="o">=</span> <span class="n">EarlyStopping</span><span class="p">(</span>
+        <span class="n">monitor</span><span class="o">=</span><span class="n">hparams</span><span class="o">.</span><span class="n">early_stop_metric</span><span class="p">,</span>
+        <span class="n">patience</span><span class="o">=</span><span class="n">hparams</span><span class="o">.</span><span class="n">early_stop_patience</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">mode</span><span class="o">=</span><span class="n">hparams</span><span class="o">.</span><span class="n">early_stop_mode</span>
+    <span class="p">)</span>
 
-    model_save_path = &#39;{}/{}/{}&#39;.format(hparams.model_save_path, exp.name, exp.version)
-    checkpoint = ModelCheckpoint(
-        filepath=model_save_path,
-        save_function=None,
-        save_best_only=True,
-        verbose=True,
-        monitor=hparams.model_save_monitor_value,
-        mode=hparams.model_save_monitor_mode
-    )
+    <span class="n">model_save_path</span> <span class="o">=</span> <span class="s1">&#39;{}/{}/{}&#39;</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">hparams</span><span class="o">.</span><span class="n">model_save_path</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">exp</span><span class="o">.</span><span class="n">version</span><span class="p">)</span>
+    <span class="n">checkpoint</span> <span class="o">=</span> <span class="n">ModelCheckpoint</span><span class="p">(</span>
+        <span class="n">filepath</span><span class="o">=</span><span class="n">model_save_path</span><span class="p">,</span>
+        <span class="n">save_function</span><span class="o">=</span><span class="bp">None</span><span class="p">,</span>
+        <span class="n">save_best_only</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="o">=</span><span class="bp">True</span><span class="p">,</span>
+        <span class="n">monitor</span><span class="o">=</span><span class="n">hparams</span><span class="o">.</span><span class="n">model_save_monitor_value</span><span class="p">,</span>
+        <span class="n">mode</span><span class="o">=</span><span class="n">hparams</span><span class="o">.</span><span class="n">model_save_monitor_mode</span>
+    <span class="p">)</span>
 
-    # configure trainer
-    trainer = Trainer(
-        experiment=exp,
-        cluster=cluster,
-        checkpoint_callback=checkpoint,
-        early_stop_callback=early_stop,
-    )
+    <span class="c1"># configure trainer</span>
+    <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+        <span class="n">experiment</span><span class="o">=</span><span class="n">exp</span><span class="p">,</span>
+        <span class="n">cluster</span><span class="o">=</span><span class="n">cluster</span><span class="p">,</span>
+        <span class="n">checkpoint_callback</span><span class="o">=</span><span class="n">checkpoint</span><span class="p">,</span>
+        <span class="n">early_stop_callback</span><span class="o">=</span><span class="n">early_stop</span><span class="p">,</span>
+    <span class="p">)</span>
 
-    # train model
-    trainer.fit(model)
+    <span class="c1"># train model</span>
+    <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">model</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
