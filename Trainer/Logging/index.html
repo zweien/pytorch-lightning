@@ -382,6 +382,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#log-metric-row-every-k-batches_1" title="Log metric row every k batches" class="md-nav__link">
+    Log metric row every k batches
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#process-position" title="Process position" class="md-nav__link">
     Process position
   </a>
@@ -579,6 +586,13 @@
 </li>
       
         <li class="md-nav__item">
+  <a href="#log-metric-row-every-k-batches_1" title="Log metric row every k batches" class="md-nav__link">
+    Log metric row every k batches
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
   <a href="#process-position" title="Process position" class="md-nav__link">
     Process position
   </a>
@@ -655,6 +669,15 @@
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT (ie: save a .csv log file every 10 batches)</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">add_log_row_interval</span><span class="o">=</span><span class="mi">10</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<hr />
+<h4 id="log-metric-row-every-k-batches_1">Log metric row every k batches</h4>
+<p>Logs GPU memory when metrics are logged.   </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">log_gpu_memory</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 

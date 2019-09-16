@@ -654,10 +654,16 @@ For multi-node training you must use DistributedDataParallel.   </p>
 2
 3
 4
-5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT uses DataParallel</span>
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT (when using single GPU or no GPUs)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">distributed_backend</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+<span class="c1"># Change to DataParallel (gpus &gt; 1)</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">distributed_backend</span><span class="o">=</span><span class="s1">&#39;dp&#39;</span><span class="p">)</span>
 
-<span class="c1"># change to distributed data parallel</span>
+<span class="c1"># change to distributed data parallel (gpus &gt; 1)</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">distributed_backend</span><span class="o">=</span><span class="s1">&#39;ddp&#39;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
@@ -689,7 +695,7 @@ not allow 16-bit and DP training. We tried to get this to work, but it's an issu
 <td></td>
 <td></td>
 <td></td>
-<td><code>Trainer(gpus=[0])</code></td>
+<td><code>Trainer(gpus=1)</code></td>
 </tr>
 <tr>
 <td>Y</td>
@@ -697,7 +703,7 @@ not allow 16-bit and DP training. We tried to get this to work, but it's an issu
 <td></td>
 <td></td>
 <td>Y</td>
-<td><code>Trainer(gpus=[0], use_amp=True)</code></td>
+<td><code>Trainer(gpus=1, use_amp=True)</code></td>
 </tr>
 <tr>
 <td></td>
@@ -705,7 +711,7 @@ not allow 16-bit and DP training. We tried to get this to work, but it's an issu
 <td>Y</td>
 <td></td>
 <td></td>
-<td><code>Trainer(gpus=[0, ...])</code></td>
+<td><code>Trainer(gpus=k)</code></td>
 </tr>
 <tr>
 <td></td>
@@ -713,7 +719,7 @@ not allow 16-bit and DP training. We tried to get this to work, but it's an issu
 <td></td>
 <td>Y</td>
 <td></td>
-<td><code>Trainer(gpus=[0, ...], distributed_backend='ddp')</code></td>
+<td><code>Trainer(gpus=k, distributed_backend='ddp')</code></td>
 </tr>
 <tr>
 <td></td>
@@ -721,10 +727,29 @@ not allow 16-bit and DP training. We tried to get this to work, but it's an issu
 <td></td>
 <td>Y</td>
 <td>Y</td>
-<td><code>Trainer(gpus=[0, ...], distributed_backend='ddp', use_amp=True)</code></td>
+<td><code>Trainer(gpus=k, distributed_backend='ddp', use_amp=True)</code></td>
 </tr>
 </tbody>
 </table>
+<p>You also have the option of specifying which GPUs to use by passing a list:   </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT (int)</span>
+<span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="n">k</span><span class="p">)</span>  
+
+<span class="c1"># You specify which GPUs (don&#39;t use if running on cluster)  </span>
+<span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">])</span>  
+
+<span class="c1"># can also be a string</span>
+<span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="s1">&#39;0, 1&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
 <hr />
 <h4 id="cuda-flags">CUDA flags</h4>
 <p>CUDA flags make certain GPUs visible to your script. 
@@ -737,6 +762,8 @@ Lightning sets these for you automatically, there's NO NEED to do this yourself.
 </pre></div>
 </td></tr></table>
 
+<p>However, when using a cluster, Lightning will NOT set these flags (and you should not either). 
+SLURM will set these for you.   </p>
 <hr />
 <h4 id="16-bit-mixed-precision">16-bit mixed precision</h4>
 <p>16 bit precision can cut your memory footprint by half. If using volta architecture GPUs it can give a dramatic training speed-up as well.  <br />
@@ -761,7 +788,7 @@ $ pip install -v --no-cache-dir --global-option<span class="o">=</span><span cla
 <p>Make sure you're on a GPU machine. </p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
@@ -773,11 +800,11 @@ In this setting, the model will run on all 8 GPUs at once using DataParallel und
 2
 3
 4
-5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># to use DataParallel (default)</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">distributed_backend</span><span class="o">=</span><span class="s1">&#39;dp&#39;</span><span class="p">)</span>
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># to use DataParallel</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">distributed_backend</span><span class="o">=</span><span class="s1">&#39;dp&#39;</span><span class="p">)</span>
 
 <span class="c1"># RECOMMENDED use DistributedDataParallel</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">distributed_backend</span><span class="o">=</span><span class="s1">&#39;ddp&#39;</span><span class="p">)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">distributed_backend</span><span class="o">=</span><span class="s1">&#39;ddp&#39;</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
@@ -786,7 +813,7 @@ In this setting, the model will run on all 8 GPUs at once using DataParallel und
 <p>Multi-node training is easily done by specifying these flags.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># train on 12*8 GPUs</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">],</span> <span class="n">nb_gpu_nodes</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">gpus</span><span class="o">=</span><span class="mi">8</span><span class="p">,</span> <span class="n">nb_gpu_nodes</span><span class="o">=</span><span class="mi">12</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 

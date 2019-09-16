@@ -1370,8 +1370,8 @@ the <a href="https://williamfalcon.github.io/pytorch-lightning/Trainer/hooks/#op
 </td></tr></table>
 
 <p><strong>OPTIONAL</strong>  <br />
-If you don't need to validate you don't need to implement this method.    </p>
-<p>In this step you'd normally generate examples or calculate anything of interest such as accuracy. </p>
+If you don't need to validate you don't need to implement this method. In this step you'd normally generate examples or calculate anything of interest such as accuracy. </p>
+<p>When the validation_step is called, the model has been put in eval mode and PyTorch gradients have been disabled. At the end of validation, model goes back to training mode and gradients are enabled.</p>
 <p>The dict you return here will be available in the <code>validation_end</code> method. </p>
 <p><strong>Params</strong>   </p>
 <table>
@@ -1487,7 +1487,7 @@ If you don't need to validate you don't need to implement this method.    </p>
 </td></tr></table>
 
 <p>If you didn't define a validation_step, this won't be called.       </p>
-<p>Called at the end of the validation loop with the output of each validation_step.  Called once per validation dataset.   </p>
+<p>Called at the end of the validation loop with the outputs of validation_step.</p>
 <p>The outputs here are strictly for the progress bar. If you don't need to display anything, don't return anything.    </p>
 <p><strong>Params</strong>    </p>
 <table>
@@ -1500,7 +1500,7 @@ If you don't need to validate you don't need to implement this method.    </p>
 <tbody>
 <tr>
 <td>outputs</td>
-<td>List of outputs you defined in validation_step</td>
+<td>List of outputs you defined in validation_step, or if there are multiple dataloaders, a list containing a list of outputs for each dataloader</td>
 </tr>
 </tbody>
 </table>
@@ -1522,6 +1522,7 @@ If you don't need to validate you don't need to implement this method.    </p>
 </tbody>
 </table>
 <p><strong>Example</strong></p>
+<p>With a single dataloader</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -1556,6 +1557,49 @@ If you don't need to validate you don't need to implement this method.    </p>
 </pre></div>
 </td></tr></table>
 
+<p>With multiple dataloaders, <code>outputs</code> will be a list of lists. The outer list contains
+one entry per dataloader, while the inner list contains the individual outputs of 
+each validation step for that dataloader.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">validation_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Called at the end of validation to aggregate outputs</span>
+<span class="sd">    :param outputs: list of list of individual outputs of each validation step</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">val_loss_mean</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">val_acc_mean</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">dataloader_outputs</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">dataloader_outputs</span><span class="p">:</span>
+            <span class="n">val_loss_mean</span> <span class="o">+=</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;val_loss&#39;</span><span class="p">]</span>
+            <span class="n">val_acc_mean</span> <span class="o">+=</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;val_acc&#39;</span><span class="p">]</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">val_loss_mean</span> <span class="o">/=</span> <span class="n">i</span>
+    <span class="n">val_acc_mean</span> <span class="o">/=</span> <span class="n">i</span>
+    <span class="n">tqdm_dic</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="n">val_loss_mean</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="s1">&#39;val_acc&#39;</span><span class="p">:</span> <span class="n">val_acc_mean</span><span class="o">.</span><span class="n">item</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="n">tqdm_dic</span>
+</pre></div>
+</td></tr></table>
+
 <h3 id="test_step">test_step</h3>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
@@ -1570,8 +1614,8 @@ If you don't need to validate you don't need to implement this method.    </p>
 </td></tr></table>
 
 <p><strong>OPTIONAL</strong>  <br />
-If you don't need to test you don't need to implement this method.    </p>
-<p>In this step you'd normally generate examples or calculate anything of interest such as accuracy. </p>
+If you don't need to test you don't need to implement this method. In this step you'd normally generate examples or calculate anything of interest such as accuracy.   </p>
+<p>When the validation_step is called, the model has been put in eval mode and PyTorch gradients have been disabled. At the end of validation, model goes back to training mode and gradients are enabled.</p>
 <p>The dict you return here will be available in the <code>test_end</code> method. </p>
 <p>This function is used when you execute <code>trainer.test()</code>.</p>
 <p><strong>Params</strong>   </p>
@@ -1676,7 +1720,7 @@ If you don't need to test you don't need to implement this method.    </p>
 </td></tr></table>
 
 <p>If you didn't define a test_step, this won't be called.       </p>
-<p>Called at the end of the test step with the output of each test_step.  Called once per test dataset.   </p>
+<p>Called at the end of the test step with the output of each test_step.</p>
 <p>The outputs here are strictly for the progress bar. If you don't need to display anything, don't return anything.    </p>
 <p><strong>Params</strong>    </p>
 <table>
@@ -1689,7 +1733,7 @@ If you don't need to test you don't need to implement this method.    </p>
 <tbody>
 <tr>
 <td>outputs</td>
-<td>List of outputs you defined test_step</td>
+<td>List of outputs you defined in test_step, or if there are multiple dataloaders, a list containing a list of outputs for each dataloader</td>
 </tr>
 </tbody>
 </table>
@@ -1740,6 +1784,49 @@ If you don't need to test you don't need to implement this method.    </p>
 
     <span class="n">test_loss_mean</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
     <span class="n">test_acc_mean</span> <span class="o">/=</span> <span class="nb">len</span><span class="p">(</span><span class="n">outputs</span><span class="p">)</span>
+    <span class="n">tqdm_dic</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;test_loss&#39;</span><span class="p">:</span> <span class="n">test_loss_mean</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="s1">&#39;test_acc&#39;</span><span class="p">:</span> <span class="n">test_acc_mean</span><span class="o">.</span><span class="n">item</span><span class="p">()}</span>
+    <span class="k">return</span> <span class="n">tqdm_dic</span>
+</pre></div>
+</td></tr></table>
+
+<p>With multiple dataloaders, <code>outputs</code> will be a list of lists. The outer list contains
+one entry per dataloader, while the inner list contains the individual outputs of 
+each validation step for that dataloader.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16
+17
+18
+19</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">test_end</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">outputs</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Called at the end of test to aggregate outputs</span>
+<span class="sd">    :param outputs: list of individual outputs of each test step</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">test_loss_mean</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">test_acc_mean</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">dataloader_outputs</span> <span class="ow">in</span> <span class="n">outputs</span><span class="p">:</span>
+        <span class="k">for</span> <span class="n">output</span> <span class="ow">in</span> <span class="n">dataloader_outputs</span><span class="p">:</span>
+            <span class="n">test_loss_mean</span> <span class="o">+=</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;test_loss&#39;</span><span class="p">]</span>
+            <span class="n">test_acc_mean</span> <span class="o">+=</span> <span class="n">output</span><span class="p">[</span><span class="s1">&#39;test_acc&#39;</span><span class="p">]</span>
+            <span class="n">i</span> <span class="o">+=</span> <span class="mi">1</span>
+
+    <span class="n">test_loss_mean</span> <span class="o">/=</span> <span class="n">i</span> 
+    <span class="n">test_acc_mean</span> <span class="o">/=</span> <span class="n">i</span>
     <span class="n">tqdm_dic</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;test_loss&#39;</span><span class="p">:</span> <span class="n">test_loss_mean</span><span class="o">.</span><span class="n">item</span><span class="p">(),</span> <span class="s1">&#39;test_acc&#39;</span><span class="p">:</span> <span class="n">test_acc_mean</span><span class="o">.</span><span class="n">item</span><span class="p">()}</span>
     <span class="k">return</span> <span class="n">tqdm_dic</span>
 </pre></div>

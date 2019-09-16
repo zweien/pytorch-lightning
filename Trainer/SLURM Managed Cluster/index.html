@@ -560,10 +560,11 @@
                 
                 <p>Lightning supports model training on a cluster managed by SLURM in the following cases:    </p>
 <ol>
-<li>Training on single or multi-cpus only.</li>
-<li>Training on single or multi-gpus on the same node.</li>
-<li>Coming SOON: Training across multiple nodes.</li>
+<li>Training on a single cpu or single GPU.</li>
+<li>Train on multiple GPUs on the same node using DataParallel or DistributedDataParallel</li>
+<li>Training across multiple GPUs on multiple different nodes via DistributedDataParallel.</li>
 </ol>
+<p><strong>Note: A node means a machine with multiple GPUs</strong></p>
 <hr />
 <h4 id="running-grid-search-on-a-cluster">Running grid search on a cluster</h4>
 <p>To use lightning to run a hyperparameter search (grid-search or random-search) on a cluster do 4 things:   </p>
@@ -645,7 +646,8 @@
 </pre></div>
 </td></tr></table>
 
-<p>(3). Give trainer the cluster_manager in your main function:    </p>
+<p>(3). Make a main function with your model and trainer. Each job will call this function with a particular
+hparams configuration.    </p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -663,12 +665,12 @@
     <span class="n">my_model</span> <span class="o">=</span> <span class="n">MyLightningModel</span><span class="p">()</span>
 
     <span class="c1"># give the trainer the cluster object</span>
-    <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">cluster</span><span class="o">=</span><span class="n">cluster_manager</span><span class="p">)</span>
+    <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">()</span>
     <span class="n">trainer</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">my_model</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
-<p>(4). Start the grid search     </p>
+<p>(3). Start the grid/random search     </p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -683,25 +685,22 @@
 </pre></div>
 </td></tr></table>
 
-<p>That's it! The SlurmCluster object will automatically checkpoint the lightning model and resubmit if it runs into the walltime!</p>
 <hr />
 <h4 id="walltime-auto-resubmit">Walltime auto-resubmit</h4>
-<p>Lightning automatically resubmits jobs when they reach the walltime. You get this behavior for free if you give lightning
-a slurm cluster object.</p>
+<p>Lightning automatically resubmits jobs when they reach the walltime. Make sure to set the SIGUSR1 signal in 
+your SLURM script.   </p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">my_main_fx</span><span class="p">(</span><span class="n">hparams</span><span class="p">,</span> <span class="n">slurm_manager</span><span class="p">,</span> <span class="n">_</span><span class="p">):</span>
-    <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">cluster</span><span class="o">=</span><span class="n">slurm_manager</span><span class="p">)</span>
+2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># 90 seconds before training ends</span>
+<span class="c1">#SBATCH --signal=SIGUSR1@90</span>
 </pre></div>
 </td></tr></table>
 
-<p>(See the grid search example above for cluster configuration).
-With this feature lightning will:    </p>
-<ol>
-<li>automatically checkpoint the model</li>
-<li>checkpoint the trainer session</li>
-<li>resubmit a continuation job.</li>
-<li>load the checkpoint and trainer session in the new model</li>
-</ol>
+<p>When lightning receives the SIGUSR1 signal it will:
+1. save a checkpoint with 'hpc_ckpt' in the name.
+2. resubmit the job using the SLURM_JOB_ID  </p>
+<p>When the script starts again, Lightning will:
+1. search for a 'hpc_ckpt' checkpoint. 
+2. restore the model, optimizers, schedulers, epoch, etc...   </p>
                 
                   
                 
