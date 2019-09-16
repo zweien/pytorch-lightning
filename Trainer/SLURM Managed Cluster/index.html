@@ -591,6 +591,9 @@
 </pre></div>
 </td></tr></table>
 
+<p><strong>NOTE</strong> You must set <code>Tunable=True</code> for that argument to be considered in the permutation set. Otherwise
+test-tube will use the default value. This flag is useful when you don't want to search over an argument and
+want to use the default instead.   </p>
 <p>(2). Define the cluster options in the <a href="https://williamfalcon.github.io/test-tube/hpc/SlurmCluster/">SlurmCluster object</a> (over 5 nodes and 8 gpus)    </p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
