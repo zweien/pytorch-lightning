@@ -688,6 +688,10 @@ hparams configuration.    </p>
 </pre></div>
 </td></tr></table>
 
+<p><strong>NOTE</strong> nb_trials specifies how many of the possible permutations to use. If using <code>grid_search</code> it will use
+the depth first ordering. If using <code>random_search</code> it will use the first k shuffled options. FYI, random search
+has been shown to be just as good as any Bayesian optimization method when using a reasonable number of samples (60),
+<a href="http://www.jmlr.org/papers/volume13/bergstra12a/bergstra12a.pdf">see this paper for more information</a>.</p>
 <hr />
 <h4 id="walltime-auto-resubmit">Walltime auto-resubmit</h4>
 <p>Lightning automatically resubmits jobs when they reach the walltime. Make sure to set the SIGUSR1 signal in 
