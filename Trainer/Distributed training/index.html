@@ -797,7 +797,10 @@ First, install apex (if install fails, look <a href="https://github.com/NVIDIA/a
 12
 13
 14
-15</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ git clone https://github.com/NVIDIA/apex
+15
+16
+17
+18</pre></div></td><td class="code"><div class="codehilite"><pre><span></span>$ git clone https://github.com/NVIDIA/apex
 $ <span class="nb">cd</span> apex
 
 <span class="c1"># ------------------------</span>
@@ -810,6 +813,9 @@ module avail
 <span class="c1"># load correct cuda before install</span>
 module load cuda-10.0
 <span class="c1"># ------------------------</span>
+
+<span class="c1"># make sure you&#39;ve loaded a cuda version &gt; 4.0 and &lt; 7.0</span>
+module load gcc-6.1.0
 
 $ pip install -v --no-cache-dir --global-option<span class="o">=</span><span class="s2">&quot;--cpp_ext&quot;</span> --global-option<span class="o">=</span><span class="s2">&quot;--cuda_ext&quot;</span> ./
 </pre></div>
