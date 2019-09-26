@@ -466,26 +466,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#update_training_log_metrics" class="md-nav__link">
-    update_training_log_metrics
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#return_6" class="md-nav__link">
-    Return
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#add_model_specific_args" class="md-nav__link">
     add_model_specific_args
   </a>
@@ -494,7 +474,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#return_7" class="md-nav__link">
+  <a href="#return_6" class="md-nav__link">
     Return
   </a>
   
@@ -941,26 +921,6 @@
 </li>
         
           <li class="md-nav__item">
-  <a href="#update_training_log_metrics" class="md-nav__link">
-    update_training_log_metrics
-  </a>
-  
-    <nav class="md-nav">
-      <ul class="md-nav__list">
-        
-          <li class="md-nav__item">
-  <a href="#return_6" class="md-nav__link">
-    Return
-  </a>
-  
-</li>
-        
-      </ul>
-    </nav>
-  
-</li>
-        
-          <li class="md-nav__item">
   <a href="#add_model_specific_args" class="md-nav__link">
     add_model_specific_args
   </a>
@@ -969,7 +929,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#return_7" class="md-nav__link">
+  <a href="#return_6" class="md-nav__link">
     Return
   </a>
   
@@ -1025,7 +985,6 @@
 <li><a href="./#test_dataloader">test_dataloader</a>    </li>
 <li><a href="./#on_save_checkpoint">on_save_checkpoint</a>    </li>
 <li><a href="./#on_load_checkpoint">on_load_checkpoint</a>    </li>
-<li><a href="./#update_training_log_metrics">update_training_log_metrics</a>    </li>
 <li><a href="./#add_model_specific_args">add_model_specific_args</a>    </li>
 </ul>
 <hr />
@@ -1961,25 +1920,6 @@ If you don't need a test dataset and a test_step, you don't need to implement th
 </td></tr></table>
 
 <hr />
-<h3 id="update_training_log_metrics">update_training_log_metrics</h3>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">update_training_log_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logs</span><span class="p">)</span>
-</pre></div>
-</td></tr></table>
-
-<p>Called by lightning right before it logs metrics for this batch.
-This is a chance to amend or add to the metrics about to be logged.</p>
-<h5 id="return_6">Return</h5>
-<p>Dict </p>
-<p><strong>Example</strong></p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">update_training_log_metrics</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">logs</span><span class="p">):</span>
-    <span class="c1"># modify or add to logs</span>
-    <span class="k">return</span> <span class="n">logs</span>
-</pre></div>
-</td></tr></table>
-
-<hr />
 <h3 id="add_model_specific_args">add_model_specific_args</h3>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="nd">@staticmethod</span>
@@ -1990,7 +1930,7 @@ This is a chance to amend or add to the metrics about to be logged.</p>
 <p>Lightning has a list of default argparse commands.
 This method is your chance to add or modify commands specific to your model.
 The <a href="https://williamfalcon.github.io/test-tube/hyperparameter_optimization/HyperOptArgumentParser/">hyperparameter argument parser</a> is available anywhere in your model by calling self.hparams.</p>
-<h5 id="return_7">Return</h5>
+<h5 id="return_6">Return</h5>
 <p>An argument parser</p>
 <p><strong>Example</strong></p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
