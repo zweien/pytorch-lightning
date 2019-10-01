@@ -1235,7 +1235,8 @@
 </pre></div>
 </td></tr></table>
 
-<p>Called by lightning during training loop. Make sure to use the @pl.data_loader decorator, this ensures not calling this function until the data are needed.</p>
+<p>Called by lightning during training loop. Make sure to use the @pl.data_loader decorator, this ensures not calling this function until the data are needed. <br />
+If you want to change the data during every epoch DON'T use the data_loader decorator.   </p>
 <h5 id="return">Return</h5>
 <p>PyTorch DataLoader</p>
 <p><strong>Example</strong></p>
@@ -1841,7 +1842,8 @@ If you saved something with <strong>on_save_checkpoint</strong> this is your cha
 
 <p><strong>OPTIONAL</strong>  <br />
 If you don't need a validation dataset and a validation_step, you don't need to implement this method.    </p>
-<p>Called by lightning during validation loop. Make sure to use the @pl.data_loader decorator, this ensures not calling this function until the data are needed.   </p>
+<p>Called by lightning during validation loop. Make sure to use the @pl.data_loader decorator, this ensures not calling this function until the data are needed. <br />
+If you want to change the data during every epoch DON'T use the data_loader decorator.   </p>
 <h5 id="return_4">Return</h5>
 <p>PyTorch DataLoader or list of PyTorch Dataloaders.    </p>
 <p><strong>Example</strong></p>
@@ -1891,7 +1893,8 @@ which matches the order here.    </p>
 
 <p><strong>OPTIONAL</strong>  <br />
 If you don't need a test dataset and a test_step, you don't need to implement this method.    </p>
-<p>Called by lightning during test loop. Make sure to use the @pl.data_loader decorator, this ensures not calling this function until the data are needed.</p>
+<p>Called by lightning during test loop. Make sure to use the @pl.data_loader decorator, this ensures not calling this function until the data are needed.
+If you want to change the data during every epoch DON'T use the data_loader decorator.   </p>
 <h5 id="return_5">Return</h5>
 <p>PyTorch DataLoader</p>
 <p><strong>Example</strong></p>
