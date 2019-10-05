@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.0">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.2">
     
     
       
@@ -42,7 +42,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/application.0284f74d.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/application.30686662.css">
       
       
     
@@ -171,7 +171,7 @@
         
       
       
-      <main class="md-main">
+      <main class="md-main" role="main">
         <div class="md-main__inner md-grid" data-md-component="container">
           
             
@@ -296,56 +296,56 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#current_epoch" title="current_epoch" class="md-nav__link">
+  <a href="#current_epoch" class="md-nav__link">
     current_epoch
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#dtype" title="dtype" class="md-nav__link">
+  <a href="#dtype" class="md-nav__link">
     dtype
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#logger" title="logger" class="md-nav__link">
+  <a href="#logger" class="md-nav__link">
     logger
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#global_step" title="global_step" class="md-nav__link">
+  <a href="#global_step" class="md-nav__link">
     global_step
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#gradient_clip_val" title="gradient_clip_val" class="md-nav__link">
+  <a href="#gradient_clip_val" class="md-nav__link">
     gradient_clip_val
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#on_gpu" title="on_gpu" class="md-nav__link">
+  <a href="#on_gpu" class="md-nav__link">
     on_gpu
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#trainer" title="trainer" class="md-nav__link">
+  <a href="#trainer" class="md-nav__link">
     trainer
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#debugging" title="Debugging" class="md-nav__link">
+  <a href="#debugging" class="md-nav__link">
     Debugging
   </a>
   
@@ -353,7 +353,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#example_input_array" title="example_input_array" class="md-nav__link">
+  <a href="#example_input_array" class="md-nav__link">
     example_input_array
   </a>
   
@@ -579,56 +579,56 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#current_epoch" title="current_epoch" class="md-nav__link">
+  <a href="#current_epoch" class="md-nav__link">
     current_epoch
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#dtype" title="dtype" class="md-nav__link">
+  <a href="#dtype" class="md-nav__link">
     dtype
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#logger" title="logger" class="md-nav__link">
+  <a href="#logger" class="md-nav__link">
     logger
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#global_step" title="global_step" class="md-nav__link">
+  <a href="#global_step" class="md-nav__link">
     global_step
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#gradient_clip_val" title="gradient_clip_val" class="md-nav__link">
+  <a href="#gradient_clip_val" class="md-nav__link">
     gradient_clip_val
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#on_gpu" title="on_gpu" class="md-nav__link">
+  <a href="#on_gpu" class="md-nav__link">
     on_gpu
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#trainer" title="trainer" class="md-nav__link">
+  <a href="#trainer" class="md-nav__link">
     trainer
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#debugging" title="Debugging" class="md-nav__link">
+  <a href="#debugging" class="md-nav__link">
     Debugging
   </a>
   
@@ -636,7 +636,7 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#example_input_array" title="example_input_array" class="md-nav__link">
+  <a href="#example_input_array" class="md-nav__link">
     example_input_array
   </a>
   
@@ -677,20 +677,22 @@
 <p>Current dtype    </p>
 <hr />
 <h4 id="logger">logger</h4>
-<p>A reference to the logger you passed into trainer. </p>
+<p>A reference to the logger you passed into trainer. 
+Passing a logger is optional. If you don't pass one in, Lightning will create one for you automatically.
+This logger saves logs to '''/os.getcwd()/lightning_logs'''</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">Trainer</span><span class="p">(</span><span class="n">logger</span><span class="o">=</span><span class="n">your_logger</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
 <p>Call it from anywhere in your LightningModule to add metrics, images, etc... whatever your logger supports.  </p>
-<p>Here is an example using the Test-tube logger (which is a wrapper on <a href="https://pytorch.org/docs/stable/tensorboard.html">PyTorch SummaryWriter</a> with versioned folder structure).     </p>
+<p>Here is an example using the TestTubeLogger (which is a wrapper on <a href="https://pytorch.org/docs/stable/tensorboard.html">PyTorch SummaryWriter</a> with versioned folder structure).     </p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># if logger is a tensorboard logger or test-tube experiment</span>
-<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">add_embedding</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>   
-<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">log</span><span class="p">({</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">})</span>   
-<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">add_scalars</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>   
+4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># if logger is a tensorboard logger or TestTubeLogger</span>
+<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">add_embedding</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>   
+<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">log</span><span class="p">({</span><span class="s1">&#39;val_loss&#39;</span><span class="p">:</span> <span class="mf">0.9</span><span class="p">})</span>   
+<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">add_scalars</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>   
 </pre></div>
 </td></tr></table>
 
@@ -796,7 +798,7 @@ to get a print out of sizes coming into and out of every layer.   </p>
       
     </div>
     
-      <script src="../../assets/javascripts/application.245445c6.js"></script>
+      <script src="../../assets/javascripts/application.c648116f.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
       
