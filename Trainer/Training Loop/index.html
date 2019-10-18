@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.2">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
     
     
       
@@ -663,7 +663,14 @@ To modify this behavior, pass in your own EarlyStopping callback.</p>
  9
 10
 11
-12</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">pytorch_lightning.callbacks</span> <span class="kn">import</span> <span class="n">EarlyStopping</span>
+12
+13
+14
+15
+16
+17
+18
+19</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">pytorch_lightning.callbacks</span> <span class="kn">import</span> <span class="n">EarlyStopping</span>
 
 <span class="c1"># DEFAULTS used by Trainer</span>
 <span class="n">early_stop_callback</span> <span class="o">=</span> <span class="n">EarlyStopping</span><span class="p">(</span>
@@ -674,16 +681,23 @@ To modify this behavior, pass in your own EarlyStopping callback.</p>
     <span class="n">mode</span><span class="o">=</span><span class="s1">&#39;min&#39;</span>
 <span class="p">)</span>
 
+<span class="c1"># without passing anything in, uses the default callback above</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">()</span>
+
+<span class="c1"># pass in your own to override the default callback </span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">early_stop_callback</span><span class="o">=</span><span class="n">early_stop_callback</span><span class="p">)</span>
+
+<span class="c1"># pass in None to disable it </span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">early_stop_callback</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
 <hr />
 <h4 id="force-disable-early-stop">Force disable early stop</h4>
-<p>Use this to turn off early stopping and run training to the <a href="#force-training-for-min-or-max-epochs">max_epoch</a></p>
+<p>To disable early stopping pass None to the early_stop_callback</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">enable_early_stop</span><span class="o">=</span><span class="bp">True</span><span class="p">)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">early_stop_callback</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
@@ -802,7 +816,7 @@ Specifically, this will <a href="https://pytorch.org/docs/stable/nn.html#torch.n
       
     </div>
     
-      <script src="../../assets/javascripts/application.c648116f.js"></script>
+      <script src="../../assets/javascripts/application.ac79c3b0.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
       

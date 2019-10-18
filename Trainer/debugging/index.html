@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.2">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
     
     
       
@@ -659,6 +659,18 @@ Use this to debug a full run of your program quickly</p>
 <hr />
 <h4 id="print-the-parameter-count-by-layer">Print the parameter count by layer</h4>
 <p>By default lightning prints a list of parameters <em>and submodules</em> when it starts training.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT print a full list of all submodules and their parameters.</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">weights_summary</span><span class="o">=</span><span class="s1">&#39;full&#39;</span><span class="p">)</span>
+
+<span class="c1"># only print the top-level modules (i.e. the children of LightningModule).</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">weights_summary</span><span class="o">=</span><span class="s1">&#39;top&#39;</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
 <hr />
 <h4 id="print-which-gradients-are-nan">Print which gradients are nan</h4>
 <p>This option prints a list of tensors with nan gradients.</p>
@@ -740,7 +752,7 @@ Use this to debug a full run of your program quickly</p>
       
     </div>
     
-      <script src="../../assets/javascripts/application.c648116f.js"></script>
+      <script src="../../assets/javascripts/application.ac79c3b0.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
       

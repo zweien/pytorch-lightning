@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.2">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
     
     
       
@@ -737,7 +737,10 @@ go to the current working directory under a folder named <code>`os.getcwd()/ligh
 <p>Lightning supports several common experiment tracking frameworks out of the box</p>
 <hr />
 <h4 id="test-tube">Test tube</h4>
-<p>Log using <a href="https://williamfalcon.github.io/test-tube/">test tube</a>.</p>
+<p>Log using <a href="https://williamfalcon.github.io/test-tube/">test tube</a>. Test tube logger is
+a strict subclass of <a href="https://pytorch.org/docs/stable/tensorboard.html">PyTorch SummaryWriter</a>, refer to their
+documentation for all supported operations. The TestTubeLogger adds a nicer folder structure
+to manage experiments and snapshots all hyperparameters you pass to a LightningModule.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
@@ -756,6 +759,21 @@ go to the current working directory under a folder named <code>`os.getcwd()/ligh
 </pre></div>
 </td></tr></table>
 
+<p>Use the logger anywhere in you LightningModule as follows:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">train_step</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    <span class="c1"># example</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">whatever_method_summary_writer_supports</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">any_lightning_module_function_or_hook</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">add_histogram</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
 <hr />
 <h4 id="mlflow">MLFlow</h4>
 <p>Log using <a href="https://mlflow.org">mlflow</a></p>
@@ -770,6 +788,21 @@ go to the current working directory under a folder named <code>`os.getcwd()/ligh
     <span class="n">tracking_uri</span><span class="o">=</span><span class="s2">&quot;file:/.&quot;</span>
 <span class="p">)</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">logger</span><span class="o">=</span><span class="n">mlf_logger</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<p>Use the logger anywhere in you LightningModule as follows:</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">train_step</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    <span class="c1"># example</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">whatever_ml_flow_supports</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">any_lightning_module_function_or_hook</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">whatever_ml_flow_supports</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
@@ -836,10 +869,14 @@ a pull request to add it to Lighting!</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
-4</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="bp">self</span><span class="o">.</span><span class="n">logger</span>
+4
+5
+6</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="k">def</span> <span class="nf">train_step</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    <span class="c1"># example</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">whatever_method_summary_writer_supports</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 
-<span class="c1"># add an image if using TestTubeLogger</span>
-<span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">add_image</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
+<span class="k">def</span> <span class="nf">any_lightning_module_function_or_hook</span><span class="p">(</span><span class="o">...</span><span class="p">):</span>
+    <span class="bp">self</span><span class="o">.</span><span class="n">logger</span><span class="o">.</span><span class="n">experiment</span><span class="o">.</span><span class="n">add_histogram</span><span class="p">(</span><span class="o">...</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
@@ -1002,7 +1039,7 @@ Lightning will stack progress bars according to this value. </p>
       
     </div>
     
-      <script src="../../assets/javascripts/application.c648116f.js"></script>
+      <script src="../../assets/javascripts/application.ac79c3b0.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
       
