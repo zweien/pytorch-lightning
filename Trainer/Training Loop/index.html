@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.0">
     
     
       
@@ -42,7 +42,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/application.30686662.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/application.0284f74d.css">
       
       
     
@@ -171,7 +171,7 @@
         
       
       
-      <main class="md-main" role="main">
+      <main class="md-main">
         <div class="md-main__inner md-grid" data-md-component="container">
           
             
@@ -404,50 +404,64 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#accumulated-gradients" class="md-nav__link">
+  <a href="#accumulated-gradients" title="Accumulated gradients" class="md-nav__link">
     Accumulated gradients
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#force-training-for-min-or-max-epochs" class="md-nav__link">
+  <a href="#force-training-for-min-or-max-epochs" title="Force training for min or max epochs" class="md-nav__link">
     Force training for min or max epochs
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#early-stopping" class="md-nav__link">
+  <a href="#early-stopping" title="Early stopping" class="md-nav__link">
     Early stopping
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#force-disable-early-stop" class="md-nav__link">
+  <a href="#force-disable-early-stop" title="Force disable early stop" class="md-nav__link">
     Force disable early stop
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#gradient-clipping" class="md-nav__link">
+  <a href="#gradient-clipping" title="Gradient Clipping" class="md-nav__link">
     Gradient Clipping
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#inspect-gradient-norms" class="md-nav__link">
+  <a href="#inspect-gradient-norms" title="Inspect gradient norms" class="md-nav__link">
     Inspect gradient norms
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-how-much-of-the-training-set-to-check" class="md-nav__link">
+  <a href="#set-how-much-of-the-training-set-to-check" title="Set how much of the training set to check" class="md-nav__link">
     Set how much of the training set to check
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#packed-sequences-as-inputs" title="Packed sequences as inputs" class="md-nav__link">
+    Packed sequences as inputs
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#truncated-back-propagation-through-time" title="Truncated Back Propagation Through Time" class="md-nav__link">
+    Truncated Back Propagation Through Time
   </a>
   
 </li>
@@ -559,50 +573,64 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#accumulated-gradients" class="md-nav__link">
+  <a href="#accumulated-gradients" title="Accumulated gradients" class="md-nav__link">
     Accumulated gradients
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#force-training-for-min-or-max-epochs" class="md-nav__link">
+  <a href="#force-training-for-min-or-max-epochs" title="Force training for min or max epochs" class="md-nav__link">
     Force training for min or max epochs
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#early-stopping" class="md-nav__link">
+  <a href="#early-stopping" title="Early stopping" class="md-nav__link">
     Early stopping
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#force-disable-early-stop" class="md-nav__link">
+  <a href="#force-disable-early-stop" title="Force disable early stop" class="md-nav__link">
     Force disable early stop
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#gradient-clipping" class="md-nav__link">
+  <a href="#gradient-clipping" title="Gradient Clipping" class="md-nav__link">
     Gradient Clipping
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#inspect-gradient-norms" class="md-nav__link">
+  <a href="#inspect-gradient-norms" title="Inspect gradient norms" class="md-nav__link">
     Inspect gradient norms
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-how-much-of-the-training-set-to-check" class="md-nav__link">
+  <a href="#set-how-much-of-the-training-set-to-check" title="Set how much of the training set to check" class="md-nav__link">
     Set how much of the training set to check
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#packed-sequences-as-inputs" title="Packed sequences as inputs" class="md-nav__link">
+    Packed sequences as inputs
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#truncated-back-propagation-through-time" title="Truncated Back Propagation Through Time" class="md-nav__link">
+    Truncated Back Propagation Through Time
   </a>
   
 </li>
@@ -632,7 +660,7 @@
 <p>Below are all the things lightning automates for you in the training loop.</p>
 <hr />
 <h4 id="accumulated-gradients">Accumulated gradients</h4>
-<p>Accumulated gradients runs K small batches of size N before doing a backwards pass. The effect is a large effective batch size of size KxN. </p>
+<p>Accumulated gradients runs K small batches of size N before doing a backwards pass. The effect is a large effective batch size of size KxN.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT (ie: no accumulated grads)</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">accumulate_grad_batches</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
@@ -650,7 +678,7 @@
 
 <hr />
 <h4 id="early-stopping">Early stopping</h4>
-<p>The trainer already sets up default early stopping for you. 
+<p>The trainer already sets up default early stopping for you.
 To modify this behavior, pass in your own EarlyStopping callback.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
@@ -684,10 +712,10 @@ To modify this behavior, pass in your own EarlyStopping callback.</p>
 <span class="c1"># without passing anything in, uses the default callback above</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">()</span>
 
-<span class="c1"># pass in your own to override the default callback </span>
+<span class="c1"># pass in your own to override the default callback</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">early_stop_callback</span><span class="o">=</span><span class="n">early_stop_callback</span><span class="p">)</span>
 
-<span class="c1"># pass in None to disable it </span>
+<span class="c1"># pass in None to disable it</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">early_stop_callback</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
@@ -745,6 +773,49 @@ Specifically, this will <a href="https://pytorch.org/docs/stable/nn.html#torch.n
 
 <span class="c1"># check 10% only</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">train_percent_check</span><span class="o">=</span><span class="mf">0.1</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<hr />
+<h4 id="packed-sequences-as-inputs">Packed sequences as inputs</h4>
+<p>When using PackedSequence, do 2 things:
+1. return either a padded tensor in dataset or a list of variable length tensors in the dataloader collate_fn (example above shows the list implementation).  <br />
+2. Pack the sequence in forward or training and validation steps depending on use case.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># For use in dataloader</span>
+<span class="k">def</span> <span class="nf">collate_fn</span><span class="p">(</span><span class="n">batch</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">]</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">batch</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span>
+
+<span class="c1"># In module</span>
+<span class="k">def</span> <span class="nf">training_step</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">batch</span><span class="p">,</span> <span class="n">batch_nb</span><span class="p">):</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="n">rnn</span><span class="o">.</span><span class="n">pack_sequence</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">enforce_sorted</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+    <span class="n">y</span> <span class="o">=</span> <span class="n">rnn</span><span class="o">.</span><span class="n">pack_sequence</span><span class="p">(</span><span class="n">batch</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">enforce_sorted</span><span class="o">=</span><span class="bp">False</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<hr />
+<h4 id="truncated-back-propagation-through-time">Truncated Back Propagation Through Time</h4>
+<p>There are times when multiple backwards passes are needed for each batch. For example, it may save memory to use Truncated Back Propagation Through Time when training RNNs.</p>
+<p>When this flag is enabled each batch is split into sequences of size truncated_bptt_steps and passed to training_step(...) separately. A default splitting function is provided, however, you can override it for more flexibility. See <a href="https://williamfalcon.github.io/pytorch-lightning/Trainer/hooks#tbptt_split_batch">tbptt_split_batch</a>.</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT (single backwards pass per batch)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">truncated_bptt_steps</span><span class="o">=</span><span class="bp">None</span><span class="p">)</span>
+
+<span class="c1"># (split batch into sequences of size 2)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">truncated_bptt_steps</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
                 
@@ -816,7 +887,7 @@ Specifically, this will <a href="https://pytorch.org/docs/stable/nn.html#torch.n
       
     </div>
     
-      <script src="../../assets/javascripts/application.ac79c3b0.js"></script>
+      <script src="../../assets/javascripts/application.245445c6.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
       

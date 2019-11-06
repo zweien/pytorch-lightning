@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.0">
     
     
       
@@ -42,7 +42,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/application.30686662.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/application.0284f74d.css">
       
       
     
@@ -171,7 +171,7 @@
         
       
       
-      <main class="md-main" role="main">
+      <main class="md-main">
         <div class="md-main__inner md-grid" data-md-component="container">
           
             
@@ -476,14 +476,14 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#template-model-definition" class="md-nav__link">
+  <a href="#template-model-definition" title="Template model definition" class="md-nav__link">
     Template model definition
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#trainer-example" class="md-nav__link">
+  <a href="#trainer-example" title="Trainer Example" class="md-nav__link">
     Trainer Example
   </a>
   
@@ -491,21 +491,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#cpu-hyperparameter-search" class="md-nav__link">
+  <a href="#cpu-hyperparameter-search" title="CPU hyperparameter search" class="md-nav__link">
     CPU hyperparameter search
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#hyperparameter-search-on-a-single-or-multiple-gpus" class="md-nav__link">
+  <a href="#hyperparameter-search-on-a-single-or-multiple-gpus" title="Hyperparameter search on a single or multiple GPUs" class="md-nav__link">
     Hyperparameter search on a single or multiple GPUs
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#hyperparameter-search-on-a-slurm-hpc-cluster" class="md-nav__link">
+  <a href="#hyperparameter-search-on-a-slurm-hpc-cluster" title="Hyperparameter search on a SLURM HPC cluster" class="md-nav__link">
     Hyperparameter search on a SLURM HPC cluster
   </a>
   
@@ -551,14 +551,14 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#template-model-definition" class="md-nav__link">
+  <a href="#template-model-definition" title="Template model definition" class="md-nav__link">
     Template model definition
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#trainer-example" class="md-nav__link">
+  <a href="#trainer-example" title="Trainer Example" class="md-nav__link">
     Trainer Example
   </a>
   
@@ -566,21 +566,21 @@
       <ul class="md-nav__list">
         
           <li class="md-nav__item">
-  <a href="#cpu-hyperparameter-search" class="md-nav__link">
+  <a href="#cpu-hyperparameter-search" title="CPU hyperparameter search" class="md-nav__link">
     CPU hyperparameter search
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#hyperparameter-search-on-a-single-or-multiple-gpus" class="md-nav__link">
+  <a href="#hyperparameter-search-on-a-single-or-multiple-gpus" title="Hyperparameter search on a single or multiple GPUs" class="md-nav__link">
     Hyperparameter search on a single or multiple GPUs
   </a>
   
 </li>
         
           <li class="md-nav__item">
-  <a href="#hyperparameter-search-on-a-slurm-hpc-cluster" class="md-nav__link">
+  <a href="#hyperparameter-search-on-a-slurm-hpc-cluster" title="Hyperparameter search on a SLURM HPC cluster" class="md-nav__link">
     Hyperparameter search on a SLURM HPC cluster
   </a>
   
@@ -613,10 +613,10 @@
                   <h1>Examples</h1>
                 
                 <h3 id="template-model-definition">Template model definition</h3>
-<p>In 99% of cases you want to just copy <a href="https://github.com/williamFalcon/pytorch-lightning/tree/master/examples">one of the examples</a> to start a new lightningModule and change the core of what your model is actually trying to do.</p>
+<p>In 99% of cases you want to just copy <a href="https://github.com/williamFalcon/pytorch-lightning/tree/master/pl_examples">one of the examples</a> to start a new lightningModule and change the core of what your model is actually trying to do.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># get a copy of the module template</span>
-wget https://raw.githubusercontent.com/williamFalcon/pytorch-lightning/master/examples/new_project_templates/lightning_module_template.py
+wget https://raw.githubusercontent.com/williamFalcon/pytorch-lightning/master/pl_examples/new_project_templates/lightning_module_template.py
 </pre></div>
 </td></tr></table>
 
@@ -796,7 +796,7 @@ argument parser you get the default arguments in the argument parser.</p>
     <span class="n">job_display_name</span> <span class="o">=</span> <span class="n">job_display_name</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">3</span><span class="p">]</span>
 
     <span class="c1"># run hopt</span>
-    <span class="k">print</span><span class="p">(</span><span class="s1">&#39;submitting jobs...&#39;</span><span class="p">)</span>
+    <span class="n">logging</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;submitting jobs...&#39;</span><span class="p">)</span>
     <span class="n">cluster</span><span class="o">.</span><span class="n">optimize_parallel_cluster_gpu</span><span class="p">(</span>
         <span class="n">main</span><span class="p">,</span>
         <span class="n">nb_trials</span><span class="o">=</span><span class="n">hyperparams</span><span class="o">.</span><span class="n">nb_hopt_trials</span><span class="p">,</span>
@@ -862,7 +862,7 @@ argument parser you get the default arguments in the argument parser.</p>
       
     </div>
     
-      <script src="../../assets/javascripts/application.ac79c3b0.js"></script>
+      <script src="../../assets/javascripts/application.245445c6.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
       

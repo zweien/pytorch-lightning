@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.0">
     
     
       
@@ -42,7 +42,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/application.30686662.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/application.0284f74d.css">
       
       
     
@@ -171,7 +171,7 @@
         
       
       
-      <main class="md-main" role="main">
+      <main class="md-main">
         <div class="md-main__inner md-grid" data-md-component="container">
           
             
@@ -344,14 +344,14 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#model-saving" class="md-nav__link">
+  <a href="#model-saving" title="Model saving" class="md-nav__link">
     Model saving
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#restoring-training-session" class="md-nav__link">
+  <a href="#restoring-training-session" title="Restoring training session" class="md-nav__link">
     Restoring training session
   </a>
   
@@ -524,14 +524,14 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#model-saving" class="md-nav__link">
+  <a href="#model-saving" title="Model saving" class="md-nav__link">
     Model saving
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#restoring-training-session" class="md-nav__link">
+  <a href="#restoring-training-session" title="Restoring training session" class="md-nav__link">
     Restoring training session
   </a>
   
@@ -601,19 +601,33 @@ To change the checkpoint path pass in :</p>
 <p>You might want to not only load a model but also continue training it. Use this method to
 restore the trainer state as well. This will continue from the epoch and global step you last left off.<br />
 However, the dataloaders will start from the first batch again (if you shuffled it shouldn't matter).   </p>
-<p>Lightning will restore the session if you pass an experiment with the same version and there's a saved checkpoint.   </p>
-<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
-2
-3
-4
-5
-6
-7
-8
-9</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">test_tube</span> <span class="kn">import</span> <span class="n">Experiment</span>
+<p>Lightning will restore the session if you pass a logger with the same version and there's a saved checkpoint.   </p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
+ 2
+ 3
+ 4
+ 5
+ 6
+ 7
+ 8
+ 9
+10
+11
+12
+13
+14
+15
+16</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="kn">from</span> <span class="nn">pytorch_lightning</span> <span class="kn">import</span> <span class="n">Trainer</span>
+<span class="kn">from</span> <span class="nn">pytorch_lightning.logging</span> <span class="kn">import</span> <span class="n">TestTubeLogger</span>
 
-<span class="n">exp</span> <span class="o">=</span> <span class="n">Experiment</span><span class="p">(</span><span class="n">version</span><span class="o">=</span><span class="n">a_previous_version_with_a_saved_checkpoint</span><span class="p">)</span>
-<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">experiment</span><span class="o">=</span><span class="n">exp</span><span class="p">)</span>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">TestTubeLogger</span><span class="p">(</span>
+    <span class="n">save_dir</span><span class="o">=</span><span class="s1">&#39;./savepath&#39;</span><span class="p">,</span>
+    <span class="n">version</span><span class="o">=</span><span class="mi">1</span>  <span class="c1"># An existing version with a saved checkpoint</span>
+<span class="p">)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span>
+    <span class="n">logger</span><span class="o">=</span><span class="n">logger</span><span class="p">,</span>
+    <span class="n">default_save_path</span><span class="o">=</span><span class="s1">&#39;./savepath&#39;</span>
+<span class="p">)</span>
 
 <span class="c1"># this fit call loads model weights and trainer state</span>
 <span class="c1"># the trainer continues seamlessly from where you left off</span>
@@ -733,7 +747,7 @@ the system isn't different. If you add a layer, for instance, it might not work.
       
     </div>
     
-      <script src="../../assets/javascripts/application.ac79c3b0.js"></script>
+      <script src="../../assets/javascripts/application.245445c6.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
       

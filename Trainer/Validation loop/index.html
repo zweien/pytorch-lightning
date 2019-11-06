@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.0">
     
     
       
@@ -42,7 +42,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/application.30686662.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/application.0284f74d.css">
       
       
     
@@ -171,7 +171,7 @@
         
       
       
-      <main class="md-main" role="main">
+      <main class="md-main">
         <div class="md-main__inner md-grid" data-md-component="container">
           
             
@@ -416,35 +416,35 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#check-validation-every-n-epochs" class="md-nav__link">
+  <a href="#check-validation-every-n-epochs" title="Check validation every n epochs" class="md-nav__link">
     Check validation every n epochs
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-how-much-of-the-validation-set-to-check" class="md-nav__link">
+  <a href="#set-how-much-of-the-validation-set-to-check" title="Set how much of the validation set to check" class="md-nav__link">
     Set how much of the validation set to check
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-how-much-of-the-test-set-to-check" class="md-nav__link">
+  <a href="#set-how-much-of-the-test-set-to-check" title="Set how much of the test set to check" class="md-nav__link">
     Set how much of the test set to check
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-validation-check-frequency-within-1-training-epoch" class="md-nav__link">
+  <a href="#set-validation-check-frequency-within-1-training-epoch" title="Set validation check frequency within 1 training epoch" class="md-nav__link">
     Set validation check frequency within 1 training epoch
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-the-number-of-validation-sanity-steps" class="md-nav__link">
+  <a href="#set-the-number-of-validation-sanity-steps" title="Set the number of validation sanity steps" class="md-nav__link">
     Set the number of validation sanity steps
   </a>
   
@@ -545,35 +545,35 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#check-validation-every-n-epochs" class="md-nav__link">
+  <a href="#check-validation-every-n-epochs" title="Check validation every n epochs" class="md-nav__link">
     Check validation every n epochs
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-how-much-of-the-validation-set-to-check" class="md-nav__link">
+  <a href="#set-how-much-of-the-validation-set-to-check" title="Set how much of the validation set to check" class="md-nav__link">
     Set how much of the validation set to check
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-how-much-of-the-test-set-to-check" class="md-nav__link">
+  <a href="#set-how-much-of-the-test-set-to-check" title="Set how much of the test set to check" class="md-nav__link">
     Set how much of the test set to check
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-validation-check-frequency-within-1-training-epoch" class="md-nav__link">
+  <a href="#set-validation-check-frequency-within-1-training-epoch" title="Set validation check frequency within 1 training epoch" class="md-nav__link">
     Set validation check frequency within 1 training epoch
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#set-the-number-of-validation-sanity-steps" class="md-nav__link">
+  <a href="#set-the-number-of-validation-sanity-steps" title="Set the number of validation sanity steps" class="md-nav__link">
     Set the number of validation sanity steps
   </a>
   
@@ -647,16 +647,25 @@ Lightning will run 5 steps of validation in the beginning of training as a sanit
 
 <hr />
 <h4 id="set-validation-check-frequency-within-1-training-epoch">Set validation check frequency within 1 training epoch</h4>
-<p>For large datasets it's often desirable to check validation multiple times within a training loop</p>
+<p>For large datasets it's often desirable to check validation multiple times within a training loop.
+Pass in a float to check that often within 1 training epoch.
+Pass in an int k to check every k training batches. Must use an int if using 
+an IterableDataset.</p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
 2
 3
 4
-5</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="c1"># DEFAULT</span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">val_check_interval</span><span class="o">=</span><span class="mf">0.95</span><span class="p">)</span>
 
 <span class="c1"># check every .25 of an epoch </span>
 <span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">val_check_interval</span><span class="o">=</span><span class="mf">0.25</span><span class="p">)</span>
+
+<span class="c1"># check every 100 train batches (ie: for IterableDatasets or fixed frequency)</span>
+<span class="n">trainer</span> <span class="o">=</span> <span class="n">Trainer</span><span class="p">(</span><span class="n">val_check_interval</span><span class="o">=</span><span class="mi">100</span><span class="p">)</span>
 </pre></div>
 </td></tr></table>
 
@@ -739,7 +748,7 @@ Lightning will run 5 steps of validation in the beginning of training as a sanit
       
     </div>
     
-      <script src="../../assets/javascripts/application.ac79c3b0.js"></script>
+      <script src="../../assets/javascripts/application.245445c6.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
       

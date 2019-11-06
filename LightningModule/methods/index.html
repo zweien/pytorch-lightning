@@ -34,7 +34,7 @@
         <meta name="lang:search.tokenizer" content="[\s\-]+">
       
       <link rel="shortcut icon" href="../../assets/images/favicon.png">
-      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.3">
+      <meta name="generator" content="mkdocs-1.0.4, mkdocs-material-4.4.0">
     
     
       
@@ -42,7 +42,7 @@
       
     
     
-      <link rel="stylesheet" href="../../assets/stylesheets/application.30686662.css">
+      <link rel="stylesheet" href="../../assets/stylesheets/application.0284f74d.css">
       
       
     
@@ -171,7 +171,7 @@
         
       
       
-      <main class="md-main" role="main">
+      <main class="md-main">
         <div class="md-main__inner md-grid" data-md-component="container">
           
             
@@ -284,21 +284,28 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#freeze" class="md-nav__link">
+  <a href="#freeze" title="freeze" class="md-nav__link">
     freeze
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#load_from_metrics" class="md-nav__link">
+  <a href="#load_from_metrics" title="load_from_metrics" class="md-nav__link">
     load_from_metrics
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#unfreeze" class="md-nav__link">
+  <a href="#load_from_metrics_1" title="load_from_metrics" class="md-nav__link">
+    load_from_metrics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unfreeze" title="unfreeze" class="md-nav__link">
     unfreeze
   </a>
   
@@ -531,21 +538,28 @@
     <ul class="md-nav__list" data-md-scrollfix>
       
         <li class="md-nav__item">
-  <a href="#freeze" class="md-nav__link">
+  <a href="#freeze" title="freeze" class="md-nav__link">
     freeze
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#load_from_metrics" class="md-nav__link">
+  <a href="#load_from_metrics" title="load_from_metrics" class="md-nav__link">
     load_from_metrics
   </a>
   
 </li>
       
         <li class="md-nav__item">
-  <a href="#unfreeze" class="md-nav__link">
+  <a href="#load_from_metrics_1" title="load_from_metrics" class="md-nav__link">
+    load_from_metrics
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#unfreeze" title="unfreeze" class="md-nav__link">
     unfreeze
   </a>
   
@@ -584,8 +598,31 @@
 
 <hr />
 <h3 id="load_from_metrics">load_from_metrics</h3>
-<p>This is the easiest/fastest way which uses the meta_tags.csv file from test-tube to rebuild the model.
-The meta_tags.csv file can be found in the test-tube experiment save_dir.       </p>
+<p>This is the easiest/fastest way which loads hyperparameters and weights from a checkpoint,
+such as the one saved by the <code>ModelCheckpoint</code> callback</p>
+<table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre>1
+2
+3
+4
+5
+6
+7
+8</pre></div></td><td class="code"><div class="codehilite"><pre><span></span><span class="n">pretrained_model</span> <span class="o">=</span> <span class="n">MyLightningModule</span><span class="o">.</span><span class="n">load_from_checkpoint</span><span class="p">(</span>
+    <span class="n">checkpoint_path</span><span class="o">=</span><span class="s1">&#39;/path/to/pytorch_checkpoint.ckpt&#39;</span>
+<span class="p">)</span>
+
+<span class="c1"># predict</span>
+<span class="n">pretrained_model</span><span class="o">.</span><span class="n">eval</span><span class="p">()</span>
+<span class="n">pretrained_model</span><span class="o">.</span><span class="n">freeze</span><span class="p">()</span>
+<span class="n">y_hat</span> <span class="o">=</span> <span class="n">pretrained_model</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+</pre></div>
+</td></tr></table>
+
+<hr />
+<h3 id="load_from_metrics_1">load_from_metrics</h3>
+<p>If you're using test tube, there is an alternate method which uses the meta_tags.csv
+file from test-tube to rebuild the model. The meta_tags.csv file can be found in the
+test-tube experiment save_dir.       </p>
 <table class="codehilitetable"><tr><td class="linenos"><div class="linenodiv"><pre> 1
  2
  3
@@ -716,7 +753,7 @@ The meta_tags.csv file can be found in the test-tube experiment save_dir.       
       
     </div>
     
-      <script src="../../assets/javascripts/application.ac79c3b0.js"></script>
+      <script src="../../assets/javascripts/application.245445c6.js"></script>
       
       <script>app.initialize({version:"1.0.4",url:{base:"../.."}})</script>
       
