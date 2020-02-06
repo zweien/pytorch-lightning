@@ -872,12 +872,12 @@ class LightningModule(ABC, GradInformation, ModelIO, ModelHooks):
     @abstractmethod
     def train_dataloader(self):
         """
-        Called by lightning during training loop. 
+        Called by lightning during training loop.
 
         When using the @pl.data_loader decorator,
          pl ensures that data_loader is not created multiple times.
          If you want to change the data during every epoch, DON'T use the data_loader decorator.
-        
+
         When returning a dali iterator and using @pl.data_loader decorator,
          its corresponding percent_check will not work as expected.
          The reason is that dali cannot be reset during a epoch.
