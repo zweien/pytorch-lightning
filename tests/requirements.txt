@@ -15,3 +15,5 @@ sacred
 neptune-client
 twine==1.13.0
 pillow<7.0.0
+--extra-index-url https://developer.download.nvidia.com/compute/redist/cuda/10.0
+nvidia-dali
