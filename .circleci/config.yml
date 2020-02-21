@@ -1,8 +1,11 @@
 # Python CircleCI 2.0 configuration file
 #
 # Check https://circleci.com/docs/2.0/language-python/ for more details
-#
+# Check https://circleci.com/blog/orbs-aws-ecr/ for AWS info
 version: 2.0
+
+orbs:
+  aws-ecr: circleci/aws-ecr@0.0.4
 
 references:
 
@@ -58,18 +61,25 @@ references:
        # sphinx-apidoc -o ./docs/source ./pytorch_lightning **/test_* --force --follow-links
        cd docs; make clean ; make html
 
+executors:
+  cpu-executor:
+    docker:
+      - image: circleci/python:3.7
+
+  gpu-executor:
+    docker:
+      - image: circleci/python:3.6
+
 jobs:
 
   Build-Docs:
-    docker:
-      - image: circleci/python:3.7
+    executor: cpu-executor
     steps:
       - checkout
       - *make_docs
 
   Formatting:
-    docker:
-      - image: circleci/python:3.7
+    executor: cpu-executor
     environment:
         - TORCH_VERSION: "torch"
     steps:
@@ -78,8 +88,7 @@ jobs:
       - *format
 
   PyTorch:
-    docker:
-      - image: circleci/python:3.7
+    executor: gpu-executor
     environment:
       - TORCH_VERSION: "torch"
     steps: &steps
@@ -94,36 +103,31 @@ jobs:
           path: test-reports
 
   PyTorch-v1.1:
-    docker:
-      - image: circleci/python:3.6
+    executor: gpu-executor
     environment:
       - TORCH_VERSION: "torch>=1.1, <1.2"
     steps: *steps
 
   PyTorch-v1.2:
-    docker:
-      - image: circleci/python:3.6
+    executor: gpu-executor
     environment:
       - TORCH_VERSION: "torch>=1.2, <1.3"
     steps: *steps
 
   PyTorch-v1.3:
-    docker:
-      - image: circleci/python:3.6
+    executor: gpu-executor
     environment:
       - TORCH_VERSION: "torch>=1.3, <1.4"
     steps: *steps
 
   PyTorch-v1.4:
-    docker:
-      - image: circleci/python:3.6
+    executor: gpu-executor
     environment:
       - TORCH_VERSION: "torch>=1.4, <1.5"
     steps: *steps
 
   Install-pkg:
-    docker:
-      - image: circleci/python:3.7
+    executor: cpu-executor
     steps:
       - checkout
       - *create_pkg
