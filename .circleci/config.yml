@@ -2,10 +2,8 @@
 #
 # Check https://circleci.com/docs/2.0/language-python/ for more details
 # Check https://circleci.com/blog/orbs-aws-ecr/ for AWS info
+# https://circleci.com/docs/2.0/using-orbs/#using-orbs-within-your-orb-and-register-time-resolution
 version: 2.0
-
-orbs:
-  aws-ecr: circleci/aws-ecr@0.0.4
 
 references:
 
@@ -61,12 +59,16 @@ references:
        # sphinx-apidoc -o ./docs/source ./pytorch_lightning **/test_* --force --follow-links
        cd docs; make clean ; make html
 
+orbs:
+  aws-ecr: circleci/aws-cli@0.1.20
+  aws-ecs: circleci/aws-ecs@1.1.0
+
 executors:
   cpu-executor:
     docker:
       - image: circleci/python:3.7
 
-  gpu-executor:
+  gpu-executor: # aws-orb
     docker:
       - image: circleci/python:3.6
 
