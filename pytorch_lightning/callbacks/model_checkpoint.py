@@ -30,11 +30,9 @@ class ModelCheckpoint(Callback):
                 #  saves like /my/path/epoch_0.ckpt
 
                 # save epoch and val_loss in name
-                ModelCheckpoint(filepath='{epoch:02d}-{val_loss:.2f}.hdf5')
-                # saves file like: /my/path/here/sample-mnist_epoch=02_val_loss=0.32.ckpt
-
-
-                # if model already exits, the file will be: /my/path/here/sample-mnist-v0_epoch=02_val_loss=0.32.ckpt
+                ModelCheckpoint(filepath='{epoch:02d}-{current:.2f}')
+                # saves file like: /my/path/here/sample-mnist_epoch=02-0.32.ckpt
+                # if model already exits, the file will be: /my/path/here/sample-mnist-v0_epoch=02-0.32.ckpt
 
 
         monitor: quantity to monitor.
@@ -83,7 +81,8 @@ class ModelCheckpoint(Callback):
             save_weights_only: bool = False,
             mode: str = 'auto',
             period: int = 1,
-            prefix: str = ''
+            prefix: str = '',
+            filename: str = '{epoch:02d}',
     ):
         super().__init__()
         if save_top_k and os.path.isdir(dirpath) and len(os.listdir(dirpath)) > 0:
@@ -106,6 +105,7 @@ class ModelCheckpoint(Callback):
         self.kth_best_model = ''
         self.best = 0
         self.save_function = None
+        self.filename = filename
 
         # this create unique prefix if the give already exists
         existing_checkpoints = sorted(glob.glob(os.path.join(self.dirpath, '*' + self.EXTENSION)))
@@ -152,8 +152,7 @@ class ModelCheckpoint(Callback):
 
     def _get_available_filepath(self, current: float, epoch: int) -> str:
         try:
-            current_str = f'{current:.2f}' if current else 'NaN'
-            fname = f'{self.prefix}_epoch={epoch}_{self.monitor}={current_str}'
+            fname = f'{self.prefix}_epoch=' + self.filename.format(epoch=epoch, current=current)
             filepath = os.path.join(self.dirpath, fname + self.EXTENSION)
             assert not os.path.isfile(filepath)
         except Exception as e:
