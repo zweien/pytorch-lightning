@@ -1,12 +1,14 @@
 r"""
 Gradient Accumulator
 ====================
+
 Change gradient accumulation factor according to scheduling.
+
 """
 
 import warnings
 
-from .base import Callback
+from pytorch_lightning.callbacks.base import Callback
 
 
 class GradientAccumulationScheduler(Callback):
@@ -15,17 +17,22 @@ class GradientAccumulationScheduler(Callback):
 
     Args:
         scheduling: scheduling in format {epoch: accumulation_factor}
-            .. warning:: Epochs indexing starts from "1" until v0.6.x,
+
+            .. warning::
+                Epochs indexing starts from "1" until v0.6.x,
                 but will start from "0" in v0.8.0.
 
     Example::
 
-        from pytorch_lightning import Trainer
-        from pytorch_lightning.callbacks import GradientAccumulationScheduler
+        >>> from pytorch_lightning import Trainer
+        >>> from pytorch_lightning.callbacks import GradientAccumulationScheduler
 
         # at epoch 5 start accumulating every 2 batches
-        accumulator = GradientAccumulationScheduler(scheduling: {5: 2})
-        Trainer(accumulate_grad_batches=accumulator)
+        >>> accumulator = GradientAccumulationScheduler(scheduling={5: 2})
+        >>> trainer = Trainer(callbacks=[accumulator])
+
+        # alternatively, pass the scheduling dict directly to the Trainer
+        >>> trainer = Trainer(accumulate_grad_batches={5: 2})
     """
 
     def __init__(self, scheduling: dict):

@@ -113,7 +113,6 @@ When the script starts again, Lightning will:
 
 """
 
-import logging as log
 import os
 import re
 import warnings
@@ -121,9 +120,9 @@ from abc import ABC, abstractmethod
 from typing import Union
 
 import torch
+from pytorch_lightning import _logger as log
 from pytorch_lightning.loggers import LightningLoggerBase
-
-from pytorch_lightning.utilities.debugging import MisconfigurationException
+from pytorch_lightning.utilities.exceptions import MisconfigurationException
 
 try:
     from apex import amp
@@ -142,7 +141,6 @@ class TrainerDDPMixin(ABC):
     logger: Union[LightningLoggerBase, bool]
     data_parallel_device_ids: ...
     distributed_backend: str
-    use_amp: bool
     amp_level: str
     use_tpu: bool
     default_save_path: str
@@ -150,6 +148,11 @@ class TrainerDDPMixin(ABC):
     @property
     @abstractmethod
     def num_gpus(self) -> int:
+        """Warning: this is just empty shell for code implemented in other class."""
+
+    @property
+    @abstractmethod
+    def use_amp(self) -> bool:
         """Warning: this is just empty shell for code implemented in other class."""
 
     @abstractmethod
@@ -200,16 +203,15 @@ class TrainerDDPMixin(ABC):
                 self.use_ddp2 = distributed_backend == 'ddp2'
 
             elif distributed_backend is None:
-                m = 'You requested multiple GPUs but did not specify a backend' \
-                    'Trainer(distributed_backend=dp) (or ddp, ddp2)' \
-                    'Setting distributed_backend=dp for you'
-                warnings.warn(m)
+                warnings.warn('You requested multiple GPUs but did not specify a backend, e.g.'
+                              ' Trainer(distributed_backend=dp) (or ddp, ddp2).'
+                              ' Setting distributed_backend=dp for you.')
                 self.use_dp = True
                 self.use_ddp = False
                 self.use_ddp2 = False
 
         # throw error to force user ddp or ddp2 choice
-        if num_gpu_nodes > 1 and not (self.use_ddp2 or self.use_ddp):  # pragma: no cover
+        if num_gpu_nodes > 1 and not (self.use_ddp2 or self.use_ddp):
             w = 'DataParallel does not support num_nodes > 1. ' \
                 'Switching to DistributedDataParallel for you. ' \
                 'To silence this warning set distributed_backend=ddp' \
@@ -283,7 +285,7 @@ class TrainerDDPMixin(ABC):
             self.node_rank = 0
 
         # show progressbar only on progress_rank 0
-        self.show_progress_bar = self.show_progress_bar and self.node_rank == 0 and gpu_idx == 0
+        self.progress_bar_refresh_rate = self.progress_bar_refresh_rate if self.node_rank == 0 and gpu_idx == 0 else 0
 
         # determine which process we are and world size
         if self.use_ddp:
@@ -306,7 +308,7 @@ class TrainerDDPMixin(ABC):
 
         # CHOOSE OPTIMIZER
         # allow for lr schedulers as well
-        self.optimizers, self.lr_schedulers = self.init_optimizers(model.configure_optimizers())
+        self.optimizers, self.lr_schedulers, self.optimizer_frequencies = self.init_optimizers(model)
 
         # MODEL
         # copy model to each gpu

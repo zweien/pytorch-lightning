@@ -114,7 +114,7 @@ However, when using a cluster, Lightning will NOT set these flags (and you shoul
 
 16 bit precision can cut your memory footprint by half. If using volta architecture GPUs
  it can give a dramatic training speed-up as well.
- First, install apex (if install fails, look `here <https://github.com/NVIDIA/apex>`_::
+ First, install apex (if install fails, look `here <https://github.com/NVIDIA/apex>`__)::
 
     $ git clone https://github.com/NVIDIA/apex
     $ cd apex
@@ -250,8 +250,11 @@ You must configure your job submission script correctly for the trainer to work.
 .. note:: When running in DDP mode, any errors in your code will show up as an NCCL issue.
  Set the `NCCL_DEBUG=INFO` flag to see the ACTUAL error.
 
-Finally, make sure to add a distributed sampler to your dataset. The distributed sampler copies a
- portion of your dataset onto each GPU. (World_size = gpus_per_node * nb_nodes).
+Normally now you would need to add a distributed sampler to your dataset, however
+Lightning automates this for you. But if you still need to set a sampler Lightning will
+not interfere nor automate it.
+
+Here's an example of how to add your own sampler (again no need with Lightning).
 
 .. code-block:: python
 
@@ -276,7 +279,7 @@ in a `HyperOptArgumentParser
 
 Here is an example where you run a grid search of 9 combinations of hyperparams.
 The full examples are
-`here <https://git.io/Jv87p>`_.
+`here <https://github.com/PyTorchLightning/pytorch-lightning/tree/master/pl_examples/multi_node_examples>`__.
 
 .. code-block:: python
 
@@ -334,18 +337,17 @@ Here lightning distributes parts of your module across available GPUs to optimiz
 
 """
 
-from abc import ABC, abstractmethod
-import logging as log
 import os
-import signal
+from abc import ABC, abstractmethod
 
 import torch
 
+from pytorch_lightning import _logger as log
 from pytorch_lightning.overrides.data_parallel import (
     LightningDistributedDataParallel,
     LightningDataParallel,
 )
-from pytorch_lightning.utilities.debugging import MisconfigurationException
+from pytorch_lightning.utilities.exceptions import MisconfigurationException
 
 try:
     from apex import amp
@@ -370,7 +372,6 @@ class TrainerDPMixin(ABC):
     use_dp: bool
     use_ddp2: bool
     use_ddp: bool
-    use_amp: bool
     testing: bool
     single_gpu: bool
     root_gpu: ...
@@ -382,6 +383,11 @@ class TrainerDPMixin(ABC):
     tpu_global_core_rank: int
     use_tpu: bool
     data_parallel_device_ids: ...
+
+    @property
+    @abstractmethod
+    def use_amp(self) -> bool:
+        """Warning: this is just empty shell for code implemented in other class."""
 
     @abstractmethod
     def run_pretrain_routine(self, *args):
@@ -460,7 +466,7 @@ class TrainerDPMixin(ABC):
 
         # CHOOSE OPTIMIZER
         # allow for lr schedulers as well
-        self.optimizers, self.lr_schedulers = self.init_optimizers(model.configure_optimizers())
+        self.optimizers, self.lr_schedulers, self.optimizer_frequencies = self.init_optimizers(model)
 
         if self.use_amp:
             # An example
@@ -478,7 +484,7 @@ class TrainerDPMixin(ABC):
         self.tpu_global_core_rank = xm.get_ordinal()
 
         # avoid duplicating progress bar
-        self.show_progress_bar = self.show_progress_bar and self.tpu_global_core_rank == 0
+        self.progress_bar_refresh_rate = self.progress_bar_refresh_rate if self.tpu_global_core_rank == 0 else 0
 
         # track current tpu
         self.current_tpu_idx = tpu_core_idx
@@ -486,15 +492,14 @@ class TrainerDPMixin(ABC):
 
         # CHOOSE OPTIMIZER
         # allow for lr schedulers as well
-        self.optimizers, self.lr_schedulers = self.init_optimizers(model.configure_optimizers())
+        self.optimizers, self.lr_schedulers, self.optimizer_frequencies = self.init_optimizers(model)
 
         # init 16 bit for TPU
         if self.precision == 16:
             os.environ['XLA_USE_BF16'] = str(1)
 
-        m = f'INIT TPU local core: {self.tpu_local_core_rank}, ' \
-            f'global rank: {self.tpu_global_core_rank}'
-        log.info(m)
+        log.info(f'INIT TPU local core: {self.tpu_local_core_rank},'
+                 f' global rank: {self.tpu_global_core_rank}')
 
         # continue training routine
         self.run_pretrain_routine(model)
@@ -505,20 +510,18 @@ class TrainerDPMixin(ABC):
 
         # CHOOSE OPTIMIZER
         # allow for lr schedulers as well
-        self.optimizers, self.lr_schedulers = self.init_optimizers(model.configure_optimizers())
+        self.optimizers, self.lr_schedulers, self.optimizer_frequencies = self.init_optimizers(model)
 
         model.cuda(self.root_gpu)
 
         # check for this bug (amp + dp + !01 doesn't work)
         # https://github.com/NVIDIA/apex/issues/227
         if self.use_dp and self.use_amp:
-            if self.amp_level == 'O2':  # pragma: no cover
-                m = f"""
-                Amp level {self.amp_level} with DataParallel is not supported.
-                See this note from NVIDIA for more info: https://github.com/NVIDIA/apex/issues/227.
-                We recommend you switch to ddp if you want to use amp
-                """
-                raise MisconfigurationException(m)
+            if self.amp_level == 'O2':
+                raise MisconfigurationException(
+                    f'Amp level {self.amp_level} with DataParallel is not supported.'
+                    f' See this note from NVIDIA for more info: https://github.com/NVIDIA/apex/issues/227.'
+                    f' We recommend you switch to ddp if you want to use amp')
             else:
                 model, optimizers = model.configure_apex(amp, model, self.optimizers, self.amp_level)
 
@@ -526,6 +529,9 @@ class TrainerDPMixin(ABC):
         device_ids = self.data_parallel_device_ids
         if isinstance(device_ids, int):
             device_ids = list(range(device_ids))
+
+        # set dp device
+        torch.cuda.set_device(self.root_gpu)
 
         model = LightningDataParallel(model, device_ids=device_ids)
 
@@ -585,11 +591,10 @@ def sanitize_gpu_ids(gpus):
     all_available_gpus = get_all_available_gpus()
     for gpu in gpus:
         if gpu not in all_available_gpus:
-            message = f"""
-            You requested GPUs: {gpus}
-            But your machine only has: {all_available_gpus}
-            """
-            raise MisconfigurationException(message)
+            raise MisconfigurationException(f"""
+                You requested GPUs: {gpus}
+                But your machine only has: {all_available_gpus}
+            """)
     return gpus
 
 

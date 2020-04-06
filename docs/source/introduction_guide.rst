@@ -33,7 +33,7 @@ Lightning Philosophy
 Lightning factors DL/ML code into three types:
 
 - Research code
-- Engineerng code
+- Engineering code
 - Non-essential code
 
 Research code
@@ -119,7 +119,7 @@ a 3-layer neural network.
     class LitMNIST(pl.LightningModule):
 
       def __init__(self):
-        super(LitMNIST, self).__init__()
+        super().__init__()
 
         # mnist images are (1, 28, 28) (channels, width, height)
         self.layer_1 = torch.nn.Linear(28 * 28, 128)
@@ -269,7 +269,6 @@ In PyTorch we do it as follows:
 
 
 In Lightning we do the same but organize it under the configure_optimizers method.
-If you don't define this, Lightning will automatically use `Adam(self.parameters(), lr=1e-3)`.
 
 .. code-block:: python
 
@@ -277,6 +276,17 @@ If you don't define this, Lightning will automatically use `Adam(self.parameters
 
       def configure_optimizers(self):
         return Adam(self.parameters(), lr=1e-3)
+
+.. note:: The LightningModule itself has the parameters, so pass in self.parameters()
+
+However, if you have multiple optimizers use the matching parameters
+
+.. code-block:: python
+
+    class LitMNIST(pl.LightningModule):
+
+        def configure_optimizers(self):
+            return Adam(self.generator(), lr=1e-3), Adam(self.discriminator(), lr=1e-3)
 
 Training step
 ^^^^^^^^^^^^^
@@ -319,7 +329,7 @@ in the LightningModule
 
       def training_step(self, batch, batch_idx):
         x, y = batch
-        logits = self.forward(x)
+        logits = self(x)
         loss = F.nll_loss(logits, y)
         return {'loss': loss}
         # return loss (also works)
@@ -344,7 +354,7 @@ For clarity, we'll recall that the full LightningModule now looks like this.
 
     class LitMNIST(pl.LightningModule):
       def __init__(self):
-        super(LitMNIST, self).__init__()
+        super().__init__()
         self.layer_1 = torch.nn.Linear(28 * 28, 128)
         self.layer_2 = torch.nn.Linear(128, 256)
         self.layer_3 = torch.nn.Linear(256, 10)
@@ -371,7 +381,7 @@ For clarity, we'll recall that the full LightningModule now looks like this.
 
       def training_step(self, batch, batch_idx):
         x, y = batch
-        logits = self.forward(x)
+        logits = self(x)
         loss = F.nll_loss(logits, y)
 
         # add logging
@@ -504,6 +514,8 @@ Next, install the required xla library (adds support for PyTorch on TPUs)
     update = threading.Thread(target=update_server_xrt)
     update.start()
 
+.. code-block::
+
     # Install Colab TPU compat PyTorch/TPU wheels and dependencies
     !pip uninstall -y torch torchvision
     !gsutil cp "$DIST_BUCKET/$TORCH_WHEEL" .
@@ -545,10 +557,10 @@ In this method we do all the preparation we need to do once (instead of on every
         return DataLoader(self.train_dataset, batch_size=64)
 
       def val_dataloader(self):
-        return DataLoader(self.mnist_val, batch_size=64)
+        return DataLoader(self.val_dataset, batch_size=64)
 
       def test_dataloader(self):
-        return DataLoader(self.mnist_test, batch_size=64)
+        return DataLoader(self.test_dataset, batch_size=64)
 
 The `prepare_data` method is also a good place to do any data processing that needs to be done only
 once (ie: download or tokenize, etc...).
@@ -600,7 +612,7 @@ Now we can parametrize the LightningModule.
 
     class LitMNIST(pl.LightningModule):
       def __init__(self, hparams):
-        super(LitMNIST, self).__init__()
+        super().__init__()
         self.hparams = hparams
 
         self.layer_1 = torch.nn.Linear(28 * 28, hparams.layer_1_dim)
@@ -682,7 +694,7 @@ sample split in the `train_dataloader` method.
     class LitMNIST(pl.LightningModule):
       def validation_step(self, batch, batch_idx):
         x, y = batch
-        logits = self.forward(x)
+        logits = self(x)
         loss = F.nll_loss(logits, y)
         return {'val_loss': loss}
 
@@ -738,7 +750,7 @@ Just like the validation loop, we define exactly the same steps for testing:
     class LitMNIST(pl.LightningModule):
       def test_step(self, batch, batch_idx):
         x, y = batch
-        logits = self.forward(x)
+        logits = self(x)
         loss = F.nll_loss(logits, y)
         return {'val_loss': loss}
 
@@ -825,7 +837,7 @@ within it.
 
       def training_step(self, batch, batch_idx):
         x, y = batch
-        logits = self.forward(x)
+        logits = self(x)
         loss = F.nll_loss(logits, y)
         return loss
 
@@ -853,7 +865,7 @@ In this case, we've set this LightningModel to predict logits. But we could also
 
       def training_step(self, batch, batch_idx):
         x, y = batch
-        out, l1_feats, l2_feats, l3_feats = self.forward(x)
+        out, l1_feats, l2_feats, l3_feats = self(x)
         logits = torch.log_softmax(out, dim=1)
         ce_loss = F.nll_loss(logits, y)
         loss = perceptual_loss(l1_feats, l2_feats, l3_feats) + ce_loss
@@ -878,7 +890,7 @@ Or maybe we have a model that we use to do generation
       def training_step(self, batch, batch_idx):
         x, y = batch
         representation = self.encoder(x)
-        imgs = self.forward(representation)
+        imgs = self(representation)
 
         loss = perceptual_loss(imgs, x)
         return loss
@@ -981,7 +993,8 @@ And pass the callbacks into the trainer
 
     Trainer(callbacks=[MyPrintingCallback()])
 
-.. note:: See full list of 12+ hooks in the `Callback docs <callbacks.rst#callback-class>`_
+.. note::
+    See full list of 12+ hooks in the :ref:`callbacks`.
 
 ---------
 
@@ -990,4 +1003,3 @@ And pass the callbacks into the trainer
 ---------
 
 .. include:: transfer_learning.rst
-

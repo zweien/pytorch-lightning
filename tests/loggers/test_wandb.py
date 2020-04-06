@@ -1,10 +1,10 @@
 import os
 import pickle
-
-import pytest
 from unittest.mock import patch
 
-import tests.models.utils as tutils
+import pytest
+
+import tests.base.utils as tutils
 from pytorch_lightning import Trainer
 from pytorch_lightning.loggers import WandbLogger
 
@@ -28,21 +28,7 @@ def test_wandb_logger(wandb):
     wandb.init().config.update.assert_called_once_with({'test': None})
 
     logger.watch('model', 'log', 10)
-    wandb.watch.assert_called_once_with('model', log='log', log_freq=10)
-
-    logger.finalize('fail')
-    wandb.join.assert_called_once_with(1)
-
-    wandb.join.reset_mock()
-    logger.finalize('success')
-    wandb.join.assert_called_once_with(0)
-
-    wandb.join.reset_mock()
-    wandb.join.side_effect = TypeError
-    with pytest.raises(TypeError):
-        logger.finalize('any')
-
-    wandb.join.assert_called()
+    wandb.init().watch.assert_called_once_with('model', log='log', log_freq=10)
 
     assert logger.name == wandb.init().project_name()
     assert logger.version == wandb.init().id
@@ -64,6 +50,8 @@ def test_wandb_pickle(wandb):
     trainer_options = dict(max_epochs=1, logger=logger)
 
     trainer = Trainer(**trainer_options)
+    # Access the experiment to ensure it's created
+    trainer.logger.experiment
     pkl_bytes = pickle.dumps(trainer)
     trainer2 = pickle.loads(pkl_bytes)
 

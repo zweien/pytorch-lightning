@@ -30,6 +30,7 @@ This is the basic use of the trainer:
     trainer = Trainer()
     trainer.fit(model)
 
+
 --------
 
 Best Practices
@@ -39,7 +40,7 @@ main.py file this way
 
 .. code-block:: python
 
-    from argparser import AugumentParser
+    from argparse import ArgumentParser
 
     def main(hparams):
         model = LightningModule()
@@ -58,6 +59,14 @@ So you can run it like so:distributed_backend
 .. code-block:: bash
 
     $ python main.py --gpus 2
+
+
+.. note::
+    If you want to stop a training run early, you can press "Ctrl + C" on your keyboard.
+    The trainer will catch the `KeyboardInterrupt` and attempt a graceful shutdown, including
+    running callbacks such as `on_train_end`. The trainer object will also set an attribute
+    `interrupted` to `True` in such cases. If you have a callback which shuts down compute
+    resources, for example, you can conditionally run the shutdown logic for only uninterrupted runs.
 
 ------------
 
@@ -146,7 +155,8 @@ Example::
 callbacks
 ^^^^^^^^^
 
-Add a list of user defined callbacks.
+Add a list of user defined callbacks. These callbacks DO NOT replace the explicit callbacks
+(loggers, EarlyStopping or ModelCheckpoint).
 
 .. note:: Only user defined callbacks (ie: Not EarlyStopping or ModelCheckpoint)
 
@@ -194,7 +204,7 @@ Example::
     # default used by the Trainer
     checkpoint_callback = ModelCheckpoint(
         filepath=os.getcwd(),
-        save_best_only=True,
+        save_top_k=True,
         verbose=True,
         monitor='val_loss',
         mode='min',
@@ -238,6 +248,8 @@ Example::
 
     # ddp2 = DistributedDataParallel + dp
     trainer = Trainer(gpus=2, num_nodes=2, distributed_backend='ddp2')
+
+.. note:: this option does not apply to TPU. TPUs use ```ddp``` by default (over each core)
 
 early_stop_callback
 ^^^^^^^^^^^^^^^^^^^
@@ -344,6 +356,7 @@ Example::
 gradient_clip:
 
 .. warning:: .. deprecated:: 0.5.0
+
     Use `gradient_clip_val` instead. Will remove 0.8.0.
 
 log_gpu_memory
@@ -409,6 +422,7 @@ Example::
 max_nb_epochs:
 
 .. warning:: .. deprecated:: 0.5.0
+
     Use `max_epochs` instead. Will remove 0.8.0.
 
 min_epochs
@@ -472,6 +486,7 @@ Example::
 nb_gpu_nodes:
 
 .. warning:: .. deprecated:: 0.5.0
+
     Use `num_nodes` instead. Will remove 0.8.0.
 
 num_sanity_val_steps
@@ -492,6 +507,7 @@ Example::
 nb_sanity_val_steps:
 
 .. warning:: .. deprecated:: 0.5.0
+
     Use `num_sanity_val_steps` instead. Will remove 0.8.0.
 
 num_tpu_cores
@@ -542,8 +558,8 @@ Example::
 
 overfit_pct
 ^^^^^^^^^^^
-Uses this much data of all datasets.
-Useful for quickly debugging or trying to overfit on purpose
+Uses this much data of all datasets (training, validation, test).
+Useful for quickly debugging or trying to overfit on purpose.
 
 Example::
 
@@ -552,6 +568,19 @@ Example::
 
     # use only 1% of the train, test, val datasets
     trainer = Trainer(overfit_pct=0.01)
+
+    # equivalent:
+    trainer = Trainer(
+        train_percent_check=0.01,
+        val_percent_check=0.01,
+        test_percent_check=0.01
+    )
+
+See Also:
+    - `train_percent_check`_
+    - `val_percent_check`_
+    - `test_percent_check`_
+
 
 precision
 ^^^^^^^^^
@@ -575,12 +604,11 @@ Example::
 print_nan_grads
 ^^^^^^^^^^^^^^^
 
-Prints gradients with nan values
+.. warning:: .. deprecated:: 0.7.2.
 
-Example::
+    Has no effect. When detected, NaN grads will be printed automatically.
+    Will remove 0.9.0.
 
-    # default used by the Trainer
-    trainer = Trainer(print_nan_grads=False)
 
 process_position
 ^^^^^^^^^^^^^^^^
@@ -619,14 +647,16 @@ Example::
 progress_bar_refresh_rate
 ^^^^^^^^^^^^^^^^^^^^^^^^^
 How often to refresh progress bar (in steps).
-Faster refresh rates (lower number), in notebooks is known to crash them
-because of their screen refresh rates. 50 is optimal for those cases.
+In notebooks, faster refresh rates (lower number) is known to crash them
+because of their screen refresh rates, so raise it to 50 or more.
 
 Example::
 
     # default used by the Trainer
-    trainer = Trainer(progress_bar_refresh_rate=50)
+    trainer = Trainer(progress_bar_refresh_rate=1)
 
+    # disable progress bar
+    trainer = Trainer(progress_bar_refresh_rate=0)
 
 reload_dataloaders_every_epoch
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
@@ -647,7 +677,7 @@ Set to True to reload dataloaders every epoch.
 
 resume_from_checkpoint
 ^^^^^^^^^^^^^^^^^^^^^^
-To resume training from a specific checkpoint pass in the path here.k
+To resume training from a specific checkpoint pass in the path here.
 
 Example::
 
@@ -671,22 +701,21 @@ Example::
 add_row_log_interval:
 
 .. warning:: .. deprecated:: 0.5.0
+
     Use `row_log_interval` instead. Will remove 0.8.0.
 
 use_amp:
 
 .. warning:: .. deprecated:: 0.7.0
+
     Use `precision` instead. Will remove 0.9.0.
 
 show_progress_bar
 ^^^^^^^^^^^^^^^^^
 
-If true shows tqdm progress bar
+.. warning:: .. deprecated:: 0.7.2
 
-Example::
-
-    # default used by the Trainer
-    trainer = Trainer(show_progress_bar=True)
+    Set `progress_bar_refresh_rate` to 0 instead. Will remove 0.9.0.
 
 test_percent_check
 ^^^^^^^^^^^^^^^^^^
@@ -875,6 +904,6 @@ Trainer class
 
 """
 
-from .trainer import Trainer
+from pytorch_lightning.trainer.trainer import Trainer
 
 __all__ = ['Trainer']

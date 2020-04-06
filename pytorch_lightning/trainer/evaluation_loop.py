@@ -123,18 +123,19 @@ In this second case, the options you pass to trainer will be used when running
 
 """
 
-from typing import Callable
-
 import sys
+import warnings
 from abc import ABC, abstractmethod
+from pprint import pprint
+from typing import Callable
 
 import torch
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
-import warnings
 
 from pytorch_lightning.core.lightning import LightningModule
-from pytorch_lightning.utilities.debugging import MisconfigurationException
+from pytorch_lightning.overrides.data_parallel import LightningDistributedDataParallel, LightningDataParallel
+from pytorch_lightning.utilities.exceptions import MisconfigurationException
 
 try:
     import torch_xla.distributed.parallel_loader as xla_pl
@@ -162,7 +163,6 @@ class TrainerEvaluationLoopMixin(ABC):
     num_val_batches: int
     fast_dev_run: ...
     process_position: ...
-    show_progress_bar: ...
     process_output: ...
     training_tqdm_dict: ...
     proc_rank: int
@@ -216,14 +216,14 @@ class TrainerEvaluationLoopMixin(ABC):
     def reset_val_dataloader(self, *args):
         """Warning: this is just empty shell for code implemented in other class."""
 
-    def evaluate(self, model, dataloaders, max_batches, test_mode: bool = False):
+    def _evaluate(self, model: LightningModule, dataloaders, max_batches: int, test_mode: bool = False):
         """Run evaluation code.
 
-        :param model: PT model
-        :param dataloaders: list of PT dataloaders
-        :param max_batches: Scalar
-        :param test_mode
-        :return:
+        Args:
+            model: PT model
+            dataloaders: list of PT dataloaders
+            max_batches: Scalar
+            test_mode:
         """
         # enable eval mode
         model.zero_grad()
@@ -249,7 +249,7 @@ class TrainerEvaluationLoopMixin(ABC):
                 dataloader = dataloader.per_device_loader(device)
 
             for batch_idx, batch in enumerate(dataloader):
-                if batch is None:  # pragma: no cover
+                if batch is None:
                     continue
 
                 # stop short when on fast_dev_run (sets max_batch=1)
@@ -277,7 +277,7 @@ class TrainerEvaluationLoopMixin(ABC):
                 dl_outputs.append(output)
 
                 # batch done
-                if batch_idx % self.progress_bar_refresh_rate == 0:
+                if self.progress_bar_refresh_rate >= 1 and batch_idx % self.progress_bar_refresh_rate == 0:
                     if test_mode:
                         self.test_progress_bar.update(self.progress_bar_refresh_rate)
                     else:
@@ -292,24 +292,28 @@ class TrainerEvaluationLoopMixin(ABC):
             outputs = outputs[0]
 
         # give model a chance to do something with the outputs (and method defined)
-        model = self.get_model()
+        if isinstance(model, (LightningDistributedDataParallel, LightningDataParallel)):
+            model = model.module
 
-        if test_mode and self.is_overriden('test_epoch_end'):
-            eval_results = model.test_epoch_end(outputs)
-        elif self.is_overriden('validation_epoch_end'):
-            eval_results = model.validation_epoch_end(outputs)
+        if test_mode:
+            if self.is_overriden('test_end', model=model):
+                # TODO: remove in v1.0.0
+                eval_results = model.test_end(outputs)
+                warnings.warn('Method `test_end` was deprecated in 0.7.0 and will be removed 1.0.0.'
+                              ' Use `test_epoch_end` instead.', DeprecationWarning)
 
-        # TODO: remove in v 1.0.0
-        if test_mode and self.is_overriden('test_end'):
-            eval_results = model.test_end(outputs)
-            m = 'test_end was deprecated in 0.7.0 and will be removed 1.0.0. ' \
-                'Use test_epoch_end instead.'
-            warnings.warn(m, DeprecationWarning)
-        elif self.is_overriden('validation_end'):
-            eval_results = model.validation_end(outputs)
-            m = 'validation_end was deprecated in 0.7.0 and will be removed 1.0.0. ' \
-                'Use validation_epoch_end instead.'
-            warnings.warn(m, DeprecationWarning)
+            elif self.is_overriden('test_epoch_end', model=model):
+                eval_results = model.test_epoch_end(outputs)
+
+        else:
+            if self.is_overriden('validation_end', model=model):
+                # TODO: remove in v1.0.0
+                eval_results = model.validation_end(outputs)
+                warnings.warn('Method `validation_end` was deprecated in 0.7.0 and will be removed 1.0.0.'
+                              ' Use `validation_epoch_end` instead.', DeprecationWarning)
+
+            elif self.is_overriden('validation_epoch_end', model=model):
+                eval_results = model.validation_epoch_end(outputs)
 
         # enable train mode again
         model.train()
@@ -322,9 +326,9 @@ class TrainerEvaluationLoopMixin(ABC):
     def run_evaluation(self, test_mode: bool = False):
         # when testing make sure user defined a test step
         if test_mode and not self.is_overriden('test_step'):
-            m = "You called `.test()` without defining model's `.test_step()`." \
-                " Please define and try again"
-            raise MisconfigurationException(m)
+            raise MisconfigurationException(
+                "You called `.test()` without defining model's `.test_step()`."
+                " Please define and try again")
 
         # Validation/Test begin callbacks
         if test_mode:
@@ -338,14 +342,14 @@ class TrainerEvaluationLoopMixin(ABC):
 
         # select dataloaders
         if test_mode:
-            if self.reload_dataloaders_every_epoch or self.test_dataloaders is None:
+            if self.test_dataloaders is None:
                 self.reset_test_dataloader(model)
 
             dataloaders = self.test_dataloaders
             max_batches = self.num_test_batches
         else:
             # val
-            if self.reload_dataloaders_every_epoch or self.val_dataloaders is None:
+            if self.val_dataloaders is None:
                 self.reset_val_dataloader(model)
 
             dataloaders = self.val_dataloaders
@@ -359,13 +363,13 @@ class TrainerEvaluationLoopMixin(ABC):
         # main progress bar will already be closed when testing so initial position is free
         position = 2 * self.process_position + (not test_mode)
         desc = 'Testing' if test_mode else 'Validating'
-        pbar = tqdm(desc=desc, total=max_batches, leave=test_mode, position=position,
-                    disable=not self.show_progress_bar, dynamic_ncols=True,
-                    file=sys.stdout)
+        total = max_batches if max_batches != float('inf') else None
+        pbar = tqdm(desc=desc, total=total, leave=test_mode, position=position,
+                    disable=not self.progress_bar_refresh_rate, dynamic_ncols=True, file=sys.stdout)
         setattr(self, f'{"test" if test_mode else "val"}_progress_bar', pbar)
 
         # run evaluation
-        eval_results = self.evaluate(self.model, dataloaders, max_batches, test_mode)
+        eval_results = self._evaluate(self.model, dataloaders, max_batches, test_mode)
         _, prog_bar_metrics, log_metrics, callback_metrics, _ = self.process_output(
             eval_results)
 
@@ -377,7 +381,7 @@ class TrainerEvaluationLoopMixin(ABC):
             if self.proc_rank == 0:
                 print('-' * 100)
                 print('TEST RESULTS')
-                print(prog_bar_metrics)
+                pprint(prog_bar_metrics)
                 print('-' * 100)
 
         # log metrics
@@ -398,6 +402,15 @@ class TrainerEvaluationLoopMixin(ABC):
             self.test_progress_bar.close()
         else:
             self.val_progress_bar.close()
+
+        # eventual dataset reloading
+        if test_mode:
+            if self.reload_dataloaders_every_epoch:
+                self.reset_test_dataloader(model)
+        else:
+            # val
+            if self.reload_dataloaders_every_epoch:
+                self.reset_val_dataloader(model)
 
         # Validation/Test end callbacks
         if test_mode:
